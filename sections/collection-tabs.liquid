@@ -89,6 +89,19 @@
   }
 {%- endstyle -%}
 
+{%- liquid
+  # Solo se muestran pestañas cuya colección tiene productos visibles en la tienda.
+  assign valid_tabs = ''
+  for block in section.blocks
+    if block.settings.collection != blank and block.settings.collection.products.size > 0
+      assign valid_tabs = valid_tabs | append: block.id | append: ','
+    endif
+  endfor
+  assign valid_tab_ids = valid_tabs | split: ','
+  assign first_tab_id = valid_tab_ids | first
+-%}
+
+{%- if valid_tab_ids.size > 0 or request.design_mode -%}
 <div class="collection-tabs-{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
   <div class="page-width" data-collection-tabs>
     {%- if section.settings.heading != blank -%}
@@ -97,14 +110,17 @@
 
     <div class="collection-tabs__nav" role="tablist" aria-label="{{ section.settings.heading | escape }}">
       {%- for block in section.blocks -%}
+        {%- unless valid_tab_ids contains block.id -%}
+          {%- continue -%}
+        {%- endunless -%}
         <button
           type="button"
           class="collection-tabs__tab"
           role="tab"
           id="Tab-{{ section.id }}-{{ forloop.index }}"
           aria-controls="Panel-{{ section.id }}-{{ forloop.index }}"
-          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-          tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+          aria-selected="{% if block.id == first_tab_id %}true{% else %}false{% endif %}"
+          tabindex="{% if block.id == first_tab_id %}0{% else %}-1{% endif %}"
           {{ block.shopify_attributes }}
         >
           {{- block.settings.title | default: block.settings.collection.title | escape -}}
@@ -114,13 +130,16 @@
 
     {%- assign skip_card_styles = false -%}
     {%- for block in section.blocks -%}
+      {%- unless valid_tab_ids contains block.id -%}
+        {%- continue -%}
+      {%- endunless -%}
       {%- assign tab_collection = block.settings.collection -%}
       <div
         class="collection-tabs__panel"
         role="tabpanel"
         id="Panel-{{ section.id }}-{{ forloop.index }}"
         aria-labelledby="Tab-{{ section.id }}-{{ forloop.index }}"
-        {% unless forloop.first %}hidden{% endunless %}
+        {% unless block.id == first_tab_id %}hidden{% endunless %}
       >
         {%- if tab_collection != blank and tab_collection.products.size > 0 -%}
           <ul
@@ -148,17 +167,17 @@
               {{- section.settings.view_all_label | default: 'Ver todo' | escape -}}
             </a>
           </div>
-        {%- else -%}
-          <p class="center">Elige una colección con productos para esta pestaña.</p>
         {%- endif -%}
       </div>
     {%- endfor -%}
   </div>
 </div>
+{%- endif -%}
 
 <script>
   (function () {
-    var root = document.currentScript.previousElementSibling.querySelector('[data-collection-tabs]');
+    var prev = document.currentScript.previousElementSibling;
+    var root = prev && prev.querySelector ? prev.querySelector('[data-collection-tabs]') : null;
     if (!root) return;
     var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
     var panels = Array.prototype.slice.call(root.querySelectorAll('[role="tabpanel"]'));
