@@ -3617,7 +3617,19 @@ details-disclosure > details {
   display: none;
 }
 
-/* Botón de carrito de las tarjetas de producto */
+/* Botón de carrito de las tarjetas de producto.
+   .card__inner crea su propia capa (transform), así que se sube por encima del enlace del título
+   y lleva un enlace propio a la ficha; la bolsa queda encima de todo. */
+.card-wrapper .card__inner--cart {
+  z-index: 2;
+}
+
+.card__inner .card-media-link {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
 .card__inner .card-cart-btn {
   position: absolute;
   right: 1rem;

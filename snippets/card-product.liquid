@@ -65,7 +65,7 @@
       style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
     >
       <div
-        class="card__inner {% if settings.card_style == 'standard' %}color-{{ settings.card_color_scheme }} gradient{% endif %}{% if card_product.featured_media or settings.card_style == 'standard' %} ratio{% endif %}"
+        class="card__inner {% if settings.card_style == 'standard' %}color-{{ settings.card_color_scheme }} gradient{% endif %}{% if card_product.featured_media or settings.card_style == 'standard' %} ratio{% endif %}{% if card_product.available %} card__inner--cart{% endif %}"
         style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
       >
         {%- if card_product.featured_media -%}
@@ -160,6 +160,11 @@
           </div>
         </div>
         {%- if card_product.available -%}
+          {%- comment -%}
+            La imagen queda en una capa por encima del enlace del título (para que la bolsa reciba el clic),
+            así que lleva su propio enlace a la ficha.
+          {%- endcomment -%}
+          <a class="card-media-link" href="{{ card_product.url }}" tabindex="-1" aria-hidden="true"></a>
           {%- if card_product.variants.size == 1 -%}
             <button
               type="button"
