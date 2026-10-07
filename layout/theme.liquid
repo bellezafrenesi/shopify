@@ -48,8 +48,14 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
+    {%- liquid
+      assign meta_description = page_description
+      if meta_description == blank and request.page_type == 'index'
+        assign meta_description = shop.description | default: 'Cuidado personal de las mejores marcas con envíos a toda Colombia. Perfumería, cuidado facial, corporal y capilar en Belleza Frenesí.'
+      endif
+    -%}
+    {% if meta_description != blank %}
+      <meta name="description" content="{{ meta_description | escape }}">
     {% endif %}
 
     {% render 'meta-tags' %}
@@ -285,11 +291,14 @@
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}
-      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
-      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
-      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
-      {{ 'component-price.css' | asset_url | stylesheet_tag }}
-      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+      {%- comment -%}
+        El CSS del carrito lateral solo se necesita cuando se abre el carrito.
+        Se carga sin bloquear el primer pintado de la página.
+      {%- endcomment -%}
+      {%- for cart_css in 'component-cart-drawer.css,component-cart.css,component-totals.css,component-price.css,component-discounts.css' | split: ',' -%}
+        <link rel="stylesheet" href="{{ cart_css | asset_url }}" media="print" onload="this.media='all'">
+        <noscript>{{ cart_css | asset_url | stylesheet_tag }}</noscript>
+      {%- endfor -%}
     {%- endif -%}
 
     {%- unless settings.type_body_font.system? -%}

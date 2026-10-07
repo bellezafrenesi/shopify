@@ -3456,7 +3456,6 @@ details-disclosure > details {
 
   :root {
     --easter-egg: none;
-    --sparkle: url('./sparkle.gif');
   }
 
   .animate--hover-vertical-lift .button:not(.button--tertiary),
@@ -3617,3 +3616,17 @@ details-disclosure > details {
            line-height: 12px;
            padding:10px 15px;
     }
+
+/* Ahorro en pesos junto al precio (ficha de producto) */
+.price__savings {
+  display: none;
+  flex-basis: 100%;
+  margin: 0.4rem 0 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a7f37;
+}
+
+.price--on-sale .price__savings {
+  display: block;
+}

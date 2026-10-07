@@ -15,7 +15,7 @@
     align-items: center;
     white-space: nowrap;
     will-change: transform;
-    animation: marquee 13s linear infinite;
+    animation: marquee 11s linear infinite;
   }
   .section-{{ section.id }}.custom-marquee-images img {
     margin-left: 40px;
@@ -29,7 +29,7 @@
       transform: translateX(0);
     }
     to {
-      transform: translateX(-20%);
+      transform: translateX(-16.6667%);
     }
   }
 </style>
@@ -56,7 +56,8 @@
                 src="{{ block.settings.image | image_url: width: request_w }}"
                 width="{{ display_w }}"
                 height="{{ img_h }}"
-                alt="{{ block.settings.image.alt | escape }}"
+                alt="{% if copy == 1 %}{{ block.settings.image.alt | escape }}{% endif %}"
+                {% if copy > 1 %}aria-hidden="true"{% endif %}
                 loading="{{ img_loading }}"
                 decoding="async"
               >

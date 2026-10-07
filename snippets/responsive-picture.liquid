@@ -15,7 +15,7 @@
 
 {%- liquid
   assign desktop_max = desktop_max | default: 3840
-  assign img_height = desktop.width | divided_by: desktop.aspect_ratio
+  assign img_height = desktop.width | divided_by: desktop.aspect_ratio | round
   assign alt_text = alt | default: desktop.alt | escape
 -%}
 

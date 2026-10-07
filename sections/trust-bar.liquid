@@ -1,0 +1,191 @@
+{%- style -%}
+  .trust-bar-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  .trust-bar-{{ section.id }} .trust-bar__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.6rem 1.2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .trust-bar-{{ section.id }} .trust-bar__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.6rem;
+  }
+  .trust-bar-{{ section.id }} .trust-bar__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5.2rem;
+    height: 5.2rem;
+    border-radius: 50%;
+    background: rgba(var(--color-button), 0.12);
+    color: rgb(var(--color-button));
+  }
+  .trust-bar-{{ section.id }} .trust-bar__icon svg {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+  .trust-bar-{{ section.id }} .trust-bar__title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .trust-bar-{{ section.id }} .trust-bar__text {
+    margin: 0;
+    font-size: 1.4rem;
+    line-height: 1.4;
+    opacity: 0.85;
+  }
+  @media screen and (min-width: 750px) {
+    .trust-bar-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    .trust-bar-{{ section.id }} .trust-bar__list {
+      grid-template-columns: repeat({{ section.blocks.size | at_least: 1 | at_most: 4 }}, 1fr);
+      gap: 2rem;
+    }
+    .trust-bar-{{ section.id }} .trust-bar__item {
+      flex-direction: row;
+      text-align: left;
+      gap: 1.2rem;
+    }
+    .trust-bar-{{ section.id }} .trust-bar__icon {
+      flex-shrink: 0;
+    }
+  }
+{%- endstyle -%}
+
+<div class="trust-bar-{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <ul class="trust-bar__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="trust-bar__item" {{ block.shopify_attributes }}>
+          <span class="trust-bar__icon" aria-hidden="true">
+            {%- case block.settings.icon -%}
+              {%- when 'truck' -%}
+                {{- 'icon-truck.svg' | inline_asset_content -}}
+              {%- when 'padlock' -%}
+                {{- 'icon-padlock.svg' | inline_asset_content -}}
+              {%- when 'checkmark' -%}
+                {{- 'icon-checkmark.svg' | inline_asset_content -}}
+              {%- when 'return' -%}
+                {{- 'icon-return.svg' | inline_asset_content -}}
+              {%- when 'chat' -%}
+                {{- 'icon-chat-bubble.svg' | inline_asset_content -}}
+              {%- when 'price_tag' -%}
+                {{- 'icon-price-tag.svg' | inline_asset_content -}}
+              {%- when 'discount' -%}
+                {{- 'icon-discount.svg' | inline_asset_content -}}
+              {%- when 'heart' -%}
+                {{- 'icon-heart.svg' | inline_asset_content -}}
+              {%- when 'box' -%}
+                {{- 'icon-box.svg' | inline_asset_content -}}
+            {%- endcase -%}
+          </span>
+          <div>
+            {%- if block.settings.title != blank -%}
+              <p class="trust-bar__title">{{ block.settings.title | escape }}</p>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <p class="trust-bar__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Barra de confianza",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacio arriba",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacio abajo",
+      "default": 28
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Beneficio",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "options": [
+            { "value": "truck", "label": "Camión (envíos)" },
+            { "value": "padlock", "label": "Candado (pago seguro)" },
+            { "value": "checkmark", "label": "Check (original)" },
+            { "value": "return", "label": "Devolución" },
+            { "value": "chat", "label": "Chat (atención)" },
+            { "value": "price_tag", "label": "Etiqueta de precio" },
+            { "value": "discount", "label": "Descuento" },
+            { "value": "heart", "label": "Corazón" },
+            { "value": "box", "label": "Caja" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Envíos a toda Colombia"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto corto",
+          "default": "Recibe en tu casa"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barra de confianza",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "checkmark", "title": "100% originales", "text": "Marcas reconocidas" } },
+        { "type": "item", "settings": { "icon": "truck", "title": "Envíos a toda Colombia", "text": "Recibe en tu casa" } },
+        { "type": "item", "settings": { "icon": "padlock", "title": "Pago 100% seguro", "text": "Compra con confianza" } },
+        { "type": "item", "settings": { "icon": "chat", "title": "Te asesoramos", "text": "Escríbenos por WhatsApp" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

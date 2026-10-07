@@ -1,0 +1,270 @@
+{%- style -%}
+  .category-tiles-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  .category-tiles-{{ section.id }} .category-tiles__header {
+    text-align: center;
+    margin-bottom: 2.4rem;
+  }
+  .category-tiles-{{ section.id }} .category-tiles__heading {
+    margin: 0;
+  }
+  .category-tiles-{{ section.id }} .category-tiles__subheading {
+    margin: 0.6rem 0 0;
+    font-size: 1.6rem;
+    opacity: 0.85;
+  }
+  .category-tiles-{{ section.id }} .category-tiles__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    gap: 1.6rem 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .category-tiles-{{ section.id }} .category-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+  }
+  .category-tiles-{{ section.id }} .category-tile__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: {% if section.settings.shape == 'circle' %}50%{% else %}1.6rem{% endif %};
+    background: rgba(var(--color-button), 0.14);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .category-tiles-{{ section.id }} .category-tile__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .category-tiles-{{ section.id }} .category-tile__initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgb(var(--color-button));
+  }
+  .category-tiles-{{ section.id }} .category-tile__title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  .category-tiles-{{ section.id }} .category-tile__tag {
+    display: inline-block;
+    margin-top: -0.3rem;
+    padding: 0.2rem 1rem;
+    border-radius: 10rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
+  }
+  .category-tiles-{{ section.id }} .category-tile:hover .category-tile__media,
+  .category-tiles-{{ section.id }} .category-tile:focus-visible .category-tile__media {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  }
+  @media screen and (min-width: 750px) {
+    .category-tiles-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    .category-tiles-{{ section.id }} .category-tiles__grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+      gap: 2.4rem 2rem;
+    }
+    .category-tiles-{{ section.id }} .category-tile__title {
+      font-size: 1.8rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="category-tiles-{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="category-tiles__header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="category-tiles__heading h2">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="category-tiles__subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <ul class="category-tiles__grid" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign tile_collection = block.settings.collection
+          assign tile_title = block.settings.title | default: tile_collection.title
+          assign tile_image = block.settings.image | default: tile_collection.featured_image
+          assign tile_url = block.settings.url | default: tile_collection.url
+        -%}
+        <li {{ block.shopify_attributes }}>
+          <a class="category-tile" href="{{ tile_url | default: routes.all_products_collection_url }}">
+            <span class="category-tile__media">
+              {%- if tile_image != blank -%}
+                {{
+                  tile_image
+                  | image_url: width: 600
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '200, 300, 400, 600',
+                    sizes: '(min-width: 750px) 200px, 33vw',
+                    alt: tile_title
+                }}
+              {%- else -%}
+                <span class="category-tile__initial" aria-hidden="true">{{ tile_title | slice: 0 | upcase }}</span>
+              {%- endif -%}
+            </span>
+            <span class="category-tile__title">{{ tile_title | escape }}</span>
+            {%- if block.settings.tag != blank -%}
+              <span class="category-tile__tag">{{ block.settings.tag | escape }}</span>
+            {%- endif -%}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Categorías con imagen",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Compra por categoría"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subtítulo (opcional)"
+    },
+    {
+      "type": "select",
+      "id": "shape",
+      "label": "Forma de la imagen",
+      "options": [
+        { "value": "circle", "label": "Círculo" },
+        { "value": "rounded", "label": "Cuadrado con esquinas redondeadas" }
+      ],
+      "default": "circle"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "Columnas en escritorio",
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columnas en celular",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacio arriba",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacio abajo",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Categoría",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Colección"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título (opcional)",
+          "info": "Si lo dejas vacío usa el nombre de la colección."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen",
+          "info": "Recomendado: 600 × 600 px. Si no subes una, usa la imagen de la colección."
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Etiqueta (opcional)",
+          "info": "Por ejemplo: Hasta -40 %"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Enlace personalizado (opcional)",
+          "info": "Solo si no quieres que lleve a la colección."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categorías con imagen",
+      "blocks": [
+        { "type": "tile" },
+        { "type": "tile" },
+        { "type": "tile" },
+        { "type": "tile" },
+        { "type": "tile" },
+        { "type": "tile" }
+      ]
+    }
+  ]
+}
+{% endschema %}
