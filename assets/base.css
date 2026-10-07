@@ -3657,6 +3657,12 @@ details-disclosure > details {
   height: 2.2rem;
 }
 
+/* El SVG de la bolsa trae mucho margen interno: se dibuja más grande para que se lea bien */
+.card__inner .card-cart-btn__icon svg {
+  width: 3.6rem;
+  height: 3.6rem;
+}
+
 .card__inner .card-cart-btn__check,
 .card__inner .card-cart-btn__spinner {
   display: none;
@@ -3721,6 +3727,11 @@ details-disclosure > details {
   .card__inner .card-cart-btn svg {
     width: 2rem;
     height: 2rem;
+  }
+
+  .card__inner .card-cart-btn__icon svg {
+    width: 3.2rem;
+    height: 3.2rem;
   }
 }
 
