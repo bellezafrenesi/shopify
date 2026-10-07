@@ -69,7 +69,7 @@
               <span class="content marquee-text">{{ block.settings.new_text | escape }}</span>
             {%- endfor -%}
             {%- if section.settings.link != blank -%}
-              {% render 'icon-arrow' %}
+              <span class="svg-wrapper" aria-hidden="true">{{- 'icon-arrow.svg' | inline_asset_content -}}</span>
             {%- endif -%}
           </div>
           {%- if section.settings.link != blank -%}
