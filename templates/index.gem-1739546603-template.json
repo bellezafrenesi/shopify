@@ -1,0 +1,397 @@
+{
+  "sections": {
+    "image_banner_D8MzQY": {
+      "type": "image-banner",
+      "blocks": {
+        "text_fHCetJ": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        },
+        "buttons_WJcMif": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Ver Categorías",
+            "button_link_1": "shopify:\/\/collections",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "text_fHCetJ",
+        "buttons_WJcMif"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/BANNERS_IMAGENES_SHOPIFY_DG_1.png",
+        "image_2": "shopify:\/\/shop_images\/ANUNCIOS_2025_BF_7b919ae6-47d3-4b4b-9a91-fff7e37e9897.png",
+        "image_overlay_opacity": 20,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "scheme-4",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "<strong>LOS FAVORITOS<\/strong>",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "los-favoritos",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": false,
+        "view_all_style": "link",
+        "enable_desktop_slider": true,
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": true,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 28,
+        "padding_bottom": 12
+      }
+    },
+    "image_banner": {
+      "type": "image-banner",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h0"
+          }
+        },
+        "button": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Maquillaje",
+            "button_link_1": "shopify:\/\/collections\/maquillaje",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "button"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/BANNERS_IMAGENES_SHOPIFY_DG_2.png",
+        "image_2": "shopify:\/\/shop_images\/BANNERS_IMAGENES_SHOPIFY_DG_2.png",
+        "image_overlay_opacity": 40,
+        "image_height": "small",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "scheme-3",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "marquee_images_n7zcpp": {
+      "type": "marquee-images",
+      "blocks": {
+        "image_picker_YYwgew": {
+          "type": "image_picker",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logos_marcas_dentro_de_BF_170_x_82_px_1.png"
+          }
+        },
+        "image_picker_jFHx8A": {
+          "type": "image_picker",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/2_d3ef6bac-6c0b-4314-84f0-4f88e9c79bc5.png"
+          }
+        },
+        "image_picker_q9BeJP": {
+          "type": "image_picker",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/7_284aa1fc-5161-430a-89d6-62d2bafab29f.png"
+          }
+        },
+        "image_picker_3PU7qW": {
+          "type": "image_picker",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/5_cda18b26-b8c4-48a9-b6dd-e7e0550fd335.png"
+          }
+        },
+        "image_picker_p4eCz7": {
+          "type": "image_picker",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/6_17711efc-3889-499f-a925-7b621cd9cfdd.png"
+          }
+        },
+        "image_picker_7H8NTE": {
+          "type": "image_picker",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/3_b37fac94-3e1a-4108-9444-869a2d458f24.png"
+          }
+        },
+        "image_picker_KeFYVM": {
+          "type": "image_picker",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/4_d0b9f3d2-9157-4283-93a9-23db0a6cbfbc.png"
+          }
+        }
+      },
+      "block_order": [
+        "image_picker_YYwgew",
+        "image_picker_jFHx8A",
+        "image_picker_q9BeJP",
+        "image_picker_3PU7qW",
+        "image_picker_p4eCz7",
+        "image_picker_7H8NTE",
+        "image_picker_KeFYVM"
+      ],
+      "settings": {
+        "colorBackground": "#e7d9cc",
+        "marquee_height": 50,
+        "marquee_padding": 0,
+        "image_width": 90
+      }
+    },
+    "image_banner_UfW4yi": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_T3tt7L": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h0"
+          }
+        },
+        "buttons_DwaRq7": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Cuidado Facial",
+            "button_link_1": "shopify:\/\/collections\/chronos",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_T3tt7L",
+        "buttons_DwaRq7"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/BANNERS_IMAGENES_SHOPIFY_DG_1_395669fa-51fa-494f-b746-1692ddbad5bd.png",
+        "image_2": "shopify:\/\/shop_images\/BANNERS_IMAGENES_SHOPIFY_DG_1_395669fa-51fa-494f-b746-1692ddbad5bd.png",
+        "image_overlay_opacity": 40,
+        "image_height": "small",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "scheme-3",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "image_banner_zTq3Yy": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_FyVBe3": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h0"
+          }
+        },
+        "buttons_jjJRqt": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Perfumes Damas",
+            "button_link_1": "shopify:\/\/collections\/perfume-femenino",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_FyVBe3",
+        "buttons_jjJRqt"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/11.png",
+        "image_2": "shopify:\/\/shop_images\/11.png",
+        "image_overlay_opacity": 20,
+        "image_height": "small",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "scheme-3",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "image_banner_FWbDpC": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_FYjWFE": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h0"
+          }
+        },
+        "buttons_nF3nA9": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Cuidado Capilar",
+            "button_link_1": "shopify:\/\/collections\/cabello",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_FYjWFE",
+        "buttons_nF3nA9"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/12.png",
+        "image_2": "shopify:\/\/shop_images\/12.png",
+        "image_overlay_opacity": 40,
+        "image_height": "small",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "scheme-3",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "17362153380c9d86d3": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_yEpiwK": {
+          "type": "shopify:\/\/apps\/judge-me-reviews\/blocks\/featured_carousel\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_yEpiwK"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "featured_collection_nUbXL3": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "<strong>ÚLTIMOS LANZAMIENTOS<\/strong>",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "ultimos-lanzamientos",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "link",
+        "enable_desktop_slider": false,
+        "color_scheme": "",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_zBCpee": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_XQcgWT": {
+          "type": "heading",
+          "settings": {
+            "heading": "Somos <strong>Belleza Frenesí<\/strong>, y sabemos que la verdadera belleza nace en el <strong>interior<\/strong>",
+            "heading_size": "h2"
+          }
+        }
+      },
+      "block_order": [
+        "heading_XQcgWT"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-c6486f74-948b-42cf-a875-95b19ab19d98",
+        "full_width": true,
+        "padding_top": 4,
+        "padding_bottom": 24
+      }
+    },
+    "image_banner_RpNJPm": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/10.png",
+        "image_2": "shopify:\/\/shop_images\/10.png",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    }
+  },
+  "order": [
+    "image_banner_D8MzQY",
+    "featured_collection",
+    "image_banner",
+    "image_banner_UfW4yi",
+    "image_banner_zTq3Yy",
+    "image_banner_FWbDpC",
+    "17362153380c9d86d3",
+    "featured_collection_nUbXL3",
+    "marquee_images_n7zcpp",
+    "rich_text_zBCpee",
+    "image_banner_RpNJPm"
+  ]
+}

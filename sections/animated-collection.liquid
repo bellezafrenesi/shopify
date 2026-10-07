@@ -1,0 +1,87 @@
+{% schema %}
+{
+  "name": "insta Icon Category",
+  "max_blocks": 30,
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "collection",
+      "settings": [
+        {
+          "id": "single_cat",
+          "type": "collection",
+          "label": "collection"
+        },
+        {
+          "id": "collection_name",
+          "type": "text",
+          "label": "collection_name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "insta Icon Category",
+      "category": "Collections"
+    }
+  ]
+}
+{% endschema %}
+<div class="scrollmenuitems">
+	{% for block in section.blocks %}
+		{% assign data_title = block.settings.single_cat.title %}
+		{% assign data_url = block.settings.single_cat.url %}
+		{% assign collection_name = block.settings.collection_name %}
+		<div class="column"> 
+			<div class="column">
+				<div class="instaslider">
+					<a href="{{data_url }}">
+						<div class="instaslide">
+							<div class="circle">
+								<img loading="eager" width="auto" height="auto" src="{{ block.settings.single_cat | img_url: '450x450' }}" alt="" >
+								<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="enable-background: new -580 439 577.9 194" xml:space="preserve" >
+									<circle cx="50" cy="50" r="40"></circle>
+								</svg>
+							</div>
+						</div>
+					</a>
+					<div class="cat_name" style="display: flex; flex-direction: column">
+						{% if collection_name == '' %}
+							{% assign collection_show_name = data_title %}
+						{% else %}
+							{% assign collection_show_name = collection_name %}
+						{% endif %}
+						<span><strong>{{- collection_show_name | link_to: collection.url }}</strong></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+<style>
+* { box-sizing: border-box; } 
+@media screen and (max-device-width: 1024px){
+	.scrollmenuitems { justify-content: flex-start !important; }
+}
+.circle { position: relative; width: 100px; height: 100px; }
+.circle svg { fill: none; stroke: #8a3ab9; stroke-linecap: round; stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 0; animation: stroke-draw 6s ease-out infinite alternate; }
+.circle svg:hover{animation: stroke-draw 10s ease-out infinite alternate; cursor:pointer; }
+.circle img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 70px; border-radius: 50%; }
+@keyframes stroke-draw {
+	from {
+		stroke: #8a3ab9; stroke-dasharray: 1;
+	}
+	to {
+		stroke: #cd486b; transform: rotate(180deg); stroke-dasharray: 8; 
+	}
+}
+h4 { margin: 15px; padding: 0; }
+.instaslider { display: flex; justify-content: flex-start; flex-direction: column; align-items: center; }
+.instaslide { display: flex; flex-direction: column; justify-content: space-between; flex: 2; }
+.column { float: left; padding: 3px; }
+div.scrollmenuitems { overflow:auto; white-space: nowrap; display: flex; justify-content: center; align-items: center; }
+div.scrollmenuitems a { display: inline-block; color:rgb(100, 97, 97); text-align: center; padding: 5px; text-decoration: none; }
+div.scrollmenuitems a:hover { color:black; }
+.cat_name{ color:rgb(100, 97, 97)); }
+</style>

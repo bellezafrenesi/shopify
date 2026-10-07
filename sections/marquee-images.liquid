@@ -1,0 +1,127 @@
+<style>
+  .section-{{ section.id }}.custom-marquee-images {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    max-width: 100%;
+    height: {{section.settings.marquee_height}}px;
+    padding-top: {{section.settings.marquee_padding}}px;
+    padding-bottom: {{section.settings.marquee_padding}}px;
+    overflow-x: hidden;
+    background:{{section.settings.colorBackground}};
+  }
+  .section-{{ section.id }}.custom-marquee-images .track-images {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    will-change: transform;
+    animation: marquee 13s linear infinite;
+  }
+  .section-{{ section.id }}.custom-marquee-images img {
+    margin-left: 40px;
+    width: calc({{section.settings.image_width}}px + 50px);
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-20%);
+    }
+  }
+</style>
+  <div class="section-{{ section.id }} custom-marquee-images" role="region" {{ block.shopify_attributes }}>
+      <div class="track-images">
+        {%- liquid
+          # Tamaño real en pantalla = image_width + 50 px. Se pide el doble (pantallas retina) en vez de
+          # 533 px fijos. Solo la primera vuelta carga de inmediato si la sección está arriba; las copias
+          # repetidas y las secciones más abajo cargan en diferido.
+          assign display_w = section.settings.image_width | plus: 50
+          assign request_w = display_w | times: 2
+        -%}
+        {%- for copy in (1..6) -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.image != blank -%}
+              {%- liquid
+                assign img_h = display_w | divided_by: block.settings.image.aspect_ratio | round
+                assign img_loading = 'lazy'
+                if copy == 1 and section.index <= 3
+                  assign img_loading = 'eager'
+                endif
+              -%}
+              <img
+                src="{{ block.settings.image | image_url: width: request_w }}"
+                width="{{ display_w }}"
+                height="{{ img_h }}"
+                alt="{{ block.settings.image.alt | escape }}"
+                loading="{{ img_loading }}"
+                decoding="async"
+              >
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+  </div>
+
+{% schema %}
+{
+  "name": "Marquee Images",
+  "settings": [
+    {
+      "type": "color",
+      "id": "colorBackground",
+      "label": "Background color",
+      "default": "#06ffbc"
+    },
+    {
+      "type": "range",
+      "id": "marquee_height",
+      "min": 24,
+      "max": 200,
+      "step": 2,
+      "default": 100,
+      "label": "Marquee height"
+    },
+    {
+      "type": "range",
+      "id": "marquee_padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0,
+      "label": "Marquee padding"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "min": 10,
+      "max": 200,
+      "step": 2,
+      "default": 100,
+      "label": "Image size"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_picker",
+      "name": "Logo",
+      "limit": 20,
+      "settings": [
+         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee Images"
+    }
+  ]
+}
+{% endschema %}
