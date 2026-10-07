@@ -6,6 +6,7 @@
   - product_form_id: {String} product form id.
   - section_id: {String} id of section to which this snippet belongs.
   - show_pickup_availability: {Boolean} for the pickup availability. If true the pickup availability is rendered, false - not rendered (optional).
+  - quantity_html: {String} selector de cantidad ya dibujado; si viene, va en la misma fila que el botón (optional).
 
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
@@ -70,11 +71,15 @@
               assign quantity_rule_soldout = true
             endif
           -%}
+          {%- if quantity_html != blank -%}
+            <div class="bf-atc-row">
+              {{ quantity_html }}
+          {%- endif -%}
           <button
             id="ProductSubmitButton-{{ section_id }}"
             type="submit"
             name="add"
-            class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+            class="product-form__submit button button--full-width {% if show_dynamic_checkout and quantity_html == blank %}button--secondary{% else %}button--primary{% endif %}"
             {% if product.selected_or_first_available_variant.available == false
               or quantity_rule_soldout
               or product.selected_or_first_available_variant == null
@@ -93,6 +98,9 @@
             </span>
             {%- render 'loading-spinner' -%}
           </button>
+          {%- if quantity_html != blank -%}
+            </div>
+          {%- endif -%}
           {%- if show_dynamic_checkout -%}
             {{ form | payment_button }}
           {%- endif -%}

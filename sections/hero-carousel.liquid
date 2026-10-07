@@ -1,17 +1,35 @@
 {%- liquid
   assign slide_count = section.blocks.size
-  assign overlay = section.settings.overlay_opacity | divided_by: 100.0
+  assign first = section.blocks.first
+
+  # Proporción de la caja: la define la primera diapositiva (como Atenea: la imagen manda, sin recortes).
+  assign ratio_desktop = '12 / 5'
+  assign ratio_mobile = '4 / 5'
+  if first.settings.image != blank
+    assign first_desktop_ratio = first.settings.image.aspect_ratio
+    if first_desktop_ratio >= 1.25
+      assign ratio_desktop = first_desktop_ratio
+    endif
+    assign first_mobile = first.settings.image_mobile | default: first.settings.image
+    assign ratio_mobile = first_mobile.aspect_ratio
+  endif
+  if section.settings.height_mode == 'fixed'
+    assign ratio_desktop = section.settings.ratio_desktop
+    assign ratio_mobile = section.settings.ratio_mobile
+  endif
 -%}
 
 {%- style -%}
   #HeroCarousel-{{ section.id }} {
-    --hc-ratio-desktop: {{ section.settings.ratio_desktop }};
-    --hc-ratio-mobile: {{ section.settings.ratio_mobile }};
-    --hc-overlay: {{ overlay }};
+    --hc-ratio-desktop: {{ ratio_desktop }};
+    --hc-ratio-mobile: {{ ratio_mobile }};
+    --hc-overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
   }
 {%- endstyle -%}
 
 {%- if slide_count > 0 -%}
+  {{ 'hero-carousel.css' | asset_url | stylesheet_tag }}
+
   <div
     id="HeroCarousel-{{ section.id }}"
     class="hero-carousel"
@@ -21,30 +39,43 @@
     data-autoplay="{{ section.settings.autoplay }}"
     data-interval="{{ section.settings.interval | times: 1000 }}"
   >
-    <div class="hero-carousel__track" tabindex="-1">
+    <div class="hero-carousel__viewport">
       {%- for block in section.blocks -%}
         {%- liquid
           assign slide_label = block.settings.alt | default: block.settings.heading
-          assign has_link = false
-          if block.settings.link != blank
-            assign has_link = true
-          endif
           assign slide_loading = 'lazy'
           assign slide_priority = 'low'
           if forloop.first
             assign slide_loading = 'eager'
             assign slide_priority = 'high'
           endif
+          # Imagen de escritorio vertical o cuadrada: se muestra completa sobre un fondo desenfocado.
+          assign framed = false
+          if block.settings.image != blank and block.settings.image.aspect_ratio < 1.25
+            assign framed = true
+          endif
         -%}
         {%- capture slide_inner -%}
-          <span class="hero-carousel__media">
+          <span class="hero-carousel__media{% if framed %} hero-carousel__media--framed{% endif %}">
             {%- if block.settings.image != blank -%}
+              {%- if framed -%}
+                <span class="hero-carousel__backdrop" aria-hidden="true">
+                  <img
+                    src="{{ block.settings.image | image_url: width: 480 }}"
+                    alt=""
+                    width="480"
+                    height="{{ 480 | divided_by: block.settings.image.aspect_ratio | round }}"
+                    loading="{{ slide_loading }}"
+                  >
+                </span>
+              {%- endif -%}
               {% render 'responsive-picture',
                 desktop: block.settings.image,
                 mobile: block.settings.image_mobile,
                 alt: slide_label,
+                class: 'hero-carousel__img',
                 sizes: '100vw',
-                widths: '750, 1100, 1500, 2000, 2400, 3000',
+                widths: '750, 1100, 1500, 1920, 2400, 3000',
                 desktop_max: 3000,
                 loading: slide_loading,
                 fetchpriority: slide_priority
@@ -68,23 +99,29 @@
           {%- endif -%}
         {%- endcapture -%}
 
-        {%- if has_link -%}
+        {%- if block.settings.link != blank -%}
           <a
             href="{{ block.settings.link }}"
-            class="hero-carousel__slide"
+            class="hero-carousel__slide{% if forloop.first %} is-active{% endif %}"
             role="group"
             aria-roledescription="slide"
             aria-label="{{ forloop.index }} de {{ slide_count }}"
+            {% unless forloop.first %}
+              aria-hidden="true" tabindex="-1"
+            {% endunless %}
             {{ block.shopify_attributes }}
           >
             {{ slide_inner }}
           </a>
         {%- else -%}
           <div
-            class="hero-carousel__slide"
+            class="hero-carousel__slide{% if forloop.first %} is-active{% endif %}"
             role="group"
             aria-roledescription="slide"
             aria-label="{{ forloop.index }} de {{ slide_count }}"
+            {% unless forloop.first %}
+              aria-hidden="true"
+            {% endunless %}
             {{ block.shopify_attributes }}
           >
             {{ slide_inner }}
@@ -101,7 +138,9 @@
               type="button"
               class="hero-carousel__dot"
               aria-label="Ir a la diapositiva {{ forloop.index }}"
-              {% if forloop.first %}aria-current="true"{% endif %}
+              {% if forloop.first %}
+                aria-current="true"
+              {% endif %}
             ></button>
           {%- endfor -%}
         </div>
@@ -110,6 +149,7 @@
             type="button"
             class="hero-carousel__toggle"
             aria-label="Pausar la reproducción automática"
+            aria-pressed="false"
             data-label-pause="Pausar la reproducción automática"
             data-label-play="Reanudar la reproducción automática"
           >
@@ -125,16 +165,15 @@
       </div>
 
       <button type="button" class="hero-carousel__arrow hero-carousel__arrow--prev" aria-label="Diapositiva anterior">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </button>
       <button type="button" class="hero-carousel__arrow hero-carousel__arrow--next" aria-label="Diapositiva siguiente">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </button>
+
+      <script src="{{ 'hero-carousel.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
   </div>
-
-  {{ 'hero-carousel.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'hero-carousel.js' | asset_url }}" defer="defer"></script>
 {%- elsif request.design_mode -%}
   <div class="page-width" style="padding: 4rem 0; text-align: center;">
     Agrega diapositivas a este carrusel.
@@ -154,29 +193,38 @@
     },
     {
       "type": "select",
-      "id": "ratio_desktop",
-      "label": "Proporción en escritorio",
-      "info": "Imagen recomendada: 2400 × 1000 px (2,4:1).",
+      "id": "height_mode",
+      "label": "Altura",
+      "info": "\"Según la imagen\" usa las medidas de la primera diapositiva y no recorta nada (como Atenea). Escritorio recomendado: 1920 × 833 px; celular: 1200 × 1600 px.",
       "options": [
-        { "value": "12 / 5", "label": "2,4:1 (2400 × 1000)" },
-        { "value": "21 / 9", "label": "21:9 (2520 × 1080)" },
-        { "value": "16 / 9", "label": "16:9 (1920 × 1080)" },
-        { "value": "3 / 1", "label": "3:1 (2400 × 800)" }
+        { "value": "adapt", "label": "Según la imagen (recomendado)" },
+        { "value": "fixed", "label": "Proporción fija" }
       ],
-      "default": "12 / 5"
+      "default": "adapt"
+    },
+    {
+      "type": "select",
+      "id": "ratio_desktop",
+      "label": "Proporción fija en escritorio",
+      "options": [
+        { "value": "12 / 5", "label": "2,4:1" },
+        { "value": "23 / 10", "label": "2,3:1 (1920 × 833)" },
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "3 / 1", "label": "3:1" }
+      ],
+      "default": "23 / 10"
     },
     {
       "type": "select",
       "id": "ratio_mobile",
-      "label": "Proporción en celular",
-      "info": "Imagen recomendada: 1080 × 1350 px (4:5).",
+      "label": "Proporción fija en celular",
       "options": [
+        { "value": "3 / 4", "label": "3:4 (1200 × 1600)" },
         { "value": "4 / 5", "label": "4:5 (1080 × 1350)" },
-        { "value": "3 / 4", "label": "3:4 (1080 × 1440)" },
-        { "value": "1 / 1", "label": "1:1 (1080 × 1080)" },
-        { "value": "9 / 16", "label": "9:16 (1080 × 1920)" }
+        { "value": "1 / 1", "label": "1:1" },
+        { "value": "9 / 16", "label": "9:16" }
       ],
-      "default": "4 / 5"
+      "default": "3 / 4"
     },
     {
       "type": "header",
@@ -196,7 +244,7 @@
       "step": 1,
       "unit": "s",
       "label": "Segundos por diapositiva",
-      "default": 5
+      "default": 6
     },
     {
       "type": "header",
@@ -228,13 +276,13 @@
           "type": "image_picker",
           "id": "image",
           "label": "Imagen de escritorio",
-          "info": "2400 × 1000 px"
+          "info": "1920 × 833 px. Si es vertical, se muestra completa sobre un fondo desenfocado."
         },
         {
           "type": "image_picker",
           "id": "image_mobile",
           "label": "Imagen de celular",
-          "info": "1080 × 1350 px. Si no la subes, se usa la de escritorio."
+          "info": "1200 × 1600 px. Si no la subes, se usa la de escritorio."
         },
         {
           "type": "url",
@@ -246,11 +294,15 @@
           "type": "text",
           "id": "alt",
           "label": "Descripción de la imagen",
-          "info": "Para accesibilidad y SEO. Si la dejas vacía usa el título."
+          "info": "Para accesibilidad y SEO. Ejemplo: Halloween, toda la tienda hasta 70% de descuento."
         },
         {
           "type": "header",
           "content": "Texto (opcional)"
+        },
+        {
+          "type": "paragraph",
+          "content": "Atenea pone el texto dentro de la imagen. Usa estos campos solo si tu imagen no trae texto."
         },
         {
           "type": "text",
@@ -265,8 +317,7 @@
         {
           "type": "text",
           "id": "button_label",
-          "label": "Texto del botón",
-          "info": "Es visual: al hacer clic en cualquier parte de la diapositiva se abre el enlace."
+          "label": "Texto del botón"
         },
         {
           "type": "select",

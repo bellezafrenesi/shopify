@@ -133,7 +133,7 @@
       </span>
     {%- endif -%}
     {%- if show_savings and compare_at_price > price -%}
-      <p class="price__savings">Ahorras {{ compare_at_price | minus: price | money_without_trailing_zeros }}</p>
+      <span class="price__savings">Ahorras {{ compare_at_price | minus: price | money_without_trailing_zeros }}</span>
     {%- endif -%}
   </div>
 {% endunless %}

@@ -10,6 +10,7 @@
   {% endif %}
 >
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'section-main-product-bf.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
@@ -230,6 +231,11 @@
                   </details>
                 </div>
               {%- when 'quantity_selector' -%}
+                {%- comment -%}
+                  La cantidad se dibuja en la misma fila que "Agregar al carrito" (bloque buy_buttons).
+                  Si el bloque de botones va antes que este, se dibuja aquí como siempre.
+                {%- endcomment -%}
+                {%- capture bf_quantity_html -%}
                 <div
                   id="Quantity-Form-{{ section.id }}"
                   class="product-form__input product-form__quantity{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} product-form__quantity-top{% endif %}"
@@ -442,6 +448,146 @@
                     </volume-pricing>
                   {%- endif -%}
                 </div>
+                {%- endcapture -%}
+                {%- if bf_buy_buttons_rendered -%}
+                  {{ bf_quantity_html }}
+                  {%- assign bf_quantity_html = '' -%}
+                {%- endif -%}
+              {%- when 'bf_short_description' -%}
+                {%- assign bf_excerpt = product.description | strip_html | strip | truncatewords: block.settings.words -%}
+                {%- if bf_excerpt != blank -%}
+                  <p class="bf-short-description" {{ block.shopify_attributes }}>{{ bf_excerpt }}</p>
+                {%- endif -%}
+              {%- when 'bf_highlights' -%}
+                <ul class="bf-highlights" role="list" {{ block.shopify_attributes }}>
+                  {%- for i in (1..4) -%}
+                    {%- liquid
+                      assign hl_text_key = 'text_' | append: i
+                      assign hl_icon_key = 'icon_' | append: i
+                      assign hl_text = block.settings[hl_text_key]
+                      assign hl_icon = block.settings[hl_icon_key]
+                    -%}
+                    {%- if hl_text != blank -%}
+                      <li class="bf-highlights__item">
+                        <span class="bf-highlights__icon" aria-hidden="true">
+                          {%- case hl_icon -%}
+                            {%- when 'truck' -%}
+                              {{- 'icon-truck.svg' | inline_asset_content -}}
+                            {%- when 'padlock' -%}
+                              {{- 'icon-padlock.svg' | inline_asset_content -}}
+                            {%- when 'return' -%}
+                              {{- 'icon-return.svg' | inline_asset_content -}}
+                            {%- when 'box' -%}
+                              {{- 'icon-box.svg' | inline_asset_content -}}
+                            {%- when 'heart' -%}
+                              {{- 'icon-heart.svg' | inline_asset_content -}}
+                            {%- when 'chat' -%}
+                              {{- 'icon-chat-bubble.svg' | inline_asset_content -}}
+                            {%- when 'leaf' -%}
+                              {{- 'icon-leaf.svg' | inline_asset_content -}}
+                            {%- else -%}
+                              {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                          {%- endcase -%}
+                        </span>
+                        <span>{{ hl_text | escape }}</span>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- when 'bf_shipping' -%}
+                {%- liquid
+                  # Fecha estimada en días hábiles (lunes a viernes). Después de la hora de corte cuenta desde el día siguiente.
+                  assign bf_months = 'enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre' | split: ','
+                  assign bf_ts = 'now' | date: '%s' | plus: 0
+                  assign bf_hour = 'now' | date: '%H' | plus: 0
+                  if bf_hour >= block.settings.cutoff_hour
+                    assign bf_ts = bf_ts | plus: 86400
+                  endif
+                  assign bf_count = 0
+                  assign bf_min_ts = bf_ts
+                  assign bf_max_ts = bf_ts
+                  for i in (1..25)
+                    assign bf_ts = bf_ts | plus: 86400
+                    assign bf_dow = bf_ts | date: '%u' | plus: 0
+                    if bf_dow < 6
+                      assign bf_count = bf_count | plus: 1
+                      if bf_count == block.settings.days_min
+                        assign bf_min_ts = bf_ts
+                      endif
+                      if bf_count == block.settings.days_max
+                        assign bf_max_ts = bf_ts
+                        break
+                      endif
+                    endif
+                  endfor
+                  assign bf_min_day = bf_min_ts | date: '%-d'
+                  assign bf_max_day = bf_max_ts | date: '%-d'
+                  assign bf_min_month_index = bf_min_ts | date: '%m' | minus: 1
+                  assign bf_max_month_index = bf_max_ts | date: '%m' | minus: 1
+                  assign bf_min_month = bf_months[bf_min_month_index]
+                  assign bf_max_month = bf_months[bf_max_month_index]
+                -%}
+                <div class="bf-shipping" {{ block.shopify_attributes }}>
+                  <div class="bf-shipping__row">
+                    <div class="bf-shipping__cell">
+                      <span class="bf-shipping__icon" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
+                      <span>
+                        <span class="bf-shipping__title">{{ block.settings.free_shipping_title | escape }}</span>
+                        <span class="bf-shipping__text">{{ block.settings.free_shipping_text | escape }}</span>
+                      </span>
+                    </div>
+                    <div class="bf-shipping__cell">
+                      <span class="bf-shipping__icon" aria-hidden="true">{{- 'icon-box.svg' | inline_asset_content -}}</span>
+                      <span>
+                        <span class="bf-shipping__title">{{ block.settings.delivery_title | escape }}</span>
+                        <span class="bf-shipping__text">
+                          {%- if bf_min_month == bf_max_month -%}
+                            Entre el {{ bf_min_day }} y el {{ bf_max_day }} de {{ bf_max_month }}
+                          {%- else -%}
+                            Entre el {{ bf_min_day }} de {{ bf_min_month }} y el {{ bf_max_day }} de {{ bf_max_month }}
+                          {%- endif -%}
+                        </span>
+                        {%- if block.settings.delivery_note != blank -%}
+                          <span class="bf-shipping__note">{{ block.settings.delivery_note | escape }}</span>
+                        {%- endif -%}
+                      </span>
+                    </div>
+                  </div>
+                  {%- if block.settings.show_payments -%}
+                    <div class="bf-shipping__secure">
+                      <span>{{ block.settings.secure_label | escape }}</span>
+                      <strong>{{ block.settings.secure_text | escape }}</strong>
+                    </div>
+                    <ul class="bf-shipping__payments" role="list">
+                      {%- for type in shop.enabled_payment_types -%}
+                        <li>{{ type | payment_type_svg_tag }}</li>
+                      {%- endfor -%}
+                      {%- if block.settings.show_cod -%}
+                        <li><span class="bf-shipping__cod">{{ block.settings.cod_label | escape }}</span></li>
+                      {%- endif -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              {%- when 'bf_accordion' -%}
+                {%- liquid
+                  assign acc_content = block.settings.content
+                  if block.settings.source == 'description'
+                    assign acc_content = product.description
+                  endif
+                -%}
+                {%- if acc_content != blank -%}
+                  <details
+                    class="bf-accordion"
+                    id="ProductAccordion-{{ block.id }}"
+                    {% if block.settings.open %}
+                      open
+                    {% endif %}
+                    {{ block.shopify_attributes }}
+                  >
+                    <summary>{{ block.settings.heading | escape }}</summary>
+                    <div class="bf-accordion__content rte">{{ acc_content }}</div>
+                  </details>
+                {%- endif -%}
               {%- when 'popup' -%}
                 <modal-opener
                   class="product-popup-modal__opener quick-add-hidden"
@@ -471,8 +617,11 @@
                   product: product,
                   product_form_id: product_form_id,
                   section_id: section.id,
-                  show_pickup_availability: true
+                  show_pickup_availability: true,
+                  quantity_html: bf_quantity_html
                 -%}
+                {%- assign bf_buy_buttons_rendered = true -%}
+                {%- assign bf_quantity_html = '' -%}
               {%- when 'rating' -%}
                 {%- if product.metafields.reviews.rating.value != blank -%}
                   <div class="rating-wrapper">
@@ -2074,6 +2223,340 @@
           "default": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.default",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        }
+      ]
+    },
+    {
+      "type": "bf_short_description",
+      "name": "Descripción corta",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "words",
+          "min": 10,
+          "max": 60,
+          "step": 2,
+          "label": "Cantidad de palabras",
+          "default": 28
+        }
+      ]
+    },
+    {
+      "type": "bf_highlights",
+      "name": "Beneficios con íconos",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_1",
+          "label": "Ícono 1",
+          "default": "checkmark",
+          "options": [
+            {
+              "value": "checkmark",
+              "label": "Check"
+            },
+            {
+              "value": "truck",
+              "label": "Camión"
+            },
+            {
+              "value": "padlock",
+              "label": "Candado"
+            },
+            {
+              "value": "return",
+              "label": "Devolución"
+            },
+            {
+              "value": "box",
+              "label": "Caja"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "chat",
+              "label": "Chat"
+            },
+            {
+              "value": "leaf",
+              "label": "Hoja"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "text_1",
+          "label": "Texto 1",
+          "default": "Productos 100% originales"
+        },
+        {
+          "type": "select",
+          "id": "icon_2",
+          "label": "Ícono 2",
+          "default": "box",
+          "options": [
+            {
+              "value": "checkmark",
+              "label": "Check"
+            },
+            {
+              "value": "truck",
+              "label": "Camión"
+            },
+            {
+              "value": "padlock",
+              "label": "Candado"
+            },
+            {
+              "value": "return",
+              "label": "Devolución"
+            },
+            {
+              "value": "box",
+              "label": "Caja"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "chat",
+              "label": "Chat"
+            },
+            {
+              "value": "leaf",
+              "label": "Hoja"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "text_2",
+          "label": "Texto 2",
+          "default": "Paga contra entrega"
+        },
+        {
+          "type": "select",
+          "id": "icon_3",
+          "label": "Ícono 3",
+          "default": "padlock",
+          "options": [
+            {
+              "value": "checkmark",
+              "label": "Check"
+            },
+            {
+              "value": "truck",
+              "label": "Camión"
+            },
+            {
+              "value": "padlock",
+              "label": "Candado"
+            },
+            {
+              "value": "return",
+              "label": "Devolución"
+            },
+            {
+              "value": "box",
+              "label": "Caja"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "chat",
+              "label": "Chat"
+            },
+            {
+              "value": "leaf",
+              "label": "Hoja"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "text_3",
+          "label": "Texto 3",
+          "default": "Pago 100% seguro"
+        },
+        {
+          "type": "select",
+          "id": "icon_4",
+          "label": "Ícono 4",
+          "default": "return",
+          "options": [
+            {
+              "value": "checkmark",
+              "label": "Check"
+            },
+            {
+              "value": "truck",
+              "label": "Camión"
+            },
+            {
+              "value": "padlock",
+              "label": "Candado"
+            },
+            {
+              "value": "return",
+              "label": "Devolución"
+            },
+            {
+              "value": "box",
+              "label": "Caja"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "chat",
+              "label": "Chat"
+            },
+            {
+              "value": "leaf",
+              "label": "Hoja"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "text_4",
+          "label": "Texto 4",
+          "default": "Garantía de 30 días"
+        }
+      ]
+    },
+    {
+      "type": "bf_shipping",
+      "name": "Envío y pagos",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "free_shipping_title",
+          "label": "Título de envío",
+          "default": "Envío gratis desde $90.000"
+        },
+        {
+          "type": "text",
+          "id": "free_shipping_text",
+          "label": "Texto de envío",
+          "default": "Envíos a toda Colombia"
+        },
+        {
+          "type": "text",
+          "id": "delivery_title",
+          "label": "Título de entrega",
+          "default": "Fecha estimada de entrega"
+        },
+        {
+          "type": "range",
+          "id": "days_min",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "label": "Días hábiles mínimos",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "days_max",
+          "min": 1,
+          "max": 15,
+          "step": 1,
+          "label": "Días hábiles máximos",
+          "default": 6
+        },
+        {
+          "type": "range",
+          "id": "cutoff_hour",
+          "min": 12,
+          "max": 23,
+          "step": 1,
+          "label": "Hora de corte (después cuenta desde el día siguiente)",
+          "default": 17
+        },
+        {
+          "type": "text",
+          "id": "delivery_note",
+          "label": "Nota de entrega",
+          "default": "Lugares alejados: hasta 8 días hábiles"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payments",
+          "label": "Mostrar medios de pago",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "secure_label",
+          "label": "Etiqueta de pago seguro",
+          "default": "Checkout protegido"
+        },
+        {
+          "type": "text",
+          "id": "secure_text",
+          "label": "Texto de pago seguro",
+          "default": "Pagos 100% seguros"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_cod",
+          "label": "Mostrar \"Contra entrega\"",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "cod_label",
+          "label": "Texto de contra entrega",
+          "default": "Contra entrega"
+        }
+      ]
+    },
+    {
+      "type": "bf_accordion",
+      "name": "Acordeón",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Descripción"
+        },
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Contenido",
+          "default": "custom",
+          "options": [
+            {
+              "value": "description",
+              "label": "Descripción del producto"
+            },
+            {
+              "value": "custom",
+              "label": "Texto propio"
+            }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Texto propio"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Abierto al cargar",
+          "default": false
         }
       ]
     }
