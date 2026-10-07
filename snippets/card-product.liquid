@@ -29,7 +29,7 @@
 
 {%- unless skip_styles -%}
   <script>
-    // Opus: el botón de carrito de las tarjetas (assets/card-cart.js) abre el carrito por su cuenta
+    // Opus: el botón de carrito de las tarjetas abre el carrito por su cuenta (assets/card-cart.js, cargado en theme.liquid)
     window.OpusNoATC = true;
   </script>
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
