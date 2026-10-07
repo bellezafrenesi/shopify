@@ -1,0 +1,25 @@
+{%- layout none -%}
+{%- comment -%}
+  Devuelve solo las tarjetas de producto de una colección (sin header ni footer).
+  Lo usa la sección "Pestañas de colecciones" para cargar pestañas, filtros de marca y orden sin recargar:
+    /collections/<colección>?view=bf-cards&sort_by=best-selling&filter.p.vendor=Natura
+  Los filtros y el orden son los nativos de Shopify, así que coinciden con la página de la colección.
+{%- endcomment -%}
+{%- paginate collection.products by 12 -%}
+  <ul data-bf-cards data-count="{{ collection.products_count }}">
+    {%- for product in collection.products -%}
+      <li class="grid__item">
+        {% render 'card-product',
+          card_product: product,
+          media_aspect_ratio: 'portrait',
+          show_secondary_image: true,
+          show_vendor: false,
+          show_rating: true,
+          skip_styles: true,
+          section_id: 'bf-cards',
+          lazy_load: true
+        %}
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endpaginate -%}
