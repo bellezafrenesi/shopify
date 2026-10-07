@@ -164,7 +164,7 @@
             La imagen queda en una capa por encima del enlace del título (para que la bolsa reciba el clic),
             así que lleva su propio enlace a la ficha.
           {%- endcomment -%}
-          <a class="card-media-link" href="{{ card_product.url }}" tabindex="-1" aria-hidden="true"></a>
+          <a class="card-media-link" href="{{ card_product.url }}" tabindex="-1" aria-hidden="true"><span class="visually-hidden">{{ card_product.title | escape }}</span></a>
           {%- if card_product.variants.size == 1 -%}
             <button
               type="button"
