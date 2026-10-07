@@ -296,7 +296,8 @@
         El CSS del carrito lateral solo se necesita cuando se abre el carrito.
         Se carga sin bloquear el primer pintado de la página.
       {%- endcomment -%}
-      {%- for cart_css in 'component-cart-drawer.css,component-cart.css,component-totals.css,component-price.css,component-discounts.css' | split: ',' -%}
+      {%- assign cart_css_files = 'component-cart-drawer.css,component-cart.css,component-totals.css,component-price.css,component-discounts.css' | split: ',' -%}
+      {%- for cart_css in cart_css_files -%}
         <link rel="stylesheet" href="{{ cart_css | asset_url }}" media="print" onload="this.media='all'">
         <noscript>{{ cart_css | asset_url | stylesheet_tag }}</noscript>
       {%- endfor -%}
