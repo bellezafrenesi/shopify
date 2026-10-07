@@ -51,7 +51,16 @@
           {%- unless valid_tab_ids contains block.id -%}
             {%- continue -%}
           {%- endunless -%}
-          {%- assign tab_collection = block.settings.collection -%}
+          {%- liquid
+            assign tab_collection = block.settings.collection
+            # Marcas de los productos visibles en la tienda (all_vendors incluye productos no publicados)
+            assign tab_vendors = ''
+            for tab_product in tab_collection.products
+              unless tab_vendors contains tab_product.vendor
+                assign tab_vendors = tab_vendors | append: tab_product.vendor | append: ','
+              endunless
+            endfor
+          -%}
           <button
             type="button"
             class="collection-tabs__tab"
@@ -61,7 +70,7 @@
             aria-selected="{% if block.id == first_tab_id %}true{% else %}false{% endif %}"
             tabindex="{% if block.id == first_tab_id %}0{% else %}-1{% endif %}"
             data-url="{{ tab_collection.url }}"
-            data-vendors="{{ tab_collection.all_vendors | join: ',' | escape }}"
+            data-vendors="{{ tab_vendors | escape }}"
             {{ block.shopify_attributes }}
           >
             {{- block.settings.title | default: tab_collection.title | escape -}}
