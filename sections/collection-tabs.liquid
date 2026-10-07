@@ -4,87 +4,13 @@
 
 {%- style -%}
   .collection-tabs-{{ section.id }} {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-  .collection-tabs-{{ section.id }} .collection-tabs__heading {
-    margin: 0 0 1.6rem;
-    text-align: center;
-  }
-  .collection-tabs-{{ section.id }} .collection-tabs__nav {
-    display: flex;
-    gap: 0.8rem;
-    margin: 0 0 2.4rem;
-    padding: 0 0 0.4rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-    justify-content: flex-start;
-  }
-  .collection-tabs-{{ section.id }} .collection-tabs__nav::-webkit-scrollbar {
-    display: none;
-  }
-  .collection-tabs-{{ section.id }} .collection-tabs__tab {
-    flex: 0 0 auto;
-    min-height: 4.4rem;
-    padding: 0.8rem 2rem;
-    border: 0.2rem solid rgb(var(--color-button));
-    border-radius: 10rem;
-    background: transparent;
-    color: rgb(var(--color-button));
-    font: inherit;
-    font-size: 1.6rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-  .collection-tabs-{{ section.id }} .collection-tabs__tab[aria-selected='true'] {
-    background: rgb(var(--color-button));
-    color: rgb(var(--color-button-text));
-  }
-  .collection-tabs-{{ section.id }} .collection-tabs__tab:focus-visible {
-    outline: 0.3rem solid rgba(var(--color-foreground), 0.6);
-    outline-offset: 0.2rem;
-  }
-  .collection-tabs-{{ section.id }} .collection-tabs__panel[hidden] {
-    display: none;
-  }
-  .collection-tabs-{{ section.id }} .collection-tabs__more {
-    margin-top: 2.4rem;
-    text-align: center;
-  }
-  /* Celular: pestañas más pequeñas y solo 4 productos por pestaña (el resto en "Ver todo") */
-  @media screen and (max-width: 749px) {
-    .collection-tabs-{{ section.id }} .collection-tabs__heading {
-      font-size: 2rem;
-      margin-bottom: 1.2rem;
-    }
-    .collection-tabs-{{ section.id }} .collection-tabs__nav {
-      gap: 0.6rem;
-      margin: 0 -1.5rem 1.6rem;
-      padding: 0 1.5rem 0.4rem;
-    }
-    .collection-tabs-{{ section.id }} .collection-tabs__tab {
-      min-height: 3.8rem;
-      padding: 0.6rem 1.4rem;
-      font-size: 1.3rem;
-      border-width: 0.1rem;
-    }
-    .collection-tabs-{{ section.id }} .product-grid > .grid__item:nth-child(n + 5) {
-      display: none;
-    }
-    .collection-tabs-{{ section.id }} .collection-tabs__more {
-      margin-top: 1.6rem;
-    }
+    padding-top: {{ section.settings.padding_top | times: 0.6 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.6 | round: 0 }}px;
   }
   @media screen and (min-width: 750px) {
     .collection-tabs-{{ section.id }} {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-    .collection-tabs-{{ section.id }} .collection-tabs__nav {
-      justify-content: center;
-      flex-wrap: wrap;
-      overflow-x: visible;
     }
   }
 {%- endstyle -%}
@@ -99,117 +25,137 @@
   endfor
   assign valid_tab_ids = valid_tabs | split: ','
   assign first_tab_id = valid_tab_ids | first
+  assign brands = section.settings.brands | split: ','
 -%}
 
-{%- if valid_tab_ids.size > 0 or request.design_mode -%}
-<div class="collection-tabs-{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
-  <div class="page-width" data-collection-tabs>
-    {%- if section.settings.heading != blank -%}
-      <h2 class="collection-tabs__heading h2">{{ section.settings.heading | escape }}</h2>
-    {%- endif -%}
+{%- if valid_tab_ids.size > 0 -%}
+  {{ 'collection-tabs.css' | asset_url | stylesheet_tag }}
 
-    <div class="collection-tabs__nav" role="tablist" aria-label="{{ section.settings.heading | escape }}">
+  <div
+    class="collection-tabs collection-tabs-{{ section.id }} color-{{ section.settings.color_scheme }} gradient"
+    data-collection-tabs
+    data-limit="{{ section.settings.products_to_show }}"
+  >
+    <div class="page-width">
+      <div class="collection-tabs__top">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="collection-tabs__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        <a class="collection-tabs__view-all link" href="{{ section.blocks.first.settings.collection.url }}" data-view-all>
+          {{- section.settings.view_all_label | default: 'Ver todo' | escape -}}
+        </a>
+      </div>
+
+      <div class="collection-tabs__nav" role="tablist" aria-label="{{ section.settings.heading | escape }}">
+        {%- for block in section.blocks -%}
+          {%- unless valid_tab_ids contains block.id -%}
+            {%- continue -%}
+          {%- endunless -%}
+          {%- assign tab_collection = block.settings.collection -%}
+          <button
+            type="button"
+            class="collection-tabs__tab"
+            role="tab"
+            id="Tab-{{ section.id }}-{{ forloop.index }}"
+            aria-controls="Panel-{{ section.id }}-{{ forloop.index }}"
+            aria-selected="{% if block.id == first_tab_id %}true{% else %}false{% endif %}"
+            tabindex="{% if block.id == first_tab_id %}0{% else %}-1{% endif %}"
+            data-url="{{ tab_collection.url }}"
+            data-vendors="{{ tab_collection.all_vendors | join: ',' | escape }}"
+            {{ block.shopify_attributes }}
+          >
+            {{- block.settings.title | default: tab_collection.title | escape -}}
+          </button>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.show_brand_filter or section.settings.show_sort -%}
+        <div class="collection-tabs__filters">
+          {%- if section.settings.show_brand_filter and brands.size > 0 -%}
+            <div class="collection-tabs__filter-group" role="group" aria-label="Filtrar por marca" data-filter="vendor">
+              <span class="collection-tabs__filter-label">Marca</span>
+              <button type="button" class="collection-tabs__chip" data-value="" aria-pressed="true">Todas</button>
+              {%- for brand in brands -%}
+                {%- assign brand_name = brand | strip -%}
+                {%- if brand_name != blank -%}
+                  <button type="button" class="collection-tabs__chip" data-value="{{ brand_name | escape }}" aria-pressed="false">
+                    {{- brand_name | escape -}}
+                  </button>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.show_sort -%}
+            <div class="collection-tabs__filter-group" role="group" aria-label="Ordenar" data-filter="sort">
+              <span class="collection-tabs__filter-label">Ordenar</span>
+              <button type="button" class="collection-tabs__chip" data-value="" aria-pressed="true">Destacados</button>
+              <button type="button" class="collection-tabs__chip" data-value="best-selling" aria-pressed="false">Más vendidos</button>
+              <button type="button" class="collection-tabs__chip" data-value="price-ascending" aria-pressed="false">Menor precio</button>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
       {%- for block in section.blocks -%}
         {%- unless valid_tab_ids contains block.id -%}
           {%- continue -%}
         {%- endunless -%}
-        <button
-          type="button"
-          class="collection-tabs__tab"
-          role="tab"
-          id="Tab-{{ section.id }}-{{ forloop.index }}"
-          aria-controls="Panel-{{ section.id }}-{{ forloop.index }}"
-          aria-selected="{% if block.id == first_tab_id %}true{% else %}false{% endif %}"
-          tabindex="{% if block.id == first_tab_id %}0{% else %}-1{% endif %}"
-          {{ block.shopify_attributes }}
+        {%- assign tab_collection = block.settings.collection -%}
+        <div
+          class="collection-tabs__panel"
+          role="tabpanel"
+          id="Panel-{{ section.id }}-{{ forloop.index }}"
+          aria-labelledby="Tab-{{ section.id }}-{{ forloop.index }}"
+          {% unless block.id == first_tab_id %}
+            hidden
+          {% endunless %}
         >
-          {{- block.settings.title | default: block.settings.collection.title | escape -}}
-        </button>
-      {%- endfor -%}
-    </div>
-
-    {%- assign skip_card_styles = false -%}
-    {%- for block in section.blocks -%}
-      {%- unless valid_tab_ids contains block.id -%}
-        {%- continue -%}
-      {%- endunless -%}
-      {%- assign tab_collection = block.settings.collection -%}
-      <div
-        class="collection-tabs__panel"
-        role="tabpanel"
-        id="Panel-{{ section.id }}-{{ forloop.index }}"
-        aria-labelledby="Tab-{{ section.id }}-{{ forloop.index }}"
-        {% unless block.id == first_tab_id %}hidden{% endunless %}
-      >
-        {%- if tab_collection != blank and tab_collection.products.size > 0 -%}
           <ul
             class="grid product-grid grid--2-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop"
             role="list"
+            {% if block.id == first_tab_id %}
+              data-key="|"
+            {% endif %}
           >
-            {%- for product in tab_collection.products limit: section.settings.products_to_show -%}
-              <li class="grid__item">
-                {% render 'card-product',
-                  card_product: product,
-                  media_aspect_ratio: section.settings.image_ratio,
-                  show_secondary_image: section.settings.show_secondary_image,
-                  show_vendor: false,
-                  show_rating: section.settings.show_rating,
-                  skip_styles: skip_card_styles,
-                  section_id: section.id,
-                  lazy_load: true
-                %}
-              </li>
-              {%- assign skip_card_styles = true -%}
-            {%- endfor -%}
+            {%- if block.id == first_tab_id -%}
+              {%- for product in tab_collection.products limit: section.settings.products_to_show -%}
+                <li class="grid__item">
+                  {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: false,
+                    show_rating: section.settings.show_rating,
+                    skip_styles: false,
+                    section_id: section.id,
+                    lazy_load: true
+                  %}
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
           </ul>
-          <div class="collection-tabs__more">
-            <a href="{{ tab_collection.url }}" class="button button--secondary">
-              {{- section.settings.view_all_label | default: 'Ver todo' | escape -}}
-            </a>
-          </div>
-        {%- endif -%}
-      </div>
-    {%- endfor -%}
+          <p class="collection-tabs__empty" hidden>
+            No hay productos con este filtro.
+            <button type="button" class="link" data-clear-filters>Ver todos</button>
+          </p>
+        </div>
+      {%- endfor -%}
+    </div>
   </div>
-</div>
+
+  <script src="{{ 'collection-tabs.js' | asset_url }}" defer="defer"></script>
+{%- elsif request.design_mode -%}
+  <div class="page-width" style="padding: 3rem 0; text-align: center;">
+    Elige colecciones con productos visibles para las pestañas.
+  </div>
 {%- endif -%}
-
-<script>
-  (function () {
-    var prev = document.currentScript.previousElementSibling;
-    var root = prev && prev.querySelector ? prev.querySelector('[data-collection-tabs]') : null;
-    if (!root) return;
-    var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
-    var panels = Array.prototype.slice.call(root.querySelectorAll('[role="tabpanel"]'));
-
-    function select(index, focus) {
-      tabs.forEach(function (tab, i) {
-        var on = i === index;
-        tab.setAttribute('aria-selected', on ? 'true' : 'false');
-        tab.setAttribute('tabindex', on ? '0' : '-1');
-        if (panels[i]) panels[i].hidden = !on;
-        if (on && focus) tab.focus();
-      });
-    }
-
-    tabs.forEach(function (tab, i) {
-      tab.addEventListener('click', function () { select(i, false); });
-      tab.addEventListener('keydown', function (e) {
-        var next = null;
-        if (e.key === 'ArrowRight') next = (i + 1) % tabs.length;
-        if (e.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
-        if (next !== null) { e.preventDefault(); select(next, true); }
-      });
-    });
-  })();
-</script>
 
 {% schema %}
 {
   "name": "Pestañas de colecciones",
   "tag": "section",
   "class": "section",
-  "max_blocks": 4,
+  "max_blocks": 6,
   "settings": [
     {
       "type": "text",
@@ -223,7 +169,8 @@
       "min": 4,
       "max": 12,
       "step": 4,
-      "label": "Productos por pestaña",
+      "label": "Productos por pestaña (escritorio)",
+      "info": "En celular se muestran 4.",
       "default": 8
     },
     {
@@ -259,9 +206,32 @@
       "default": true
     },
     {
+      "type": "header",
+      "content": "Filtros"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_brand_filter",
+      "label": "Filtrar por marca",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "brands",
+      "label": "Marcas (separadas por coma)",
+      "info": "Escríbelas igual que el \"Proveedor\" del producto en Shopify. Solo aparecen las que existen en la pestaña activa.",
+      "default": "Natura,Avon"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Ordenar (Destacados, Más vendidos, Menor precio)",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "view_all_label",
-      "label": "Texto del botón \"ver todo\"",
+      "label": "Texto del enlace \"ver todo\"",
       "default": "Ver todo"
     },
     {

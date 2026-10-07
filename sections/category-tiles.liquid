@@ -156,6 +156,10 @@
           assign tile_collection = block.settings.collection
           assign tile_title = block.settings.title | default: tile_collection.title
           assign tile_image = block.settings.image | default: tile_collection.featured_image
+          # Sin imagen de colección: se usa la foto del primer producto
+          if tile_image == blank and tile_collection.products.size > 0
+            assign tile_image = tile_collection.products.first.featured_media.preview_image
+          endif
           assign tile_url = block.settings.url | default: tile_collection.url
         -%}
         <li {{ block.shopify_attributes }}>
@@ -218,7 +222,7 @@
       "type": "range",
       "id": "columns_desktop",
       "min": 3,
-      "max": 6,
+      "max": 8,
       "step": 1,
       "label": "Columnas en escritorio",
       "default": 6
