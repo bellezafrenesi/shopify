@@ -56,12 +56,17 @@
   margin: 0;
 }
 
-.product__info-container .price--large .price__sale,
-.product__info-container .price--large .price__regular {
+/* Sin oferta se ve .price__regular; con oferta, solo .price__sale (precio anterior tachado + actual) */
+.product__info-container .price--large:not(.price--on-sale) .price__regular,
+.product__info-container .price--large.price--on-sale .price__sale {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0 0.8rem;
+}
+
+.product__info-container .price--large.price--on-sale .price__regular {
+  display: none;
 }
 
 .product__info-container .price--large .price-item--last,
@@ -132,7 +137,7 @@
 .bf-highlights {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.4rem 1.6rem;
+  gap: 1.2rem 1.2rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -141,7 +146,7 @@
 .bf-highlights__item {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
   min-width: 0;
   font-size: 1.4rem;
   line-height: 1.35;
@@ -149,11 +154,11 @@
 
 .bf-highlights__icon {
   display: flex;
-  flex: 0 0 3.6rem;
+  flex: 0 0 3.4rem;
   align-items: center;
   justify-content: center;
-  width: 3.6rem;
-  height: 3.6rem;
+  width: 3.4rem;
+  height: 3.4rem;
   border: 0.1rem solid rgba(var(--color-foreground), 0.3);
   border-radius: 50%;
 }
@@ -188,7 +193,7 @@
 }
 
 .bf-atc-row .quantity {
-  width: 12.4rem;
+  width: 11rem;
   min-height: 4.8rem;
   height: 100%;
 }
@@ -200,8 +205,10 @@
   margin: 0;
   font-size: 1.4rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .product-form__buttons .shopify-payment-button {
@@ -224,13 +231,20 @@
   color: rgb(var(--color-background));
 }
 
-@media screen and (max-width: 359px) {
+@media screen and (max-width: 389px) {
+  .bf-atc-row {
+    gap: 0.8rem;
+  }
+
   .bf-atc-row .quantity {
-    width: 10.4rem;
+    width: 9.6rem;
   }
 
   .bf-atc-row .product-form__submit {
-    letter-spacing: 0.04em;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1.3rem;
+    letter-spacing: 0.03em;
   }
 }
 
