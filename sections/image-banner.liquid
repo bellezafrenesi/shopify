@@ -1,12 +1,21 @@
 {{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign mobile_image = section.settings.image_mobile
+  assign mobile_ratio = mobile_image.aspect_ratio | default: section.settings.image.aspect_ratio
+  # La imagen de celular solo se usa cuando el banner tiene una sola imagen
+  if section.settings.image != blank and section.settings.image_2 != blank
+    assign mobile_image = blank
+  endif
+-%}
+
 {%- if section.settings.image_height == 'adapt' and section.settings.image != blank -%}
   {%- style -%}
     @media screen and (max-width: 749px) {
       #Banner-{{ section.id }}::before,
       #Banner-{{ section.id }} .banner__media::before,
       #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content::before {
-        padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
+        padding-bottom: {{ 1 | divided_by: mobile_ratio | times: 100 }}%;
         content: '';
         display: block;
       }
@@ -74,18 +83,15 @@
           assign sizes = full_width
         endif
       -%}
-      {{
-        section.settings.image
-        | image_url: width: 3840
-        | image_tag:
-          width: section.settings.image.width,
-          height: image_height,
-          class: image_class,
-          sizes: sizes,
-          widths: widths,
-          fetchpriority: fetch_priority,
-          loading: banner_loading
-      }}
+      {% render 'responsive-picture',
+        desktop: section.settings.image,
+        mobile: mobile_image,
+        class: image_class,
+        sizes: sizes,
+        widths: widths,
+        fetchpriority: fetch_priority,
+        loading: banner_loading
+      %}
     </div>
   {%- elsif section.settings.image_2 == blank -%}
     <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
@@ -107,18 +113,15 @@
           assign sizes = full_width
         endif
       -%}
-      {{
-        section.settings.image_2
-        | image_url: width: 3840
-        | image_tag:
-          width: section.settings.image_2.width,
-          height: image_height_2,
-          class: image_class_2,
-          sizes: sizes,
-          widths: widths,
-          fetchpriority: fetch_priority,
-          loading: banner_loading
-      }}
+      {% render 'responsive-picture',
+        desktop: section.settings.image_2,
+        mobile: mobile_image,
+        class: image_class_2,
+        sizes: sizes,
+        widths: widths,
+        fetchpriority: fetch_priority,
+        loading: banner_loading
+      %}
     </div>
   {%- endif -%}
   <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
@@ -190,6 +193,12 @@
       "type": "image_picker",
       "id": "image_2",
       "label": "t:sections.image-banner.settings.image_2.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Imagen para celular",
+      "info": "Opcional. Se usa en pantallas menores a 750 px. Medida recomendada: 1080 × 1350 px. Solo aplica si el banner tiene una sola imagen (la de escritorio: 2400 × 1000 px)."
     },
     {
       "type": "range",

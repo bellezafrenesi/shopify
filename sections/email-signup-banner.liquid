@@ -33,6 +33,19 @@
   {%- if section.settings.show_background_image -%}
     <div class="banner__media{% if section.settings.image != blank %} media{% endif %}">
       {%- if section.settings.image != blank -%}
+        <picture>
+        {%- if section.settings.image_mobile != blank -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="
+              {%- if section.settings.image_mobile.width >= 360 -%}{{ section.settings.image_mobile | image_url: width: 360 }} 360w,{%- endif -%}
+              {%- if section.settings.image_mobile.width >= 750 -%}{{ section.settings.image_mobile | image_url: width: 750 }} 750w,{%- endif -%}
+              {%- if section.settings.image_mobile.width >= 1080 -%}{{ section.settings.image_mobile | image_url: width: 1080 }} 1080w,{%- endif -%}
+              {{ section.settings.image_mobile | image_url }} {{ section.settings.image_mobile.width }}w
+            "
+            sizes="100vw"
+          >
+        {%- endif -%}
         <img
           srcset="
             {%- if section.settings.image.width >= 375 -%}{{ section.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
@@ -52,6 +65,7 @@
           width="{{ section.settings.image.width }}"
           height="{{ section.settings.image.width | divided_by: section.settings.image.aspect_ratio }}"
         >
+        </picture>
       {%- else -%}
         {{- 'email-signup-banner-background.svg' | inline_asset_content -}}
         {{- 'email-signup-banner-background-mobile.svg' | inline_asset_content -}}
@@ -156,6 +170,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "t:sections.email-signup-banner.settings.image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Imagen para celular",
+      "info": "Opcional. Se usa en pantallas menores a 750 px. Recomendado: 1080 × 1350 px."
     },
     {
       "type": "range",

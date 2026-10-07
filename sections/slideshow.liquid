@@ -137,17 +137,21 @@
               endif
             -%}
             {%- if forloop.first %}
-              {{
-                block.settings.image
-                | image_url: width: 3840
-                | image_tag: height: height, sizes: sizes, widths: widths, fetchpriority: fetch_priority
-              }}
+              {% render 'responsive-picture',
+                desktop: block.settings.image,
+                mobile: block.settings.image_mobile,
+                sizes: sizes,
+                widths: widths,
+                fetchpriority: fetch_priority
+              %}
             {%- else -%}
-              {{
-                block.settings.image
-                | image_url: width: 3840
-                | image_tag: loading: 'lazy', height: height, sizes: sizes, widths: widths
-              }}
+              {% render 'responsive-picture',
+                desktop: block.settings.image,
+                mobile: block.settings.image_mobile,
+                sizes: sizes,
+                widths: widths,
+                loading: 'lazy'
+              %}
             {%- endif -%}
           {%- else -%}
             {%- assign placeholder_slide = forloop.index | modulo: 2 -%}
@@ -398,6 +402,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "t:sections.slideshow.blocks.slide.settings.image.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Imagen para celular",
+          "info": "Opcional. Se usa en pantallas menores a 750 px. Recomendado: 1080 × 1350 px (escritorio: 2400 × 1000 px)."
         },
         {
           "type": "inline_richtext",

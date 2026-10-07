@@ -1,0 +1,73 @@
+{%- comment -%}
+  Imagen con versión para escritorio y para celular.
+
+  Parámetros:
+    - desktop: imagen principal (obligatoria)
+    - mobile: imagen para celular (opcional, se usa por debajo de 750 px)
+    - widths: anchos de la imagen de escritorio (como en image_tag)
+    - sizes: atributo sizes de la imagen de escritorio
+    - class, loading, fetchpriority, alt: se pasan a la etiqueta <img>
+    - desktop_max: ancho máximo a pedir para escritorio (por defecto 3840)
+
+  Si no hay imagen para celular, genera la misma etiqueta que image_tag.
+  Con imagen para celular, el celular descarga solo la suya y el escritorio solo la suya.
+{%- endcomment -%}
+
+{%- liquid
+  assign desktop_max = desktop_max | default: 3840
+  assign img_height = desktop.width | divided_by: desktop.aspect_ratio
+  assign alt_text = alt | default: desktop.alt | escape
+-%}
+
+{%- if mobile != blank -%}
+  {%- capture mobile_srcset -%}
+    {%- assign mobile_widths = '360,480,640,750,900,1080,1440' | split: ',' -%}
+    {%- for w in mobile_widths -%}
+      {%- assign w_int = w | plus: 0 -%}
+      {%- if w_int <= mobile.width -%}
+        {{ mobile | image_url: width: w_int }} {{ w_int }}w,
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign mobile_srcset = mobile_srcset | strip -%}
+  {%- if mobile_srcset == blank -%}
+    {%- capture mobile_srcset -%}{{ mobile | image_url }} {{ mobile.width }}w,{%- endcapture -%}
+  {%- endif -%}
+  {%- assign mobile_height = mobile.width | divided_by: mobile.aspect_ratio | round -%}
+  <picture>
+    <source
+      media="(max-width: 749px)"
+      srcset="{{ mobile_srcset | remove_last: ',' }}"
+      sizes="100vw"
+      width="{{ mobile.width }}"
+      height="{{ mobile_height }}"
+    >
+    {{
+      desktop
+      | image_url: width: desktop_max
+      | image_tag:
+        width: desktop.width,
+        height: img_height,
+        class: class,
+        sizes: sizes,
+        widths: widths,
+        fetchpriority: fetchpriority,
+        loading: loading,
+        alt: alt_text
+    }}
+  </picture>
+{%- else -%}
+  {{
+    desktop
+    | image_url: width: desktop_max
+    | image_tag:
+      width: desktop.width,
+      height: img_height,
+      class: class,
+      sizes: sizes,
+      widths: widths,
+      fetchpriority: fetchpriority,
+      loading: loading,
+      alt: alt_text
+  }}
+{%- endif -%}
