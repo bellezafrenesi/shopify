@@ -555,17 +555,16 @@
                   </div>
                   {%- if block.settings.show_payments -%}
                     <div class="bf-shipping__secure">
-                      <span>{{ block.settings.secure_label | escape }}</span>
-                      <strong>{{ block.settings.secure_text | escape }}</strong>
+                      <span class="bf-shipping__secure-label">{{ block.settings.secure_text | escape }}</span>
+                      <ul class="bf-shipping__payments" role="list">
+                        {%- for type in shop.enabled_payment_types -%}
+                          <li>{{ type | payment_type_svg_tag }}</li>
+                        {%- endfor -%}
+                        {%- if block.settings.show_cod -%}
+                          <li><span class="bf-shipping__cod">{{ block.settings.cod_label | escape }}</span></li>
+                        {%- endif -%}
+                      </ul>
                     </div>
-                    <ul class="bf-shipping__payments" role="list">
-                      {%- for type in shop.enabled_payment_types -%}
-                        <li>{{ type | payment_type_svg_tag }}</li>
-                      {%- endfor -%}
-                      {%- if block.settings.show_cod -%}
-                        <li><span class="bf-shipping__cod">{{ block.settings.cod_label | escape }}</span></li>
-                      {%- endif -%}
-                    </ul>
                   {%- endif -%}
                 </div>
               {%- when 'bf_accordion' -%}

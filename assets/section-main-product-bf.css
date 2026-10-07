@@ -140,11 +140,11 @@
   font-weight: 700;
 }
 
-/* Beneficios: rejilla 2 x 2 con ícono en círculo */
+/* Beneficios: una sola fila, compactos (ícono arriba, texto corto abajo) */
 .bf-highlights {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.2rem 1.2rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -152,27 +152,43 @@
 
 .bf-highlights__item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.5rem;
   min-width: 0;
-  font-size: 1.4rem;
-  line-height: 1.35;
+  font-size: 1.15rem;
+  line-height: 1.25;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .bf-highlights__icon {
   display: flex;
-  flex: 0 0 3.4rem;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 3.4rem;
-  height: 3.4rem;
-  border: 0.1rem solid rgba(var(--color-foreground), 0.3);
+  width: 3rem;
+  height: 3rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.25);
   border-radius: 50%;
 }
 
 .bf-highlights__icon svg {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+@media screen and (min-width: 990px) {
+  .bf-highlights__item {
+    font-size: 1.25rem;
+  }
+}
+
+/* Existencias: línea pequeña debajo de los botones de compra */
+.product__info-container .product__inventory {
+  margin-top: 0.8rem;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.75);
 }
 
 /* Cantidad + botón en una fila */
@@ -266,7 +282,7 @@
   }
 }
 
-/* Caja de envío + pagos */
+/* Caja de envío + pagos (compacta) */
 .bf-shipping {
   border: 0.1rem solid rgba(var(--color-foreground), 0.15);
 }
@@ -278,8 +294,9 @@
 
 .bf-shipping__cell {
   display: flex;
-  gap: 1rem;
-  padding: 1.4rem;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 1.1rem 1.2rem;
   min-width: 0;
 }
 
@@ -288,9 +305,9 @@
 }
 
 .bf-shipping__icon {
-  flex: 0 0 2.4rem;
-  width: 2.4rem;
-  height: 2.4rem;
+  flex: 0 0 2rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .bf-shipping__icon svg {
@@ -300,26 +317,26 @@
 
 .bf-shipping__title {
   display: block;
-  margin: 0 0 0.3rem;
-  font-size: 1.2rem;
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1.35;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
   text-transform: uppercase;
 }
 
 .bf-shipping__text {
   display: block;
   margin: 0;
-  font-size: 1.3rem;
-  line-height: 1.45;
+  font-size: 1.25rem;
+  line-height: 1.4;
   color: rgba(var(--color-foreground), 0.8);
 }
 
 .bf-shipping__note {
   display: block;
-  margin-top: 0.3rem;
-  font-size: 1.2rem;
+  margin-top: 0.2rem;
+  font-size: 1.15rem;
   color: rgba(var(--color-foreground), 0.6);
 }
 
@@ -327,24 +344,25 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.4rem 1rem;
-  padding: 1.2rem 1.4rem;
+  gap: 0.6rem 1rem;
+  padding: 1rem 1.2rem;
   border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
-  font-size: 1.2rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
-.bf-shipping__secure strong {
+.bf-shipping__secure-label {
+  font-size: 1.1rem;
   font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .bf-shipping__payments {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.5rem;
   margin: 0;
-  padding: 0 1.4rem 1.4rem;
+  padding: 0;
   list-style: none;
 }
 
@@ -354,15 +372,15 @@
 }
 
 .bf-shipping__payments svg {
-  width: 3.8rem;
-  height: 2.4rem;
+  width: 3.4rem;
+  height: 2.2rem;
 }
 
 .bf-shipping__cod {
-  padding: 0.3rem 0.8rem;
+  padding: 0.2rem 0.7rem;
   border: 0.1rem solid rgba(var(--color-foreground), 0.3);
   border-radius: 0.4rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1.6rem;
@@ -370,7 +388,7 @@
   white-space: nowrap;
 }
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 339px) {
   .bf-shipping__row {
     grid-template-columns: 1fr;
   }
