@@ -3630,3 +3630,158 @@ details-disclosure > details {
 .price--on-sale .price__savings {
   display: block;
 }
+
+/* Botón de carrito de las tarjetas de producto */
+.card__inner .card-cart-btn {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  min-width: 4.4rem;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.card__inner .card-cart-btn svg {
+  display: block;
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.card__inner .card-cart-btn__check,
+.card__inner .card-cart-btn__spinner {
+  display: none;
+}
+
+.card__inner .card-cart-btn:hover,
+.card__inner .card-cart-btn:focus-visible {
+  background: rgb(var(--color-button));
+  color: rgb(var(--color-button-text));
+  transform: scale(1.06);
+}
+
+.card__inner .card-cart-btn:focus-visible {
+  outline: 0.3rem solid rgba(var(--color-foreground), 0.6);
+  outline-offset: 0.2rem;
+}
+
+.card__inner .card-cart-btn.is-loading .card-cart-btn__icon,
+.card__inner .card-cart-btn.is-added .card-cart-btn__icon {
+  display: none;
+}
+
+.card__inner .card-cart-btn.is-loading .card-cart-btn__spinner {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  border: 0.25rem solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: card-cart-spin 0.7s linear infinite;
+}
+
+.card__inner .card-cart-btn.is-added {
+  background: #1a7f37;
+  color: #ffffff;
+}
+
+.card__inner .card-cart-btn.is-added .card-cart-btn__check {
+  display: block;
+}
+
+.card__inner .card-cart-btn.is-error {
+  background: #cf3345;
+  color: #ffffff;
+}
+
+@keyframes card-cart-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .card__inner .card-cart-btn {
+    right: 0.8rem;
+    bottom: 0.8rem;
+    width: 4rem;
+    height: 4rem;
+    min-width: 4rem;
+  }
+
+  .card__inner .card-cart-btn svg {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card__inner .card-cart-btn {
+    transition: none;
+  }
+
+  .card__inner .card-cart-btn.is-loading .card-cart-btn__spinner {
+    animation-duration: 2s;
+  }
+}
+
+/* Header minimalista: íconos finos y pequeños, menú en mayúsculas pequeñas.
+   El área táctil de cada ícono sigue siendo de 44 px. */
+.header__icon .icon,
+.header__icon--menu .icon,
+.header__icon .svg-wrapper > svg:not(.icon-cart):not(.icon-cart-empty) {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.header__icon--cart .icon,
+.header__icon--cart .svg-wrapper > svg {
+  width: 3.4rem;
+  height: 3.4rem;
+}
+
+.header__icon .icon path,
+.header__icon .icon line {
+  stroke-width: 1.2;
+}
+
+.header .cart-count-bubble {
+  width: 1.6rem;
+  height: 1.6rem;
+  bottom: 0.9rem;
+  left: 2.3rem;
+  font-size: 0.95rem;
+}
+
+.header__menu-item span,
+.header__menu-item {
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header__inline-menu .list-menu--inline {
+  gap: 0.4rem;
+}
+
+@media screen and (max-width: 749px) {
+  .header__heading-logo-wrapper img,
+  .header__heading-logo {
+    max-height: 4rem;
+    width: auto;
+  }
+}

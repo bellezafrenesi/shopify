@@ -1,0 +1,229 @@
+{%- style -%}
+  #ImageTiles-{{ section.id }} {
+    --it-ratio-desktop: {{ section.settings.ratio_desktop }};
+    --it-ratio-mobile: {{ section.settings.ratio_mobile }};
+    --it-cols-mobile: {{ section.settings.columns_mobile }};
+    --it-cols-desktop: {{ section.settings.columns_desktop }};
+    --it-gap: {{ section.settings.gap }}px;
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    #ImageTiles-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{{ 'image-tiles.css' | asset_url | stylesheet_tag }}
+
+<div id="ImageTiles-{{ section.id }}" class="image-tiles color-{{ section.settings.color_scheme }} gradient">
+  <div class="{% if section.settings.full_width %}image-tiles__wrap--full{% else %}page-width{% endif %}">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="image-tiles__heading h2">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    <ul class="image-tiles__grid" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign tile_label = block.settings.label
+          assign tile_alt = block.settings.alt | default: tile_label
+          assign tile_loading = 'lazy'
+          if section.index <= 2 and forloop.index <= 2
+            assign tile_loading = 'eager'
+          endif
+        -%}
+        {%- capture tile_html -%}
+          <span class="image-tiles__media">
+            {%- if block.settings.image != blank -%}
+              {% render 'responsive-picture',
+                desktop: block.settings.image,
+                mobile: block.settings.image_mobile,
+                alt: tile_alt,
+                sizes: '(min-width: 750px) 50vw, 100vw',
+                widths: '375, 550, 750, 1100, 1500, 2000',
+                desktop_max: 2000,
+                loading: tile_loading
+              %}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </span>
+          {%- if tile_label != blank -%}
+            <span class="image-tiles__label image-tiles__label--{{ block.settings.label_color }}">{{ tile_label | escape }}</span>
+          {%- endif -%}
+        {%- endcapture -%}
+        <li class="image-tiles__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" class="image-tiles__tile">{{ tile_html }}</a>
+          {%- else -%}
+            <div class="image-tiles__tile">{{ tile_html }}</div>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Imágenes con texto simple",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título (opcional)"
+    },
+    {
+      "type": "header",
+      "content": "Distribución"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Columnas en escritorio",
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columnas en celular",
+      "options": [
+        { "value": "1", "label": "1 (una debajo de otra)" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "select",
+      "id": "ratio_desktop",
+      "label": "Proporción de cada imagen en escritorio",
+      "info": "Si usas 2 columnas, 1200 × 1500 px (4:5) queda muy bien.",
+      "options": [
+        { "value": "4 / 5", "label": "4:5 (vertical)" },
+        { "value": "1 / 1", "label": "1:1 (cuadrada)" },
+        { "value": "3 / 2", "label": "3:2 (horizontal)" },
+        { "value": "16 / 9", "label": "16:9 (panorámica)" }
+      ],
+      "default": "4 / 5"
+    },
+    {
+      "type": "select",
+      "id": "ratio_mobile",
+      "label": "Proporción de cada imagen en celular",
+      "info": "1080 × 1350 px (4:5) si va una por fila.",
+      "options": [
+        { "value": "4 / 5", "label": "4:5 (vertical)" },
+        { "value": "1 / 1", "label": "1:1 (cuadrada)" },
+        { "value": "3 / 2", "label": "3:2 (horizontal)" }
+      ],
+      "default": "4 / 5"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Espacio entre imágenes",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Ocupar todo el ancho de la pantalla",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacio arriba",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacio abajo",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Imagen",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen de escritorio"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Imagen de celular",
+          "info": "Opcional. Si no la subes, se usa la de escritorio."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace",
+          "info": "Toda la imagen es clicable."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texto",
+          "info": "Una o dos palabras funcionan mejor."
+        },
+        {
+          "type": "select",
+          "id": "label_color",
+          "label": "Color del texto",
+          "options": [
+            { "value": "light", "label": "Claro" },
+            { "value": "dark", "label": "Oscuro" }
+          ],
+          "default": "light"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Descripción de la imagen",
+          "info": "Para accesibilidad y SEO. Si la dejas vacía usa el texto."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Imágenes con texto simple",
+      "blocks": [
+        { "type": "tile" },
+        { "type": "tile" }
+      ]
+    }
+  ]
+}
+{% endschema %}

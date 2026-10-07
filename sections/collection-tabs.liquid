@@ -2,12 +2,6 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 
-{%- unless section.settings.quick_add == 'none' -%}
-  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-{%- endunless -%}
-
 {%- style -%}
   .collection-tabs-{{ section.id }} {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -119,7 +113,6 @@
                   show_rating: section.settings.show_rating,
                   skip_styles: skip_card_styles,
                   section_id: section.id,
-                  quick_add: section.settings.quick_add,
                   lazy_load: true
                 %}
               </li>
@@ -221,16 +214,6 @@
       "id": "show_rating",
       "label": "Mostrar estrellas de reseñas",
       "default": true
-    },
-    {
-      "type": "select",
-      "id": "quick_add",
-      "label": "Botón de compra rápida",
-      "options": [
-        { "value": "none", "label": "Ninguno" },
-        { "value": "standard", "label": "Agregar al carrito" }
-      ],
-      "default": "standard"
     },
     {
       "type": "text",
