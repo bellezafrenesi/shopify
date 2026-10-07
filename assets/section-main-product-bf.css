@@ -56,6 +56,13 @@
   margin: 0;
 }
 
+/* Celular: precios en la primera línea; "% OFF" y "Ahorras" juntos en la segunda */
+@media screen and (max-width: 749px) {
+  .product__info-container .price--large.price--on-sale .price__container {
+    flex-basis: 100%;
+  }
+}
+
 /* Sin oferta se ve .price__regular; con oferta, solo .price__sale (precio anterior tachado + actual) */
 .product__info-container .price--large:not(.price--on-sale) .price__regular,
 .product__info-container .price--large.price--on-sale .price__sale {
@@ -198,6 +205,17 @@
   height: 100%;
 }
 
+.bf-atc-row .quantity__button {
+  width: 3.4rem;
+  flex: 0 0 3.4rem;
+}
+
+.bf-atc-row .quantity__input {
+  min-width: 2.4rem;
+  padding: 0;
+  text-align: center;
+}
+
 .bf-atc-row .product-form__submit {
   flex: 1 1 auto;
   min-width: 0;
@@ -237,7 +255,7 @@
   }
 
   .bf-atc-row .quantity {
-    width: 9.6rem;
+    width: 10.8rem;
   }
 
   .bf-atc-row .product-form__submit {
