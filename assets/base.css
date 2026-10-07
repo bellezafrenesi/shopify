@@ -3610,12 +3610,7 @@ details-disclosure > details {
 }
 .price.price--large.price--show-badge .price-item.price-item--regular {
   font-size: 20px;
-
-    .badge--bottom-left.color-scheme-4 {
-           font-size: 1px;
-           line-height: 12px;
-           padding:10px 15px;
-    }
+}
 
 /* Ahorro en pesos junto al precio (ficha de producto) */
 .price__savings {
