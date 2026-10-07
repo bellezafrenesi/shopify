@@ -52,6 +52,30 @@
     margin-top: 2.4rem;
     text-align: center;
   }
+  /* Celular: pestañas más pequeñas y solo 4 productos por pestaña (el resto en "Ver todo") */
+  @media screen and (max-width: 749px) {
+    .collection-tabs-{{ section.id }} .collection-tabs__heading {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+    }
+    .collection-tabs-{{ section.id }} .collection-tabs__nav {
+      gap: 0.6rem;
+      margin: 0 -1.5rem 1.6rem;
+      padding: 0 1.5rem 0.4rem;
+    }
+    .collection-tabs-{{ section.id }} .collection-tabs__tab {
+      min-height: 3.8rem;
+      padding: 0.6rem 1.4rem;
+      font-size: 1.3rem;
+      border-width: 0.1rem;
+    }
+    .collection-tabs-{{ section.id }} .product-grid > .grid__item:nth-child(n + 5) {
+      display: none;
+    }
+    .collection-tabs-{{ section.id }} .collection-tabs__more {
+      margin-top: 1.6rem;
+    }
+  }
   @media screen and (min-width: 750px) {
     .collection-tabs-{{ section.id }} {
       padding-top: {{ section.settings.padding_top }}px;
