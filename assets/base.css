@@ -3628,7 +3628,7 @@ details-disclosure > details {
   position: absolute;
   inset: 0;
   z-index: 3;
-  display: block; /* el tema oculta los enlaces vacíos (a:empty) */
+  display: block; /* el tema oculta los enlaces vacios (a:empty) */
 }
 
 .card__inner .card-cart-btn {
