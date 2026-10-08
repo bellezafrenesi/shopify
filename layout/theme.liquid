@@ -80,6 +80,20 @@ cart-drawer:not(.active) { position: fixed; top: 0; left: 0; width: 100%; height
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    {%- if template.name == 'index' -%}
+      {%- assign bf_hero = sections['hero_carousel_bf'].blocks.first -%}
+      {%- if bf_hero.settings.image != blank -%}
+        {%- assign bf_hero_d = bf_hero.settings.image -%}
+        {%- assign bf_hero_m = bf_hero.settings.image_mobile -%}
+        {%- if bf_hero_m != blank -%}
+          <link rel="preload" as="image" fetchpriority="high" media="(max-width: 749px)" imagesrcset="{% for w in (360,480,640,750,900,1080,1440) %}{% if w <= bf_hero_m.width %}{{ bf_hero_m | image_url: width: w }} {{ w }}w{% unless w == 1440 %}, {% endunless %}{% endif %}{% endfor %}" imagesizes="100vw">
+          <link rel="preload" as="image" fetchpriority="high" media="(min-width: 750px)" imagesrcset="{% for w in (640,800,1080,1500,1920,2400,3000) %}{% if w <= bf_hero_d.width %}{{ bf_hero_d | image_url: width: w }} {{ w }}w{% unless w == 3000 %}, {% endunless %}{% endif %}{% endfor %}" imagesizes="100vw">
+        {%- else -%}
+          <link rel="preload" as="image" fetchpriority="high" imagesrcset="{% for w in (640,800,1080,1500,1920,2400,3000) %}{% if w <= bf_hero_d.width %}{{ bf_hero_d | image_url: width: w }} {{ w }}w{% unless w == 3000 %}, {% endunless %}{% endif %}{% endfor %}" imagesizes="(max-width: 749px) 66vw, 100vw">
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+
     {{ content_for_header }}
 
     {%- liquid
