@@ -297,7 +297,7 @@
       "settings": {
         "image": "shopify://shop_images/Fotos_productos_elegido_BF_9719a1d2-2eeb-4e25-a195-1d9baeeee64b.png",
         "image_overlay_opacity": 50,
-        "image_height": "small",
+        "image_height": "medium",
         "desktop_content_position": "bottom-center",
         "show_text_box": false,
         "desktop_content_alignment": "center",
@@ -337,7 +337,7 @@
       "settings": {
         "image": "shopify://shop_images/156_5e259b1e-347c-432e-b840-637844117be1.png",
         "image_overlay_opacity": 50,
-        "image_height": "small",
+        "image_height": "medium",
         "desktop_content_position": "bottom-center",
         "show_text_box": false,
         "desktop_content_alignment": "center",
