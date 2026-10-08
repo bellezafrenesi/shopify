@@ -19,38 +19,48 @@
   assign current_vendor = current_vendors | split: ',' | first
 -%}
 {{ 'collection-chips.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign sort_active = false
+  if current_sort != blank and current_sort != collection.default_sort_by
+    assign sort_active = true
+  endif
+  assign any_filter = false
+  if current_vendor != blank or sort_active
+    assign any_filter = true
+  endif
+-%}
 <nav class="collection-chips page-width" aria-label="Filtrar y ordenar productos">
-  {%- if vendor_filter and vendor_filter.values.size > 1 -%}
-    <div class="collection-chips__group">
-      <span class="collection-chips__label">Marca</span>
-      <a class="collection-chips__chip" href="{{ collection.url }}{% if current_sort != blank %}?sort_by={{ current_sort }}{% endif %}" aria-current="{% if current_vendor == blank %}true{% else %}false{% endif %}">Todas</a>
+  <div class="collection-chips__group">
+    <span class="collection-chips__label">Marca</span>
+    {%- if vendor_filter -%}
       {%- for v in vendor_filter.values -%}
         {%- if v.count > 0 or v.active -%}
           <a
             class="collection-chips__chip"
-            href="{{ collection.url }}?filter.p.vendor={{ v.value | url_encode }}{% if current_sort != blank %}&sort_by={{ current_sort }}{% endif %}"
+            href="{{ collection.url }}?filter.p.vendor={{ v.value | url_encode }}{% if sort_active %}&sort_by={{ current_sort }}{% endif %}"
             aria-current="{% if v.active %}true{% else %}false{% endif %}"
           >{{ v.label | escape }}</a>
         {%- endif -%}
       {%- endfor -%}
-    </div>
-  {%- endif -%}
+    {%- endif -%}
+  </div>
   <div class="collection-chips__group">
     <span class="collection-chips__label">Ordenar</span>
-    {%- assign sort_options = 'manual:Destacados,best-selling:Más vendidos,price-ascending:Menor precio,price-descending:Mayor precio,created-descending:Más nuevos' | split: ',' -%}
-    {%- for opt in sort_options -%}
-      {%- assign pair = opt | split: ':' -%}
-      {%- assign key = pair[0] -%}
-      {%- assign is_current = false -%}
-      {%- if key == current_sort or current_sort == blank and key == collection.default_sort_by -%}
-        {%- assign is_current = true -%}
-      {%- endif -%}
-      <a
-        class="collection-chips__chip"
-        href="{{ collection.url }}?sort_by={{ key }}{% if current_vendor != blank %}&filter.p.vendor={{ current_vendor | url_encode }}{% endif %}"
-        aria-current="{{ is_current }}"
-      >{{ pair[1] }}</a>
-    {%- endfor -%}
+    <a
+      class="collection-chips__chip"
+      href="{{ collection.url }}?sort_by=best-selling{% if current_vendor != blank %}&filter.p.vendor={{ current_vendor | url_encode }}{% endif %}"
+      aria-current="{% if current_sort == 'best-selling' %}true{% else %}false{% endif %}"
+    >Más vendidos</a>
+    <a
+      class="collection-chips__chip"
+      href="{{ collection.url }}?sort_by=price-ascending{% if current_vendor != blank %}&filter.p.vendor={{ current_vendor | url_encode }}{% endif %}"
+      aria-current="{% if current_sort == 'price-ascending' %}true{% else %}false{% endif %}"
+    >Menor precio</a>
+  </div>
+  <div class="collection-chips__group collection-chips__group--meta">
+    {%- if any_filter -%}
+      <a class="collection-chips__chip collection-chips__chip--clear" href="{{ collection.url }}">&#10005; Quitar filtro</a>
+    {%- endif -%}
     <span class="collection-chips__count">{{ collection.products_count }} productos</span>
   </div>
 </nav>

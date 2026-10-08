@@ -7,6 +7,28 @@
       padding-bottom: calc({{ settings.media_shadow_vertical_offset | at_least: 0 }}px + 2rem);
     }
   }
+  .collection-hero { padding: 0; }
+  .collection-hero__inner { padding-top: 3.2rem; padding-bottom: 2.8rem; }
+  .collection-hero__text-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
+  .collection-hero__title {
+    margin: 0;
+    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+  .collection-hero__title::after {
+    content: '';
+    display: block;
+    width: 6rem;
+    height: 0.3rem;
+    margin: 1.4rem auto 0;
+    border-radius: 1rem;
+    background: rgb(var(--color-button));
+  }
+  .collection-hero__count { margin: 1.2rem 0 0; font-size: 1.4rem; letter-spacing: 0.06em; color: rgba(var(--color-foreground), 0.65); }
+  .collection-hero__description { max-width: 56rem; margin: 1rem auto 0; font-size: 1.5rem; }
 {%- endstyle -%}
 
 <div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
@@ -16,6 +38,8 @@
         <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
         {{- collection.title | escape -}}
       </h1>
+
+      <p class="collection-hero__count">{{ collection.all_products_count }} productos</p>
 
       {%- if section.settings.show_collection_description -%}
         <div class="collection-hero__description rte">{{ collection.description }}</div>

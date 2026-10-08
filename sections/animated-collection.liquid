@@ -65,9 +65,9 @@
 	.scrollmenuitems { justify-content: flex-start !important; }
 }
 .circle { position: relative; width: 100px; height: 100px; }
-.circle svg { fill: none; stroke: #8a3ab9; stroke-linecap: round; stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 0; animation: stroke-draw 6s ease-out infinite alternate; }
+.circle svg { display: none; fill: none; stroke: #8a3ab9; stroke-linecap: round; stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 0; animation: stroke-draw 6s ease-out infinite alternate; }
 .circle svg:hover{animation: stroke-draw 10s ease-out infinite alternate; cursor:pointer; }
-.circle img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 70px; border-radius: 50%; }
+.circle img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 88px; height: 88px; object-fit: cover; border-radius: 50%; }
 @keyframes stroke-draw {
 	from {
 		stroke: #8a3ab9; stroke-dasharray: 1;
