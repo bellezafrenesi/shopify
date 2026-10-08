@@ -52,6 +52,9 @@
           >{{ v.label | escape }}</a>
         {%- endif -%}
       {%- endfor -%}
+      {%- if any_filter -%}
+        <a class="collection-chips__chip collection-chips__chip--clear" href="{{ collection.url }}">&#10005; Quitar filtro</a>
+      {%- endif -%}
     </div>
   {%- endif -%}
   <div class="collection-chips__group">
@@ -66,7 +69,7 @@
       href="{{ collection.url }}?sort_by=price-ascending{% if current_vendor != blank %}&filter.p.vendor={{ current_vendor | url_encode }}{% endif %}"
       aria-current="{% if current_sort == 'price-ascending' %}true{% else %}false{% endif %}"
     >Menor precio</a>
-    {%- if any_filter -%}
+    {%- if any_filter and visible_vendors < 2 -%}
       <a class="collection-chips__chip collection-chips__chip--clear" href="{{ collection.url }}">&#10005; Quitar filtro</a>
     {%- endif -%}
   </div>
