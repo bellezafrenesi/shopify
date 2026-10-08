@@ -17,12 +17,18 @@
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
           })(window, document, "clarity", "script", "rixx9knni3");
         }
-        function schedule() {
-          if ('requestIdleCallback' in window) { requestIdleCallback(loadClarity, { timeout: 3000 }); }
-          else { setTimeout(loadClarity, 1500); }
+        // Se carga con la primera interacción del visitante (scroll, toque, clic o tecla) o, como máximo, a los 8 s,
+        // para que no compita con la carga inicial de la página.
+        var started = false;
+        function start() {
+          if (started) { return; }
+          started = true;
+          ['scroll', 'touchstart', 'pointerdown', 'keydown'].forEach(function (e) { window.removeEventListener(e, start); });
+          if ('requestIdleCallback' in window) { requestIdleCallback(loadClarity, { timeout: 2000 }); }
+          else { setTimeout(loadClarity, 300); }
         }
-        if (document.readyState === 'complete') { schedule(); }
-        else { window.addEventListener('load', schedule, { once: true }); }
+        ['scroll', 'touchstart', 'pointerdown', 'keydown'].forEach(function (e) { window.addEventListener(e, start, { passive: true }); });
+        window.addEventListener('load', function () { setTimeout(start, 8000); }, { once: true });
       })();
     </script>
     <style>
