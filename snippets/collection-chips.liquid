@@ -1,0 +1,56 @@
+{%- comment -%}
+  Filtros en "burbujas" para páginas de colección: Marca y Orden.
+  Usa los filtros nativos de Shopify (?filter.p.vendor=...&sort_by=...), así que la paginación y el conteo siguen funcionando.
+{%- endcomment -%}
+{%- liquid
+  assign vendor_filter = null
+  for f in collection.filters
+    if f.param_name == 'filter.p.vendor'
+      assign vendor_filter = f
+    endif
+  endfor
+  assign current_sort = collection.sort_by
+  assign current_vendors = ''
+  if vendor_filter
+    for v in vendor_filter.active_values
+      assign current_vendors = current_vendors | append: v.value | append: ','
+    endfor
+  endif
+  assign current_vendor = current_vendors | split: ',' | first
+-%}
+{{ 'collection-chips.css' | asset_url | stylesheet_tag }}
+<nav class="collection-chips page-width" aria-label="Filtrar y ordenar productos">
+  {%- if vendor_filter and vendor_filter.values.size > 1 -%}
+    <div class="collection-chips__group">
+      <span class="collection-chips__label">Marca</span>
+      <a class="collection-chips__chip" href="{{ collection.url }}{% if current_sort != blank %}?sort_by={{ current_sort }}{% endif %}" aria-current="{% if current_vendor == blank %}true{% else %}false{% endif %}">Todas</a>
+      {%- for v in vendor_filter.values -%}
+        {%- if v.count > 0 or v.active -%}
+          <a
+            class="collection-chips__chip"
+            href="{{ collection.url }}?filter.p.vendor={{ v.value | url_encode }}{% if current_sort != blank %}&sort_by={{ current_sort }}{% endif %}"
+            aria-current="{% if v.active %}true{% else %}false{% endif %}"
+          >{{ v.label | escape }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+  <div class="collection-chips__group">
+    <span class="collection-chips__label">Ordenar</span>
+    {%- assign sort_options = 'manual:Destacados,best-selling:Más vendidos,price-ascending:Menor precio,price-descending:Mayor precio,created-descending:Más nuevos' | split: ',' -%}
+    {%- for opt in sort_options -%}
+      {%- assign pair = opt | split: ':' -%}
+      {%- assign key = pair[0] -%}
+      {%- assign is_current = false -%}
+      {%- if key == current_sort or current_sort == blank and key == collection.default_sort_by -%}
+        {%- assign is_current = true -%}
+      {%- endif -%}
+      <a
+        class="collection-chips__chip"
+        href="{{ collection.url }}?sort_by={{ key }}{% if current_vendor != blank %}&filter.p.vendor={{ current_vendor | url_encode }}{% endif %}"
+        aria-current="{{ is_current }}"
+      >{{ pair[1] }}</a>
+    {%- endfor -%}
+    <span class="collection-chips__count">{{ collection.products_count }} productos</span>
+  </div>
+</nav>

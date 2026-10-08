@@ -32,9 +32,11 @@
   {{ 'collection-tabs.css' | asset_url | stylesheet_tag }}
 
   <div
-    class="collection-tabs collection-tabs-{{ section.id }} color-{{ section.settings.color_scheme }} gradient"
+    class="collection-tabs collection-tabs-{{ section.id }}{% if section.settings.layout == 'carousel' %} collection-tabs--carousel{% endif %} color-{{ section.settings.color_scheme }} gradient"
     data-collection-tabs
     data-limit="{{ section.settings.products_to_show }}"
+    data-default-sort="{{ section.settings.default_sort }}"
+    data-lazy="{% if section.settings.layout == 'carousel' %}true{% else %}false{% endif %}"
   >
     <div class="page-width">
       <div class="collection-tabs__top">
@@ -46,7 +48,7 @@
         </a>
       </div>
 
-      <div class="collection-tabs__nav" role="tablist" aria-label="{{ section.settings.heading | escape }}">
+      <div class="collection-tabs__nav{% if valid_tab_ids.size < 2 %} collection-tabs__nav--single{% endif %}" role="tablist" aria-label="{{ section.settings.heading | escape }}">
         {%- for block in section.blocks -%}
           {%- unless valid_tab_ids contains block.id -%}
             {%- continue -%}
@@ -111,7 +113,7 @@
         {%- endunless -%}
         {%- assign tab_collection = block.settings.collection -%}
         <div
-          class="collection-tabs__panel"
+          class="collection-tabs__panel{% if section.settings.layout == 'carousel' and block.id == first_tab_id %} is-loading{% endif %}"
           role="tabpanel"
           id="Panel-{{ section.id }}-{{ forloop.index }}"
           aria-labelledby="Tab-{{ section.id }}-{{ forloop.index }}"
@@ -122,11 +124,11 @@
           <ul
             class="grid product-grid grid--2-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop"
             role="list"
-            {% if block.id == first_tab_id %}
+            {% if block.id == first_tab_id and section.settings.layout != 'carousel' %}
               data-key="|"
             {% endif %}
           >
-            {%- if block.id == first_tab_id -%}
+            {%- if block.id == first_tab_id and section.settings.layout != 'carousel' -%}
               {%- for product in tab_collection.products limit: section.settings.products_to_show -%}
                 <li class="grid__item">
                   {% render 'card-product',
@@ -149,6 +151,10 @@
           </p>
         </div>
       {%- endfor -%}
+      {%- if section.settings.layout == 'carousel' -%}
+        <button type="button" class="collection-tabs__arrow collection-tabs__arrow--prev" aria-label="Anterior" data-arrow="-1">&#8249;</button>
+        <button type="button" class="collection-tabs__arrow collection-tabs__arrow--next" aria-label="Siguiente" data-arrow="1">&#8250;</button>
+      {%- endif -%}
     </div>
   </div>
 
@@ -171,6 +177,27 @@
       "id": "heading",
       "label": "Título",
       "default": "Lo que más te gusta"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Presentación",
+      "options": [
+        { "value": "grid", "label": "Cuadrícula" },
+        { "value": "carousel", "label": "Carrusel de una fila (deslizable)" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "default_sort",
+      "label": "Orden inicial",
+      "options": [
+        { "value": "", "label": "Destacados" },
+        { "value": "best-selling", "label": "Más vendidos" },
+        { "value": "price-ascending", "label": "Menor precio" }
+      ],
+      "default": ""
     },
     {
       "type": "range",

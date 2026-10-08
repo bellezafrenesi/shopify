@@ -17,7 +17,8 @@
     var sortGroup = root.querySelector('[data-filter="sort"]');
     var limit = parseInt(root.getAttribute('data-limit'), 10) || 8;
     var cache = {};
-    var state = { tab: 0, vendor: '', sort: '' };
+    var state = { tab: 0, vendor: '', sort: root.getAttribute('data-default-sort') || '' };
+    var lazy = root.getAttribute('data-lazy') === 'true';
 
     tabs.forEach(function (tab, i) {
       if (tab.getAttribute('aria-selected') === 'true') state.tab = i;
@@ -169,8 +170,20 @@
       load(state.tab);
     });
 
+    // El orden inicial también se refleja en los chips de orden.
+    setPressed(sortGroup, state.sort);
+
+    // Flechas del carrusel
+    Array.prototype.forEach.call(root.querySelectorAll('[data-arrow]'), function (arrow) {
+      arrow.addEventListener('click', function () {
+        var list = panels[state.tab].querySelector('.product-grid');
+        list.scrollBy({ left: list.clientWidth * 0.8 * Number(arrow.getAttribute('data-arrow')), behavior: 'smooth' });
+      });
+    });
+
     updateVendorChips();
     updateViewAll();
+    if (lazy) load(state.tab);
   }
 
   function initAll() {

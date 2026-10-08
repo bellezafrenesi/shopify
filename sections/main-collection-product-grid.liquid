@@ -114,6 +114,8 @@
       </facet-filters-form>
     {%- endif -%}
 
+    {%- render 'collection-chips' -%}
+
     <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
       {{ 'component-facets.css' | asset_url | stylesheet_tag }}
       <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
