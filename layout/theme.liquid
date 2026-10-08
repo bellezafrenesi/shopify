@@ -80,6 +80,9 @@ cart-drawer:not(.active) { position: fixed; top: 0; left: 0; width: 100%; height
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    {%- capture bf_header -%}{{ content_for_header }}{%- endcapture -%}
+    {%- assign bf_parts = bf_header | split: '<script' -%}
+    <!-- bfdbg {{ bf_header | size }} {{ bf_parts.size }} -->
     {{ content_for_header }}
 
     {%- liquid
