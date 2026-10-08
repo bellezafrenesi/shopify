@@ -496,30 +496,11 @@
                 </ul>
               {%- when 'bf_shipping' -%}
                 {%- liquid
-                  # Fecha estimada en días hábiles (lunes a viernes). Después de la hora de corte cuenta desde el día siguiente.
+                  # Respaldo calculado en el servidor (días corridos desde hoy). El navegador lo recalcula con la fecha real de Colombia.
                   assign bf_months = 'enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre' | split: ','
-                  assign bf_ts = 'now' | date: '%s' | plus: 0
-                  assign bf_hour = 'now' | date: '%H' | plus: 0
-                  if bf_hour >= block.settings.cutoff_hour
-                    assign bf_ts = bf_ts | plus: 86400
-                  endif
-                  assign bf_count = 0
-                  assign bf_min_ts = bf_ts
-                  assign bf_max_ts = bf_ts
-                  for i in (1..25)
-                    assign bf_ts = bf_ts | plus: 86400
-                    assign bf_dow = bf_ts | date: '%u' | plus: 0
-                    if bf_dow < 6
-                      assign bf_count = bf_count | plus: 1
-                      if bf_count == block.settings.days_min
-                        assign bf_min_ts = bf_ts
-                      endif
-                      if bf_count == block.settings.days_max
-                        assign bf_max_ts = bf_ts
-                        break
-                      endif
-                    endif
-                  endfor
+                  assign bf_now = 'now' | date: '%s' | plus: 0
+                  assign bf_min_ts = block.settings.days_min | times: 86400 | plus: bf_now
+                  assign bf_max_ts = block.settings.days_max | times: 86400 | plus: bf_now
                   assign bf_min_day = bf_min_ts | date: '%-d'
                   assign bf_max_day = bf_max_ts | date: '%-d'
                   assign bf_min_month_index = bf_min_ts | date: '%m' | minus: 1
@@ -540,7 +521,12 @@
                       <span class="bf-shipping__icon" aria-hidden="true">{{- 'icon-box.svg' | inline_asset_content -}}</span>
                       <span>
                         <span class="bf-shipping__title">{{ block.settings.delivery_title | escape }}</span>
-                        <span class="bf-shipping__text">
+                        <span
+                          class="bf-shipping__text"
+                          data-delivery-range
+                          data-days-min="{{ block.settings.days_min }}"
+                          data-days-max="{{ block.settings.days_max }}"
+                        >
                           {%- if bf_min_month == bf_max_month -%}
                             Entre el {{ bf_min_day }} y el {{ bf_max_day }} de {{ bf_max_month }}
                           {%- else -%}
@@ -567,6 +553,23 @@
                     </div>
                   {%- endif -%}
                 </div>
+                <script>
+                  (function () {
+                    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+                    var parts;
+                    try {
+                      parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Bogota', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()).split('-');
+                    } catch (e) { return; }
+                    var base = Date.UTC(+parts[0], +parts[1] - 1, +parts[2]);
+                    function fmt(days) { var d = new Date(base + days * 86400000); return { day: d.getUTCDate(), month: months[d.getUTCMonth()] }; }
+                    Array.prototype.forEach.call(document.querySelectorAll('[data-delivery-range]'), function (el) {
+                      var a = fmt(+el.getAttribute('data-days-min')), b = fmt(+el.getAttribute('data-days-max'));
+                      el.textContent = a.month === b.month
+                        ? 'Entre el ' + a.day + ' y el ' + b.day + ' de ' + b.month
+                        : 'Entre el ' + a.day + ' de ' + a.month + ' y el ' + b.day + ' de ' + b.month;
+                    });
+                  })();
+                </script>
               {%- when 'bf_accordion' -%}
                 {%- liquid
                   assign acc_content = block.settings.content
@@ -2461,7 +2464,7 @@
           "min": 1,
           "max": 10,
           "step": 1,
-          "label": "Días hábiles mínimos",
+          "label": "Días mínimos desde hoy",
           "default": 1
         },
         {
@@ -2470,17 +2473,8 @@
           "min": 1,
           "max": 15,
           "step": 1,
-          "label": "Días hábiles máximos",
-          "default": 6
-        },
-        {
-          "type": "range",
-          "id": "cutoff_hour",
-          "min": 12,
-          "max": 23,
-          "step": 1,
-          "label": "Hora de corte (después cuenta desde el día siguiente)",
-          "default": 17
+          "label": "Días máximos desde hoy",
+          "default": 10
         },
         {
           "type": "text",
