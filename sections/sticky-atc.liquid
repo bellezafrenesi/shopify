@@ -23,7 +23,10 @@
             opacity: 0;
             transform: translateY(100%);
             transition: all .15s ease-out;
-            border-top: 0.1rem solid rgba(var(--color-foreground),.08);
+            border-top: 0.1rem solid rgba(var(--color-button), .25);
+            /* Fondo cálido con degradado suave (crema -> rosa empolvado) y sombra hacia arriba para separarlo del contenido */
+            background: linear-gradient(180deg, #fbf3ee 0%, #f3dfd8 100%);
+            box-shadow: 0 -0.6rem 1.8rem rgba(120, 60, 60, .14);
         }
         #md-sticky-atc.show {
             visibility: visible;
