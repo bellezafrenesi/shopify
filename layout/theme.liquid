@@ -310,8 +310,7 @@ cart-drawer:not(.active) { position: fixed; top: 0; left: 0; width: 100%; height
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
       {% comment %}theme-check-enable AssetPreload{% endcomment %}
     {%- endunless -%}
-    {%- comment -%}En la home, arriba solo hay una imagen: la fuente de títulos se carga cuando se necesita para no competir con el hero.{%- endcomment -%}
-    {%- unless settings.type_header_font.system? or template == 'index' -%}
+    {%- unless settings.type_header_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
       <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
       {% comment %}theme-check-enable AssetPreload{% endcomment %}
