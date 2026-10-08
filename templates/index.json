@@ -843,7 +843,7 @@
         "image_2": "shopify://shop_images/Banners_Escritorio_2_1.png",
         "image_mobile": "shopify://shop_images/10_e9b35daf-a67c-4aa0-82ba-e30b13a0d293.png",
         "image_overlay_opacity": 0,
-        "image_height": "small",
+        "image_height": "medium",
         "desktop_content_position": "middle-center",
         "show_text_box": true,
         "desktop_content_alignment": "center",
