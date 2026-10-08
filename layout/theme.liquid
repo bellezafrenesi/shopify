@@ -85,12 +85,18 @@ cart-drawer:not(.active) { position: fixed; top: 0; left: 0; width: 100%; height
       Pixeles de Shopify (Google, Meta, TikTok, etc.): el administrador de pixeles se inicia al terminar de cargar
       la pagina (evento load) en vez de durante la primera pintura. Siguen enviando todos los eventos.
     {%- endcomment -%}
-    <!-- bf-pix -->
+    <!-- bf-pix2 -->
     {%- capture bf_header -%}{{ content_for_header }}{%- endcapture -%}
+    {%- assign bf_end = '</scr' | append: 'ipt>' -%}
     {%- assign bf_parts = bf_header | split: '<script' -%}
     {%- for part in bf_parts -%}
       {%- if forloop.first -%}
         {{- part -}}
+      {%- elsif part contains 'var wpmLoader=' -%}
+        {%- assign bf_pp = part | split: bf_end -%}
+        {%- assign bf_code = bf_pp.first | remove_first: '>' -%}
+        {%- render 'pixel-delay-open' -%}{{- bf_code -}}{%- render 'pixel-delay-close' -%}
+        {%- for rest in bf_pp offset: 1 -%}{{- rest -}}{%- unless forloop.last -%}{{- bf_end -}}{%- endunless -%}{%- endfor -%}
       {%- else -%}
         {{- '<script' -}}{{- part -}}
       {%- endif -%}
