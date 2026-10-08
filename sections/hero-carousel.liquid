@@ -28,7 +28,7 @@
 {%- endstyle -%}
 
 {%- if slide_count > 0 -%}
-  {{ 'hero-carousel.css' | asset_url | stylesheet_tag }}
+  <style>{{ 'hero-carousel.css' | inline_asset_content }}</style>
 
   <div
     id="HeroCarousel-{{ section.id }}"
@@ -75,7 +75,7 @@
                 mobile: block.settings.image_mobile,
                 alt: slide_label,
                 class: 'hero-carousel__img',
-                sizes: '100vw',
+                sizes: '(max-width: 749px) 66vw, 100vw',
                 widths: '640, 800, 1080, 1500, 1920, 2400, 3000',
                 desktop_max: 3000,
                 loading: slide_loading,
