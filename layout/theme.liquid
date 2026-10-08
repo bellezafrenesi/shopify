@@ -1,7 +1,6 @@
 <!doctype html>
 <html class="js" lang="{{ request.locale.iso_code }}">
   <head>
-    <!-- bf-sync-test -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -81,28 +80,7 @@ cart-drawer:not(.active) { position: fixed; top: 0; left: 0; width: 100%; height
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {%- comment -%}
-      Pixeles de Shopify (Google, Meta, TikTok, etc.): el administrador de pixeles se inicia al terminar de cargar
-      la pagina (evento load) en vez de durante la primera pintura. Siguen enviando todos los eventos.
-    {%- endcomment -%}
-    <!-- bf-pix4 -->
-    {%- capture bf_header -%}{{ content_for_header }}{%- endcapture -%}
-    {%- assign bf_end = '</scr' | append: 'ipt>' -%}
-    {%- assign bf_parts = bf_header | split: '<script' -%}
-    {%- for part in bf_parts -%}
-      {%- if forloop.first -%}
-        {{- part -}}
-      {%- elsif part contains 'var wpmLoader=' -%}
-        {%- assign bf_pp = part | split: bf_end -%}
-        {%- assign bf_code = bf_pp.first | remove_first: '>' -%}
-        {%- capture bf_open -%}{% raw %}<script>window.addEventListener("load", function () { setTimeout(function () { {% endraw %}{%- endcapture -%}
-        {%- capture bf_close -%}{% raw %} }, 0); });</script>{% endraw %}{%- endcapture -%}
-        {{- bf_open -}}{{- bf_code -}}{{- bf_close -}}
-        {%- for rest in bf_pp offset: 1 -%}{{- rest -}}{%- unless forloop.last -%}{{- bf_end -}}{%- endunless -%}{%- endfor -%}
-      {%- else -%}
-        {{- '<script' -}}{{- part -}}
-      {%- endif -%}
-    {%- endfor -%}
+    {{ content_for_header }}
 
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
