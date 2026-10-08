@@ -150,6 +150,19 @@
   outline-offset: 0.2rem;
 }
 
+/* Etiqueta de descuento arriba a la izquierda, igual que en el resto de la tienda */
+.collection-tabs .card__badge .badge--bottom-left {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  right: auto;
+  bottom: auto;
+  z-index: 2;
+  padding: 0.4rem 1rem;
+  border-radius: 0;
+  font-size: 1.2rem;
+}
+
 /* Paneles */
 .collection-tabs__panel[hidden] {
   display: none;
@@ -206,6 +219,17 @@
 
   .collection-tabs__filter-group {
     width: 100%;
+    gap: 0.5rem;
+  }
+
+  .collection-tabs__filter-label {
+    font-size: 1.1rem;
+  }
+
+  .collection-tabs__chip {
+    min-height: 3rem;
+    padding: 0.3rem 1rem;
+    font-size: 1.2rem;
   }
 
   .collection-tabs .product-grid > .grid__item:nth-child(n + 5) {
