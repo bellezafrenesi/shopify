@@ -17,18 +17,6 @@
       window.opusOpen();
       return;
     }
-    // Opus se carga diferido en inicio/colecciones: se fuerza su carga y se abre cuando esté listo.
-    if (window.bfOpus && !window.bfOpus.ready()) {
-      window.bfOpus.whenReady(function (ok) {
-        if (ok) window.opusOpen();
-        else fallbackOpen(cartResponse);
-      });
-      return;
-    }
-    fallbackOpen(cartResponse);
-  }
-
-  function fallbackOpen(cartResponse) {
     var drawer = document.querySelector('cart-drawer');
     if (drawer && typeof drawer.renderContents === 'function' && cartResponse && cartResponse.sections) {
       drawer.renderContents(cartResponse);
