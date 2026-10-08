@@ -1,6 +1,53 @@
 <div class="{% if section.settings.include_margins %}page-width{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
   {%- for block in section.blocks -%}
-    {% render block %}
+    {%- comment -%}
+      Reseñas de Judge.me (carrusel): se dejan en el HTML (SEO), pero Judge.me solo carga sus ~200 KB de
+      scripts cuando el bloque esta por aparecer en pantalla. Mientras tanto sus clases se renombran (bf-jdgm-*).
+    {%- endcomment -%}
+    {%- if block.type contains 'judge-me-reviews' and request.design_mode == false -%}
+      {%- capture bf_block_html -%}{% render block %}{%- endcapture -%}
+      {%- assign bf_block_html = bf_block_html | replace: "class='jdgm-widget jdgm-carousel ", "class='jdgm-widget bf-jdgm-carousel " | replace: "class='jdgm-all-reviews-rating'", "class='bf-jdgm-all-reviews-rating'" -%}
+      {%- if bf_block_html contains 'bf-jdgm-' -%}
+        <div class="bf-lazy-reviews" data-bf-lazy-reviews>{{ bf_block_html }}</div>
+        <style>.bf-lazy-reviews:not(.is-ready){min-height:36rem;overflow:hidden}.bf-lazy-reviews:not(.is-ready) .jdgm-carousel__item-container{visibility:hidden}</style>
+        <script>
+          (function () {
+            var box = document.currentScript.previousElementSibling.previousElementSibling;
+            if (!box) return;
+            var started = false;
+            function start() {
+              if (started) return;
+              started = true;
+              Array.prototype.forEach.call(box.querySelectorAll('[class*="bf-jdgm-"]'), function (el) {
+                Array.prototype.slice.call(el.classList).forEach(function (c) {
+                  if (c.indexOf('bf-jdgm-') === 0) { el.classList.remove(c); el.classList.add(c.slice(3)); }
+                });
+              });
+              box.classList.add('is-ready');
+              var loader = document.querySelector('script[src*="judgeme"][src*="loader.js"]');
+              if (loader && window.jdgm) {
+                window.jdgm._loaderExecuted = false;
+                var s = document.createElement('script');
+                s.src = loader.src;
+                document.head.appendChild(s);
+              }
+            }
+            if ('IntersectionObserver' in window) {
+              var io = new IntersectionObserver(function (entries) {
+                if (entries[0].isIntersecting) { io.disconnect(); start(); }
+              }, { rootMargin: '900px 0px' });
+              io.observe(box);
+            } else {
+              window.addEventListener('load', start);
+            }
+          })();
+        </script>
+      {%- else -%}
+        {{ bf_block_html }}
+      {%- endif -%}
+    {%- else -%}
+      {% render block %}
+    {%- endif -%}
   {%- endfor -%}
 </div>
 
