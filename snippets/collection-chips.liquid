@@ -18,6 +18,16 @@
   endif
   assign current_vendor = current_vendors | split: ',' | first
 -%}
+{%- liquid
+  assign visible_vendors = 0
+  if vendor_filter
+    for v in vendor_filter.values
+      if v.count > 0 or v.active
+        assign visible_vendors = visible_vendors | plus: 1
+      endif
+    endfor
+  endif
+-%}
 {{ 'collection-chips.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign sort_active = false
@@ -30,9 +40,9 @@
   endif
 -%}
 <nav class="collection-chips page-width" aria-label="Filtrar y ordenar productos">
-  <div class="collection-chips__group">
-    <span class="collection-chips__label">Marca</span>
-    {%- if vendor_filter -%}
+  {%- if visible_vendors > 1 -%}
+    <div class="collection-chips__group">
+      <span class="collection-chips__label">Marca</span>
       {%- for v in vendor_filter.values -%}
         {%- if v.count > 0 or v.active -%}
           <a
@@ -42,8 +52,8 @@
           >{{ v.label | escape }}</a>
         {%- endif -%}
       {%- endfor -%}
-    {%- endif -%}
-  </div>
+    </div>
+  {%- endif -%}
   <div class="collection-chips__group">
     <span class="collection-chips__label">Ordenar</span>
     <a
@@ -56,11 +66,8 @@
       href="{{ collection.url }}?sort_by=price-ascending{% if current_vendor != blank %}&filter.p.vendor={{ current_vendor | url_encode }}{% endif %}"
       aria-current="{% if current_sort == 'price-ascending' %}true{% else %}false{% endif %}"
     >Menor precio</a>
-  </div>
-  <div class="collection-chips__group collection-chips__group--meta">
     {%- if any_filter -%}
       <a class="collection-chips__chip collection-chips__chip--clear" href="{{ collection.url }}">&#10005; Quitar filtro</a>
     {%- endif -%}
-    <span class="collection-chips__count">{{ collection.products_count }} productos</span>
   </div>
 </nav>
