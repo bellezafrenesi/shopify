@@ -43,7 +43,7 @@
           })();
         </script>
       {%- else -%}
-        {{ bf_block_html }}
+        <!-- bf-miss {{ bf_block_html | size }} -->{{ bf_block_html }}
       {%- endif -%}
     {%- else -%}
       {% render block %}
