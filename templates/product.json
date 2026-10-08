@@ -1,1 +1,286 @@
-{"sections":{"main":{"type":"main-product","blocks":{"vendor":{"type":"text","settings":{"text":"{{ product.vendor }}","text_style":"uppercase"}},"judge_me_reviews_preview_badge_qt4aAH":{"type":"shopify:\/\/apps\/judge-me-reviews\/blocks\/preview_badge\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8","settings":{}},"title":{"type":"title","settings":{}},"price":{"type":"price","settings":{}},"inventory_native":{"type":"inventory","settings":{"text_style":"body","inventory_threshold":10,"show_inventory_quantity":true}},"custom_liquid_bWHJzT":{"type":"custom_liquid","settings":{"custom_liquid":"<style>\n  .live_visitors {\n    position: relative;\n    display: flex;\n    align-items: center;\n    gap: .5rem;\n    padding-left: 13px;\n    font-size: 15px; \/* Tamaño de la letra *\/\n  }\n  .live_visitors::before {\n    position: absolute;\n    display: inline-block;\n    content: \"\";\n    width: 8px;\n    height: 8px;\n    margin-left: -14px;\n    top: 0.6em;\n    border-radius: 100%;\n    background: currentColor;\n    color: rgba(33, 182, 70, 1);\n    box-shadow: 0 0 0 0 rgba(33, 182, 70, 1);\n    animation: pulse-blue 2s infinite;\n  }\n  @keyframes pulse-blue {\n    0% {\n      transform: scale(0.95);\n      box-shadow: 0 0 0 0 rgba(33, 182, 70, 0.7);\n    }\n    70% {\n      transform: scale(1);\n      box-shadow: 0 0 0 10px rgba(33, 182, 70, 0);\n    }\n    100% {\n      transform: scale(0.95);\n      box-shadow: 0 0 0 0 rgba(33, 182, 70, 0);\n    }\n  }\n<\/style>\n<p class=\"live_visitors no-js-hidden\">\n  <span id=\"visitors_count\"><\/span> Personas mirando esto\n<\/p>\n\n<script>\n  let max_visitors = 7;\n  let min_visitors = 2;\n  let delay = 7000;\n  let visitors_count = Math.floor(Math.random() * (max_visitors - min_visitors + 1) + min_visitors);\n  document.getElementById(\"visitors_count\").innerHTML = visitors_count;\n  setInterval(function() {\n    visitors_count = Math.floor(Math.random() * (max_visitors - min_visitors + 1) + min_visitors);\n    document.getElementById(\"visitors_count\").innerHTML = visitors_count;\n  }, delay);\n<\/script>"},"disabled":true},"variant_picker":{"type":"variant_picker","settings":{"picker_type":"button","swatch_shape":"circle"}},"quantity_selector":{"type":"quantity_selector","settings":{}},"buy_buttons":{"type":"buy_buttons","settings":{"show_dynamic_checkout":true,"show_gift_card_recipient":true}},"share":{"type":"share","disabled":true,"settings":{"share_label":"Share"}},"bf_hl":{"type":"bf_highlights","settings":{"icon_1":"checkmark","text_1":"100% originales","icon_2":"box","text_2":"Contra entrega","icon_3":"padlock","text_3":"Pago seguro","icon_4":"return","text_4":"Garantía 30 días"}},"bf_ship":{"type":"bf_shipping","settings":{"free_shipping_title":"Envío gratis +$90.000","free_shipping_text":"A toda Colombia","delivery_title":"Entrega estimada","days_min":1,"days_max":10,"delivery_note":"","show_payments":true,"secure_label":"Checkout protegido","secure_text":"Pago 100% seguro","show_cod":true,"cod_label":"Contra entrega"}},"acc_desc":{"type":"bf_accordion","settings":{"heading":"Descripción","source":"description","content":"","open":false}},"acc_ship":{"type":"bf_accordion","settings":{"heading":"Tiempos de envío","source":"custom","content":"<p><strong>Medellín:<\/strong> La entrega se hará de 1 a 2 días hábiles<\/p><p><strong>Bogotá y ciudades principales:<\/strong> la entrega se hará de 3 a 6 días hábiles<\/p><p><strong>Otras ciudades o lugares alejados:<\/strong> la entrega se hará de 3 a 8 días hábiles<\/p><p><strong>*Días hábiles<\/strong> se consideran de lunes a viernes. Las órdenes recibidas después de las 5:00 pm serán consideradas como órdenes del día siguiente.<\/p>","open":false}},"acc_pay":{"type":"bf_accordion","settings":{"heading":"Métodos de pago","source":"custom","content":"<p>Puedes pagar con tarjeta de crédito o débito (PSE), Nequi o transferencia por la App Bancolombia en nuestra pasarela de pagos: MercadoPago y tambien tienes la opción de pagar contra entrega al momento de recibir tus productos<\/p>","open":false}},"acc_gar":{"type":"bf_accordion","settings":{"heading":"Cambios y garantía","source":"custom","content":"<p>En Nuestra compañia nos comprometemos con tu satisfacción y con la calidad de cada uno de nuestros productos. Por eso, todos nuestros artículos cuentan con garantía del fabricante<\/p><p>Debes tener en cuenta la siguiente información para garantías<\/p><ul><li><strong>Cambio voluntario:<\/strong> Para realizar cambio voluntario, debe ser en un plazo máximo de 15 días tras recibir la orden. Los artículos que vas a cambiar deben estar en perfectas condiciones, sin usar y en su empaque original. Los costos de envío deben ser asumidos por el cliente.<\/li><\/ul><p><\/p><ul><li><strong>Cambios:<\/strong> Si recibes productos incorrectos o en mal estado realizamos el cambio sin costos adicionales <\/li><\/ul><p><\/p><ul><li><strong>Garantía:<\/strong> Todos nuestros productos tienen <strong>30 días de garantía<\/strong> a partir de la fecha de compra por defectos de fabricación.<\/li><\/ul><p>No se consideran defectos de fábrica:<\/p><p>- Deterioro por uso incorrecto o almacenamiento inadecuado<\/p><p>- Reacciones adversas por tipo de piel o mal uso del producto<\/p><p>- Productos abiertos, usados o manipulados<\/p>","open":false}}},"block_order":["vendor","title","judge_me_reviews_preview_badge_qt4aAH","price","custom_liquid_bWHJzT","bf_hl","variant_picker","quantity_selector","buy_buttons","inventory_native","bf_ship","acc_desc","acc_ship","acc_pay","acc_gar","share"],"settings":{"enable_sticky_info":true,"color_scheme":"scheme-1","media_size":"medium","constrain_to_viewport":false,"media_fit":"cover","gallery_layout":"thumbnail_slider","media_position":"left","image_zoom":"hover","mobile_thumbnails":"show","hide_variants":true,"enable_video_looping":true,"padding_top":12,"padding_bottom":0}},"collapsible_content_GEXtXj":{"type":"collapsible-content","blocks":{"collapsible_row_hAVhtq":{"type":"collapsible_row","settings":{"heading":"ÚLTIMA OPORTUNIDAD","icon":"stopwatch","row_content":"<p>Oferta disponible hasta el 25 de Septiembre - APROVECHA <\/p>","page":""}},"collapsible_row_pT4e3j":{"type":"collapsible_row","settings":{"heading":"Métodos de pago","icon":"price_tag","row_content":"<p>Puedes pagar con tarjeta de crédito o débito (PSE), Nequi o transferencia por la App Bancolombia en nuestra pasarela de pagos: MercadoPago y tambien tienes la opción de pagar contra entrega al momento de recibir tus productos<\/p>","page":""}},"collapsible_row_zXh6hF":{"type":"collapsible_row","settings":{"heading":"Tiempo de envío","icon":"truck","row_content":"<p><strong>Medellín:<\/strong> La entrega se hará de 1 a 2 días hábiles<\/p><p><strong>Bogotá y ciudades principales:<\/strong> la entrega se hará de 3 a 6 días hábiles<\/p><p><strong>Otras ciudades o lugares alejados:<\/strong> la entrega se hará de 3 a 8 días hábiles<\/p><p><strong>*Días hábiles<\/strong> se consideran de lunes a viernes. Las órdenes recibidas después de las 5:00 pm serán consideradas como órdenes del día siguiente.<\/p>","page":""}},"collapsible_row_mejqBC":{"type":"collapsible_row","settings":{"heading":"Garantías","icon":"star","row_content":"<p>En Nuestra compañia nos comprometemos con tu satisfacción y con la calidad de cada uno de nuestros productos. Por eso, todos nuestros artículos cuentan con garantía del fabricante<\/p><p>Debes tener en cuenta la siguiente información para garantías<\/p><ul><li><strong>Cambio voluntario:<\/strong> Para realizar cambio voluntario, debe ser en un plazo máximo de 15 días tras recibir la orden. Los artículos que vas a cambiar deben estar en perfectas condiciones, sin usar y en su empaque original. Los costos de envío deben ser asumidos por el cliente.<\/li><\/ul><p><\/p><ul><li><strong>Cambios:<\/strong> Si recibes productos incorrectos o en mal estado realizamos el cambio sin costos adicionales <\/li><\/ul><p><\/p><ul><li><strong>Garantía:<\/strong> Todos nuestros productos tienen <strong>30 días de garantía<\/strong> a partir de la fecha de compra por defectos de fabricación.<\/li><\/ul><p>No se consideran defectos de fábrica:<\/p><p>- Deterioro por uso incorrecto o almacenamiento inadecuado<\/p><p>- Reacciones adversas por tipo de piel o mal uso del producto<\/p><p>- Productos abiertos, usados o manipulados<\/p>","page":""}}},"block_order":["collapsible_row_hAVhtq","collapsible_row_pT4e3j","collapsible_row_zXh6hF","collapsible_row_mejqBC"],"settings":{"caption":"","heading":"","heading_size":"h2","heading_alignment":"center","layout":"none","color_scheme":"","container_color_scheme":"","open_first_collapsible_row":true,"image_ratio":"adapt","desktop_layout":"image_first","padding_top":0,"padding_bottom":12},"disabled":true},"related-products":{"type":"related-products","custom_css":[".badge--bottom-left {top: 10px !important; left: 0px !important; bottom: auto !important; right: auto !important; position: absolute !important;}",".badge {font-size: 12px !important; padding: 4px 10px !important; border-radius: 0px !important; z-index: 100;}",".collection-add-to-cart {display: none !important;}"],"settings":{"heading":"También te puede interesar!","heading_size":"h2","products_to_show":4,"columns_desktop":4,"color_scheme":"scheme-1","image_ratio":"square","image_shape":"default","show_secondary_image":true,"show_vendor":true,"show_rating":false,"columns_mobile":"2","padding_top":36,"padding_bottom":28}},"17362143099d3817cf":{"type":"apps","blocks":{"judge_me_reviews_review_widget_Ld7Kgi":{"type":"shopify:\/\/apps\/judge-me-reviews\/blocks\/review_widget\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8","settings":{"review_data":"sample_data","max_width":1200,"show_shop_reviews":false,"empty_state":"empty_widget"}}},"block_order":["judge_me_reviews_review_widget_Ld7Kgi"],"settings":{"include_margins":true}}},"order":["main","collapsible_content_GEXtXj","related-products","17362143099d3817cf"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "judge_me_reviews_preview_badge_qt4aAH": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "inventory_native": {
+          "type": "inventory",
+          "settings": {
+            "text_style": "body",
+            "inventory_threshold": 10,
+            "show_inventory_quantity": true
+          }
+        },
+        "custom_liquid_bWHJzT": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<style>\n  .live_visitors {\n    position: relative;\n    display: flex;\n    align-items: center;\n    gap: .5rem;\n    padding-left: 13px;\n    font-size: 15px; /* Tamaño de la letra */\n  }\n  .live_visitors::before {\n    position: absolute;\n    display: inline-block;\n    content: \"\";\n    width: 8px;\n    height: 8px;\n    margin-left: -14px;\n    top: 0.6em;\n    border-radius: 100%;\n    background: currentColor;\n    color: rgba(33, 182, 70, 1);\n    box-shadow: 0 0 0 0 rgba(33, 182, 70, 1);\n    animation: pulse-blue 2s infinite;\n  }\n  @keyframes pulse-blue {\n    0% {\n      transform: scale(0.95);\n      box-shadow: 0 0 0 0 rgba(33, 182, 70, 0.7);\n    }\n    70% {\n      transform: scale(1);\n      box-shadow: 0 0 0 10px rgba(33, 182, 70, 0);\n    }\n    100% {\n      transform: scale(0.95);\n      box-shadow: 0 0 0 0 rgba(33, 182, 70, 0);\n    }\n  }\n</style>\n<p class=\"live_visitors no-js-hidden\">\n  <span id=\"visitors_count\"></span> Personas mirando esto\n</p>\n\n<script>\n  let max_visitors = 7;\n  let min_visitors = 2;\n  let delay = 7000;\n  let visitors_count = Math.floor(Math.random() * (max_visitors - min_visitors + 1) + min_visitors);\n  document.getElementById(\"visitors_count\").innerHTML = visitors_count;\n  setInterval(function() {\n    visitors_count = Math.floor(Math.random() * (max_visitors - min_visitors + 1) + min_visitors);\n    document.getElementById(\"visitors_count\").innerHTML = visitors_count;\n  }, delay);\n</script>"
+          },
+          "disabled": true
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "disabled": true,
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "bf_hl": {
+          "type": "bf_highlights",
+          "settings": {
+            "icon_1": "checkmark",
+            "text_1": "100% originales",
+            "icon_2": "box",
+            "text_2": "Contra entrega",
+            "icon_3": "padlock",
+            "text_3": "Pago seguro",
+            "icon_4": "return",
+            "text_4": "Garantía 30 días"
+          }
+        },
+        "bf_ship": {
+          "type": "bf_shipping",
+          "settings": {
+            "free_shipping_title": "Envío gratis +$90.000",
+            "free_shipping_text": "A toda Colombia",
+            "delivery_title": "Entrega estimada",
+            "days_min": 1,
+            "days_max": 10,
+            "delivery_note": "",
+            "show_payments": true,
+            "secure_label": "Checkout protegido",
+            "secure_text": "Pago 100% seguro",
+            "show_cod": true,
+            "cod_label": "Contra entrega"
+          }
+        },
+        "acc_desc": {
+          "type": "bf_accordion",
+          "settings": {
+            "heading": "Descripción",
+            "source": "description",
+            "content": "",
+            "open": false
+          }
+        },
+        "acc_ship": {
+          "type": "bf_accordion",
+          "settings": {
+            "heading": "Tiempos de envío",
+            "source": "custom",
+            "content": "<p><strong>Medellín:</strong> La entrega se hará de 1 a 2 días hábiles</p><p><strong>Bogotá y ciudades principales:</strong> la entrega se hará de 3 a 6 días hábiles</p><p><strong>Otras ciudades o lugares alejados:</strong> la entrega se hará de 3 a 8 días hábiles</p><p><strong>*Días hábiles</strong> se consideran de lunes a viernes. Las órdenes recibidas después de las 5:00 pm serán consideradas como órdenes del día siguiente.</p>",
+            "open": false
+          }
+        },
+        "acc_pay": {
+          "type": "bf_accordion",
+          "settings": {
+            "heading": "Métodos de pago",
+            "source": "custom",
+            "content": "<p>Puedes pagar con tarjeta de crédito o débito (PSE), Nequi o transferencia por la App Bancolombia en nuestra pasarela de pagos: MercadoPago y tambien tienes la opción de pagar contra entrega al momento de recibir tus productos</p>",
+            "open": false
+          }
+        },
+        "acc_gar": {
+          "type": "bf_accordion",
+          "settings": {
+            "heading": "Cambios y garantía",
+            "source": "custom",
+            "content": "<p>En Nuestra compañia nos comprometemos con tu satisfacción y con la calidad de cada uno de nuestros productos. Por eso, todos nuestros artículos cuentan con garantía del fabricante</p><p>Debes tener en cuenta la siguiente información para garantías</p><ul><li><strong>Cambio voluntario:</strong> Para realizar cambio voluntario, debe ser en un plazo máximo de 15 días tras recibir la orden. Los artículos que vas a cambiar deben estar en perfectas condiciones, sin usar y en su empaque original. Los costos de envío deben ser asumidos por el cliente.</li></ul><p></p><ul><li><strong>Cambios:</strong> Si recibes productos incorrectos o en mal estado realizamos el cambio sin costos adicionales </li></ul><p></p><ul><li><strong>Garantía:</strong> Todos nuestros productos tienen <strong>30 días de garantía</strong> a partir de la fecha de compra por defectos de fabricación.</li></ul><p>No se consideran defectos de fábrica:</p><p>- Deterioro por uso incorrecto o almacenamiento inadecuado</p><p>- Reacciones adversas por tipo de piel o mal uso del producto</p><p>- Productos abiertos, usados o manipulados</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "judge_me_reviews_preview_badge_qt4aAH",
+        "price",
+        "custom_liquid_bWHJzT",
+        "bf_hl",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "inventory_native",
+        "bf_ship",
+        "acc_desc",
+        "acc_ship",
+        "acc_pay",
+        "acc_gar",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "medium",
+        "constrain_to_viewport": false,
+        "media_fit": "cover",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "mobile_thumbnails": "show",
+        "hide_variants": true,
+        "enable_video_looping": true,
+        "padding_top": 12,
+        "padding_bottom": 0
+      }
+    },
+    "collapsible_content_GEXtXj": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_hAVhtq": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "ÚLTIMA OPORTUNIDAD",
+            "icon": "stopwatch",
+            "row_content": "<p>Oferta disponible hasta el 25 de Septiembre - APROVECHA </p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_pT4e3j": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Métodos de pago",
+            "icon": "price_tag",
+            "row_content": "<p>Puedes pagar con tarjeta de crédito o débito (PSE), Nequi o transferencia por la App Bancolombia en nuestra pasarela de pagos: MercadoPago y tambien tienes la opción de pagar contra entrega al momento de recibir tus productos</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_zXh6hF": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Tiempo de envío",
+            "icon": "truck",
+            "row_content": "<p><strong>Medellín:</strong> La entrega se hará de 1 a 2 días hábiles</p><p><strong>Bogotá y ciudades principales:</strong> la entrega se hará de 3 a 6 días hábiles</p><p><strong>Otras ciudades o lugares alejados:</strong> la entrega se hará de 3 a 8 días hábiles</p><p><strong>*Días hábiles</strong> se consideran de lunes a viernes. Las órdenes recibidas después de las 5:00 pm serán consideradas como órdenes del día siguiente.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_mejqBC": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Garantías",
+            "icon": "star",
+            "row_content": "<p>En Nuestra compañia nos comprometemos con tu satisfacción y con la calidad de cada uno de nuestros productos. Por eso, todos nuestros artículos cuentan con garantía del fabricante</p><p>Debes tener en cuenta la siguiente información para garantías</p><ul><li><strong>Cambio voluntario:</strong> Para realizar cambio voluntario, debe ser en un plazo máximo de 15 días tras recibir la orden. Los artículos que vas a cambiar deben estar en perfectas condiciones, sin usar y en su empaque original. Los costos de envío deben ser asumidos por el cliente.</li></ul><p></p><ul><li><strong>Cambios:</strong> Si recibes productos incorrectos o en mal estado realizamos el cambio sin costos adicionales </li></ul><p></p><ul><li><strong>Garantía:</strong> Todos nuestros productos tienen <strong>30 días de garantía</strong> a partir de la fecha de compra por defectos de fabricación.</li></ul><p>No se consideran defectos de fábrica:</p><p>- Deterioro por uso incorrecto o almacenamiento inadecuado</p><p>- Reacciones adversas por tipo de piel o mal uso del producto</p><p>- Productos abiertos, usados o manipulados</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_hAVhtq",
+        "collapsible_row_pT4e3j",
+        "collapsible_row_zXh6hF",
+        "collapsible_row_mejqBC"
+      ],
+      "settings": {
+        "caption": "",
+        "heading": "",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "layout": "none",
+        "color_scheme": "",
+        "container_color_scheme": "",
+        "open_first_collapsible_row": true,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_first",
+        "padding_top": 0,
+        "padding_bottom": 12
+      },
+      "disabled": true
+    },
+    "related-products": {
+      "type": "related-products",
+      "custom_css": [
+        ".badge--bottom-left {top: 10px !important; left: 0px !important; bottom: auto !important; right: auto !important; position: absolute !important;}",
+        ".badge {font-size: 12px !important; padding: 4px 10px !important; border-radius: 0px !important; z-index: 100;}",
+        ".collection-add-to-cart {display: none !important;}"
+      ],
+      "settings": {
+        "heading": "También te puede interesar!",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "17362143099d3817cf": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_Ld7Kgi": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_Ld7Kgi"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "collapsible_content_GEXtXj",
+    "related-products",
+    "17362143099d3817cf"
+  ]
+}
