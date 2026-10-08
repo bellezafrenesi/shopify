@@ -80,7 +80,30 @@ cart-drawer:not(.active) { position: fixed; top: 0; left: 0; width: 100%; height
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {{ content_for_header }}
+    {%- liquid
+      assign bf_delay_opus = false
+      if template.name == 'index' or template.name == 'collection'
+        unless request.design_mode
+          assign bf_delay_opus = true
+        endunless
+      endif
+    -%}
+    {%- if bf_delay_opus -%}
+      {%- capture bf_header -%}{{ content_for_header }}{%- endcapture -%}
+      {%- assign bf_parts = bf_header | split: '<script' -%}
+      {%- for part in bf_parts -%}
+        {%- if forloop.first -%}
+          {{- part -}}
+        {%- elsif part contains 'opus-cart-drawer-cart-upsell' -%}
+          {{- '<script type="text/bf-delayed"' -}}{{- part | replace: ' type="text/javascript"', '' | replace: ' src="', ' data-bf-src="' -}}
+        {%- else -%}
+          {{- '<script' -}}{{- part -}}
+        {%- endif -%}
+      {%- endfor -%}
+      {% render 'opus-delay' %}
+    {%- else -%}
+      {{ content_for_header }}
+    {%- endif -%}
 
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'

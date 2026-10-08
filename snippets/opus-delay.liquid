@@ -1,0 +1,64 @@
+{%- comment -%}
+  Carga el JavaScript de Opus (carrito) cuando el visitante interactúa (scroll, toque, clic o tecla),
+  o a los 6 s de cargar la página. En la home y las colecciones no hace falta antes: nadie compra en el primer segundo.
+  Los scripts de Opus los deja en pausa theme.liquid (type="text/bf-delayed"); aquí se activan en el mismo orden.
+  Si alguien toca el carrito del encabezado antes de que cargue, se carga Opus y se abre su carrito (o /cart si falla).
+{%- endcomment -%}
+<script>
+  (function () {
+    var loaded = false;
+    var timer = null;
+    var EVENTS = ['scroll', 'touchstart', 'pointerdown', 'keydown'];
+
+    function ready() {
+      return typeof window.opusOpen === 'function';
+    }
+
+    function load() {
+      if (loaded) return;
+      loaded = true;
+      clearTimeout(timer);
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var pending = Array.prototype.slice.call(document.querySelectorAll('script[type="text/bf-delayed"]'));
+      pending.forEach(function (old) {
+        var s = document.createElement('script');
+        Array.prototype.forEach.call(old.attributes, function (a) {
+          if (a.name === 'type' || a.name === 'data-bf-src') return;
+          s.setAttribute(a.name, a.value);
+        });
+        s.src = old.getAttribute('data-bf-src');
+        // Los que eran "defer" conservan su orden; el que era "async" sigue siendo async.
+        s.async = old.hasAttribute('async');
+        old.parentNode.replaceChild(s, old);
+      });
+    }
+
+    function whenReady(callback) {
+      load();
+      var tries = 0;
+      (function check() {
+        if (ready()) { callback(true); return; }
+        if (++tries > 50) { callback(false); return; }
+        setTimeout(check, 100);
+      })();
+    }
+
+    window.bfOpus = { load: load, ready: ready, whenReady: whenReady };
+
+    EVENTS.forEach(function (e) { window.addEventListener(e, load, { passive: true }); });
+    window.addEventListener('load', function () { timer = setTimeout(load, 6000); }, { once: true });
+
+    // Carrito del encabezado antes de que Opus esté listo
+    document.addEventListener('click', function (event) {
+      if (ready()) return;
+      var link = event.target.closest && event.target.closest('#cart-icon-bubble, a[href$="/cart"]');
+      if (!link) return;
+      event.preventDefault();
+      event.stopPropagation();
+      whenReady(function (ok) {
+        if (ok) window.opusOpen();
+        else window.location.href = link.href;
+      });
+    }, true);
+  })();
+</script>
