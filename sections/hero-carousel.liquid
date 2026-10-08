@@ -61,11 +61,12 @@
               {%- if framed -%}
                 <span class="hero-carousel__backdrop" aria-hidden="true">
                   <img
-                    src="{{ block.settings.image | image_url: width: 480 }}"
+                    src="{{ block.settings.image | image_url: width: 240 }}"
                     alt=""
-                    width="480"
-                    height="{{ 480 | divided_by: block.settings.image.aspect_ratio | round }}"
-                    loading="{{ slide_loading }}"
+                    width="240"
+                    height="{{ 240 | divided_by: block.settings.image.aspect_ratio | round }}"
+                    loading="lazy"
+                    decoding="async"
                   >
                 </span>
               {%- endif -%}
@@ -75,7 +76,7 @@
                 alt: slide_label,
                 class: 'hero-carousel__img',
                 sizes: '100vw',
-                widths: '750, 1100, 1500, 1920, 2400, 3000',
+                widths: '640, 800, 1080, 1500, 1920, 2400, 3000',
                 desktop_max: 3000,
                 loading: slide_loading,
                 fetchpriority: slide_priority

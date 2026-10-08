@@ -1,0 +1,6 @@
+{%- comment -%}
+  Carga una hoja de estilos SIN bloquear el primer pintado (para secciones que están más abajo).
+  Uso: {% render 'css-defer', file: 'collection-tabs.css' %}
+{%- endcomment -%}
+<link rel="stylesheet" href="{{ file | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ file | asset_url | stylesheet_tag }}</noscript>

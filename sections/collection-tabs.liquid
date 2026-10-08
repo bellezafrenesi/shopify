@@ -1,6 +1,6 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{% render 'css-defer', file: 'component-card.css' %}
+{% render 'css-defer', file: 'component-price.css' %}
+{% render 'css-defer', file: 'template-collection.css' %}
 
 {%- style -%}
   .collection-tabs-{{ section.id }} {
@@ -29,7 +29,7 @@
 -%}
 
 {%- if valid_tab_ids.size > 0 -%}
-  {{ 'collection-tabs.css' | asset_url | stylesheet_tag }}
+  {% render 'css-defer', file: 'collection-tabs.css' %}
 
   <div
     class="collection-tabs collection-tabs-{{ section.id }}{% if section.settings.layout == 'carousel' %} collection-tabs--carousel{% endif %} color-{{ section.settings.color_scheme }} gradient"

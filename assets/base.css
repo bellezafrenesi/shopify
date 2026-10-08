@@ -3795,3 +3795,9 @@ details-disclosure > details {
     width: auto;
   }
 }
+
+/* Evita que la fecha de las reseñas (cursiva) fuerce la descarga de otra fuente de 41 KB */
+.jdgm-carousel-item__timestamp,
+.jdgm-rev__timestamp {
+  font-style: normal !important;
+}

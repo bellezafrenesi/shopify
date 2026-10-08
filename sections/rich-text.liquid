@@ -1,4 +1,4 @@
-{{ 'section-rich-text.css' | asset_url | stylesheet_tag }}
+{% render 'css-defer', file: 'section-rich-text.css' %}
 
 {%- style -%}
   .section-{{ section.id }}-padding {

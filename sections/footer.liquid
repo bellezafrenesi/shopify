@@ -1,9 +1,9 @@
 {% comment %}theme-check-disable UndefinedObject{% endcomment %}
-{{ 'section-footer.css' | asset_url | stylesheet_tag }}
-{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
-{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
-{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
-{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+{% render 'css-defer', file: 'section-footer.css' %}
+{% render 'css-defer', file: 'component-newsletter.css' %}
+{% render 'css-defer', file: 'component-list-menu.css' %}
+{% render 'css-defer', file: 'component-list-payment.css' %}
+{% render 'css-defer', file: 'component-list-social.css' %}
 
 {%- style -%}
   .footer {
