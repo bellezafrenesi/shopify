@@ -32,11 +32,16 @@
                 document.head.appendChild(s);
               }
             }
+            // Solo arranca cuando la persona ya hizo scroll (o pasaron 10 s) Y la seccion esta cerca de la pantalla.
+            var near = false, moved = window.scrollY > 0;
+            function check() { if (near && moved) start(); }
+            window.addEventListener('scroll', function () { moved = true; check(); }, { passive: true, once: true });
+            window.addEventListener('load', function () { setTimeout(function () { moved = true; check(); }, 10000); }, { once: true });
             if ('IntersectionObserver' in window) {
-              var io = new IntersectionObserver(function (entries) {
-                if (entries[0].isIntersecting) { io.disconnect(); start(); }
-              }, { rootMargin: '900px 0px' });
-              io.observe(box);
+              new IntersectionObserver(function (entries) {
+                near = entries[entries.length - 1].isIntersecting;
+                check();
+              }, { rootMargin: '400px 0px' }).observe(box);
             } else {
               window.addEventListener('load', start);
             }
