@@ -39,8 +39,6 @@
         {{- collection.title | escape -}}
       </h1>
 
-      <p class="collection-hero__count">{{ collection.all_products_count }} productos</p>
-
       {%- if section.settings.show_collection_description -%}
         <div class="collection-hero__description rte">{{ collection.description }}</div>
       {%- endif -%}

@@ -8,9 +8,8 @@
 .collection-chips__group {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.8rem;
-  overflow-x: auto;
-  scrollbar-width: none;
 }
 .collection-chips__group::-webkit-scrollbar { display: none; }
 .collection-chips__label {
