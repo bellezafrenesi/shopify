@@ -19,32 +19,37 @@
             "text_style": "uppercase"
           }
         },
-        "judge_me_reviews_preview_badge_qt4aAH": {
-          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
-        },
         "title": {
           "type": "title",
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_qt4aAH": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {}
         },
         "price": {
           "type": "price",
           "settings": {}
         },
-        "inventory_native": {
-          "type": "inventory",
-          "settings": {
-            "text_style": "body",
-            "inventory_threshold": 10,
-            "show_inventory_quantity": true
-          }
-        },
         "custom_liquid_bWHJzT": {
           "type": "custom_liquid",
+          "disabled": true,
           "settings": {
             "custom_liquid": "<style>\n  .live_visitors {\n    position: relative;\n    display: flex;\n    align-items: center;\n    gap: .5rem;\n    padding-left: 13px;\n    font-size: 15px; /* Tamaño de la letra */\n  }\n  .live_visitors::before {\n    position: absolute;\n    display: inline-block;\n    content: \"\";\n    width: 8px;\n    height: 8px;\n    margin-left: -14px;\n    top: 0.6em;\n    border-radius: 100%;\n    background: currentColor;\n    color: rgba(33, 182, 70, 1);\n    box-shadow: 0 0 0 0 rgba(33, 182, 70, 1);\n    animation: pulse-blue 2s infinite;\n  }\n  @keyframes pulse-blue {\n    0% {\n      transform: scale(0.95);\n      box-shadow: 0 0 0 0 rgba(33, 182, 70, 0.7);\n    }\n    70% {\n      transform: scale(1);\n      box-shadow: 0 0 0 10px rgba(33, 182, 70, 0);\n    }\n    100% {\n      transform: scale(0.95);\n      box-shadow: 0 0 0 0 rgba(33, 182, 70, 0);\n    }\n  }\n</style>\n<p class=\"live_visitors no-js-hidden\">\n  <span id=\"visitors_count\"></span> Personas mirando esto\n</p>\n\n<script>\n  let max_visitors = 7;\n  let min_visitors = 2;\n  let delay = 7000;\n  let visitors_count = Math.floor(Math.random() * (max_visitors - min_visitors + 1) + min_visitors);\n  document.getElementById(\"visitors_count\").innerHTML = visitors_count;\n  setInterval(function() {\n    visitors_count = Math.floor(Math.random() * (max_visitors - min_visitors + 1) + min_visitors);\n    document.getElementById(\"visitors_count\").innerHTML = visitors_count;\n  }, delay);\n</script>"
-          },
-          "disabled": true
+          }
+        },
+        "bf_hl": {
+          "type": "bf_highlights",
+          "settings": {
+            "icon_1": "checkmark",
+            "text_1": "100% originales",
+            "icon_2": "box",
+            "text_2": "Contra entrega",
+            "icon_3": "padlock",
+            "text_3": "Pago seguro",
+            "icon_4": "return",
+            "text_4": "Garantía 30 días"
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -64,30 +69,18 @@
             "show_gift_card_recipient": true
           }
         },
-        "share": {
-          "type": "share",
-          "disabled": true,
+        "inventory_native": {
+          "type": "inventory",
           "settings": {
-            "share_label": "Share"
-          }
-        },
-        "bf_hl": {
-          "type": "bf_highlights",
-          "settings": {
-            "icon_1": "checkmark",
-            "text_1": "100% originales",
-            "icon_2": "box",
-            "text_2": "Contra entrega",
-            "icon_3": "padlock",
-            "text_3": "Pago seguro",
-            "icon_4": "return",
-            "text_4": "Garantía 30 días"
+            "text_style": "body",
+            "inventory_threshold": 10,
+            "show_inventory_quantity": true
           }
         },
         "bf_ship": {
           "type": "bf_shipping",
           "settings": {
-            "free_shipping_title": "Envío gratis +$90.000",
+            "free_shipping_title": "Envío gratis +$99.999",
             "free_shipping_text": "A toda Colombia",
             "delivery_title": "Entrega estimada",
             "days_min": 1,
@@ -134,6 +127,13 @@
             "source": "custom",
             "content": "<p>En Nuestra compañia nos comprometemos con tu satisfacción y con la calidad de cada uno de nuestros productos. Por eso, todos nuestros artículos cuentan con garantía del fabricante</p><p>Debes tener en cuenta la siguiente información para garantías</p><ul><li><strong>Cambio voluntario:</strong> Para realizar cambio voluntario, debe ser en un plazo máximo de 15 días tras recibir la orden. Los artículos que vas a cambiar deben estar en perfectas condiciones, sin usar y en su empaque original. Los costos de envío deben ser asumidos por el cliente.</li></ul><p></p><ul><li><strong>Cambios:</strong> Si recibes productos incorrectos o en mal estado realizamos el cambio sin costos adicionales </li></ul><p></p><ul><li><strong>Garantía:</strong> Todos nuestros productos tienen <strong>30 días de garantía</strong> a partir de la fecha de compra por defectos de fabricación.</li></ul><p>No se consideran defectos de fábrica:</p><p>- Deterioro por uso incorrecto o almacenamiento inadecuado</p><p>- Reacciones adversas por tipo de piel o mal uso del producto</p><p>- Productos abiertos, usados o manipulados</p>",
             "open": false
+          }
+        },
+        "share": {
+          "type": "share",
+          "disabled": true,
+          "settings": {
+            "share_label": "Share"
           }
         }
       },
@@ -217,6 +217,7 @@
         "collapsible_row_zXh6hF",
         "collapsible_row_mejqBC"
       ],
+      "disabled": true,
       "settings": {
         "caption": "",
         "heading": "",
@@ -230,8 +231,7 @@
         "desktop_layout": "image_first",
         "padding_top": 0,
         "padding_bottom": 12
-      },
-      "disabled": true
+      }
     },
     "related-products": {
       "type": "related-products",
