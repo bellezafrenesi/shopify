@@ -40,61 +40,6 @@
         "aria_label": "Promociones destacadas"
       }
     },
-    "videobanner_wBJb3F": {
-      "type": "videobanner",
-      "blocks": {
-        "heading_jXrqbt": {
-          "type": "heading",
-          "disabled": true,
-          "settings": {
-            "heading_text": "Hasta 70% Off",
-            "desktop_width": 1000,
-            "mobile_width": 1000,
-            "desktop_heading_size": 84,
-            "mobile_heading_size": 32,
-            "h1_heading": false
-          }
-        },
-        "text_zg66TE": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "text_content": "<p>Your text goes here</p>"
-          }
-        },
-        "button_Xhae3k": {
-          "type": "button",
-          "disabled": true,
-          "settings": {
-            "button_text": "",
-            "button_link": "shopify://collections/sale",
-            "button_text_color": "#ffffff",
-            "button_bg_color": "#dd9599",
-            "button_bg_hover": "#232323",
-            "button_radius": 40,
-            "font_weight": false,
-            "font_size": 18
-          }
-        }
-      },
-      "block_order": [
-        "heading_jXrqbt",
-        "text_zg66TE",
-        "button_Xhae3k"
-      ],
-      "disabled": true,
-      "name": "Video Banner",
-      "settings": {
-        "video": "shopify://files/videos/campañas casa del tornillo.mp4",
-        "video_mobile": "shopify://files/videos/ANUNCIOS 2025 BF _194c62c0-7064-4829-855f-01483ff84524.mp4",
-        "video_url": "",
-        "image_placeholder": "shopify://shop_images/ANUNCIOS_2025_BF_1_7144fbb5-1e43-4ab2-9a35-b998dba0d288.png",
-        "video-alt": "",
-        "content_position": "middle-center",
-        "desktop_height": 600,
-        "mobile_height": 500
-      }
-    },
     "trust_bar_bf": {
       "type": "trust-bar",
       "blocks": {
@@ -934,7 +879,6 @@
   },
   "order": [
     "hero_carousel_bf",
-    "videobanner_wBJb3F",
     "trust_bar_bf",
     "marquee_images_FwEtHk",
     "category_tiles_bf",
