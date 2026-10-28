@@ -15,8 +15,8 @@
         "s1": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Banners_Escritorio_1.png",
-            "image_mobile": "shopify://shop_images/campanas_casa_del_tornillo_1_c8cb565c-26a0-4f36-ba61-a352a666b3cf.png",
+            "image": "shopify://shop_images/Banners_Escritorio.png",
+            "image_mobile": "shopify://shop_images/Banners_Celular.png",
             "link": "shopify://collections/sale",
             "alt": "Halloween: toda la tienda hasta con el 70% de descuento, válido hasta el 31 de octubre",
             "heading": "",
