@@ -17,7 +17,7 @@
         "text_FBEw7L": {
           "type": "text",
           "settings": {
-            "new_text": "Envío gratis por compras +$99.999"
+            "new_text": "Envío gratis por compras +$130.000"
           }
         },
         "text_jUGYM6": {
@@ -32,7 +32,7 @@
         "text_jUGYM6"
       ],
       "settings": {
-        "colorBackground": "#DC939A",
+        "colorBackground": "#dc939a",
         "colorText": "#ffffff",
         "link": "shopify://collections",
         "marquee_height": 30,
