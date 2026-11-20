@@ -247,7 +247,7 @@
     var tags = ['diagnostico', 'diag-' + D.variant, 'diag-indice-' + (idx < 45 ? 'bajo' : idx < 65 ? 'medio' : idx < 80 ? 'bueno' : 'alto')].concat(lows.map(function (k) { return 'diag-prioridad-' + k; }));
     var f = new FormData(); f.append('form_type', 'customer'); f.append('utf8', '✓'); f.append('contact[email]', email); f.append('contact[tags]', tags.join(','));
     if (D.ans.nombre) f.append('contact[first_name]', D.ans.nombre);
-    if (whatsapp) f.append('contact[note]', 'WhatsApp: ' + whatsapp);
+    f.append('contact[note]', (whatsapp ? 'WhatsApp: ' + whatsapp + ' | ' : '') + 'Diagnóstico ' + idx + '/100: ' + D.shareUrl());
     D.track('correo', 'enviado');
     return fetch('/contact', { method: 'POST', body: f, credentials: 'same-origin' }).then(function (r) { return r.ok; }).catch(function () { return false; });
   };
