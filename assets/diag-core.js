@@ -302,6 +302,7 @@
   D.emailForm = function (onDone, cls) {
     var w = document.createElement('form'); w.className = 'dg-email ' + (cls || ''); w.noValidate = true; D.armCaptcha();
     w.innerHTML = '<label>Tu correo<input type="email" name="email" required autocomplete="email" placeholder="tucorreo@ejemplo.com"></label><label><span class="lt">WhatsApp <span>(opcional)</span></span><input type="tel" name="wa" autocomplete="tel" inputmode="tel" placeholder="300 123 4567"></label><label class="dg-check"><input type="checkbox" name="ok" checked> Acepto recibir mi diagnóstico y consejos de Belleza Frenesí por correo. Puedo darme de baja cuando quiera.</label><button class="dg-btn dg-btn-big" type="submit">Ver mi diagnóstico</button><p class="dg-err" hidden>Revisa tu correo: parece que falta algo.</p>';
+    var cn = document.getElementById('dgCapNote'); if (cn && cn.innerHTML.trim()) { var nt = document.createElement('p'); nt.className = 'dg-capnote'; nt.innerHTML = cn.innerHTML; w.appendChild(nt); }
     w.addEventListener('submit', function (e) {
       e.preventDefault(); var em = w.email.value.trim(), ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em);
       if (!ok || !w.ok.checked) { w.querySelector('.dg-err').hidden = false; return; }

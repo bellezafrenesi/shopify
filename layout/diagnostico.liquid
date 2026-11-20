@@ -51,6 +51,7 @@
       <input type="hidden" name="contact[note]" value="">
       <input type="hidden" name="contact[accepts_marketing]" value="true">
     {%- endform -%}
+    <template id="dgCapNote">{{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}</template>
     <iframe name="dgSink" id="dgSink" title="dg" tabindex="-1" style="width:0;height:0;border:0"></iframe>
   </div>
   <script src="{{ 'diag-core.js' | asset_url }}" defer></script>
