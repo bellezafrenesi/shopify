@@ -182,19 +182,19 @@
     h += '<section class="dg-r-map dg-card"><div class="dg-map-r"><h3>Tu mapa de 9 áreas</h3>' + D.radar(s) + '</div><details class="dg-more"><summary>Ver área por área</summary>' + D.bars(s) + '</details></section>';
     // 3. prioridades en acordeón
     h += '<section class="dg-r-pri"><h3 class="dg-h">Tus 3 prioridades</h3><div class="dg-acc">' + lows.map(function (k, i) { var T = D.TXT[k]; return '<details class="dg-card dg-acc-i"' + (i === 0 ? ' open' : '') + '><summary><span class="dg-acc-n" style="background:' + D.color(s[k]) + '">' + s[k] + '</span><span><b>' + D.AREAS[k].i + ' ' + D.AREAS[k].n + '</b><small>' + D.label(s[k]) + ' · toca para ver</small></span></summary><p>' + esc(T.por) + '</p><ul>' + T.h.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></details>'; }).join('') + '</div></section>';
-    // 4. recomendación: máximo 2 productos, botones directo al checkout
+    // 4. mañana, compacto
+    var tl = D.tomorrow(s);
+    h += '<section class="dg-r-tl"><h3 class="dg-h">Tu rutina para mañana</h3><p class="dg-muted">Toca cada paso para ver por qué.</p><div class="dg-tl2">' + tl.map(function (r, i) { return '<details' + (i > 4 ? ' class="dg-tl-more"' : '') + '><summary><span class="t">' + r[0] + '</span><span class="i">' + r[1] + '</span><b>' + esc(r[2]) + '</b></summary><p>' + esc(r[3]) + '</p></details>'; }).join('') + '</div>' + (tl.length > 5 ? '<button type="button" class="dg-link" data-tlmore>Ver el día completo (' + tl.length + ' pasos)</button>' : '') + '</section>';
+    // 5. semana con pestañas por día
+    h += '<section class="dg-r-plan"><h3 class="dg-h">Tu semana de comidas</h3><p class="dg-muted">Comida colombiana, con proteína en cada comida.</p><div class="dg-days" role="tablist">' + D.PLAN.map(function (d, i) { return '<button type="button" role="tab" data-day="' + i + '"' + (i === 0 ? ' class="on"' : '') + '>' + d[0].slice(0, 3) + '</button>'; }).join('') + '</div><div class="dg-day dg-card" data-dayview></div></section>';
+    // 6. PDF
+    h += '<section class="dg-r-cta dg-card"><h3>Tu diagnóstico completo en PDF</h3><p class="dg-muted">6 páginas: tablero, prioridades explicadas, rutina hora por hora, semana de comidas y recomendación.</p><button class="dg-btn dg-btn-big" type="button" data-pdf>Descargar mi PDF</button><p class="dg-muted" data-mailmsg>' + (D.ans.email ? 'También te lo enviamos a ' + esc(D.ans.email) + '.' : '') + '</p></section>';
+    // 7. recomendación (al final, después de todo el valor): máximo 2 productos, botones directo al checkout
     if (main) {
       h += '<section class="dg-r-prod" id="dgProd"><h3 class="dg-h">Lo que te recomendamos</h3><article class="dg-card dg-main"><div class="dg-main-img"><img src="' + esc(main.p.img) + '" alt="' + esc(main.p.title) + '" loading="lazy"></div><div class="dg-main-b"><span class="dg-tag">' + esc(main.k) + '</span><h4>' + esc(main.p.title) + '</h4><p>' + esc(main.w) + '</p><ul class="dg-ticks"><li>Colágeno sabor mango, 1 litro</li><li>60 gomitas sabor uva</li><li>Guía de alimentación de regalo</li></ul><div class="dg-buy"><b>' + esc(main.p.price) + '</b><span>Pagas al recibir</span></div><a class="dg-btn dg-btn-big" data-track="checkout" href="' + D.checkout([main.p]) + '">Pedir mi rutina</a></div></article>';
       if (extra) h += '<article class="dg-card dg-extra"><div class="dg-extra-top"><img src="' + esc(extra.p.img) + '" alt="' + esc(extra.p.title) + '" loading="lazy"><div><span class="dg-tag">' + esc(extra.k) + '</span><h4>' + esc(extra.p.title) + '</h4><b>+ ' + esc(extra.p.price) + '</b></div></div><p>' + esc(extra.w) + '</p><a class="dg-btn dg-btn-ghost dg-btn-big" data-track="checkout" href="' + D.checkout([main.p, extra.p]) + '">Pedir la rutina + este producto</a></article>';
       h += '</section>';
     }
-    // 5. mañana, compacto
-    var tl = D.tomorrow(s);
-    h += '<section class="dg-r-tl"><h3 class="dg-h">Tu rutina para mañana</h3><p class="dg-muted">Toca cada paso para ver por qué.</p><div class="dg-tl2">' + tl.map(function (r, i) { return '<details' + (i > 4 ? ' class="dg-tl-more"' : '') + '><summary><span class="t">' + r[0] + '</span><span class="i">' + r[1] + '</span><b>' + esc(r[2]) + '</b></summary><p>' + esc(r[3]) + '</p></details>'; }).join('') + '</div>' + (tl.length > 5 ? '<button type="button" class="dg-link" data-tlmore>Ver el día completo (' + tl.length + ' pasos)</button>' : '') + '</section>';
-    // 6. semana con pestañas por día
-    h += '<section class="dg-r-plan"><h3 class="dg-h">Tu semana de comidas</h3><p class="dg-muted">Comida colombiana, con proteína en cada comida.</p><div class="dg-days" role="tablist">' + D.PLAN.map(function (d, i) { return '<button type="button" role="tab" data-day="' + i + '"' + (i === 0 ? ' class="on"' : '') + '>' + d[0].slice(0, 3) + '</button>'; }).join('') + '</div><div class="dg-day dg-card" data-dayview></div></section>';
-    // 7. PDF
-    h += '<section class="dg-r-cta dg-card"><h3>Tu diagnóstico completo en PDF</h3><p class="dg-muted">6 páginas: tablero, prioridades explicadas, rutina hora por hora, semana de comidas y recomendación.</p><button class="dg-btn dg-btn-big" type="button" data-pdf>Descargar mi PDF</button><p class="dg-muted" data-mailmsg>' + (D.ans.email ? 'También te lo enviamos a ' + esc(D.ans.email) + '.' : '') + '</p></section>';
     h += '<p class="dg-legal">' + esc(D.LEGAL) + '</p>';
     if (main) h += '<div class="dg-sticky" data-sticky hidden><div><b>' + esc(main.p.price) + '</b><span>Rutina Belleza de Adentro · pagas al recibir</span></div><a class="dg-btn" data-track="checkout" href="' + D.checkout([main.p]) + '">Pedir mi rutina</a></div>';
     el.innerHTML = h; el.hidden = false;
@@ -203,9 +203,9 @@
     [].forEach.call(el.querySelectorAll('[data-day]'), function (x) { x.addEventListener('click', function () { showDay(+x.dataset.day); }); }); showDay(0);
     var more = el.querySelector('[data-tlmore]'); if (more) more.addEventListener('click', function () { el.querySelector('.dg-tl2').classList.add('all'); more.remove(); });
     [].forEach.call(el.querySelectorAll('[data-track=checkout]'), function (a) { a.addEventListener('click', function () { D.track('checkout', a.textContent); }); });
-    // barra fija de compra: aparece cuando la recomendación ya pasó hacia arriba
+    // barra fija de compra: aparece al bajar y se esconde cuando ya se ve la recomendación (que está al final)
     var st = el.querySelector('[data-sticky]'), prod = el.querySelector('#dgProd');
-    if (st && prod) { var onS = function () { var r = prod.getBoundingClientRect(); st.hidden = !(r.bottom < 0); }; window.addEventListener('scroll', onS, { passive: true }); onS(); }
+    if (st && prod) { var onS = function () { var r = prod.getBoundingClientRect(); st.hidden = !(window.scrollY > 500 && r.top > window.innerHeight); }; window.addEventListener('scroll', onS, { passive: true }); onS(); }
     D.track('resultado', 'idx-' + idx);
   };
 
