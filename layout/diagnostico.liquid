@@ -40,6 +40,16 @@
     };
   </script>
   {{ content_for_layout }}
+  {%- comment -%} Formulario real de Shopify (para que lleve el captcha) que guarda a la clienta; se envía en segundo plano con el token del captcha {%- endcomment -%}
+  <div hidden aria-hidden="true">
+    {%- form 'customer', id: 'dgCust' -%}
+      <input type="hidden" name="contact[email]" value="">
+      <input type="hidden" name="contact[first_name]" value="">
+      <input type="hidden" name="contact[tags]" value="">
+      <input type="hidden" name="contact[note]" value="">
+      <input type="hidden" name="contact[accepts_marketing]" value="true">
+    {%- endform -%}
+  </div>
   <script src="{{ 'diag-core.js' | asset_url }}" defer></script>
 </body>
 </html>

@@ -242,6 +242,7 @@
   };
 
   // ---------- Correo: crea la clienta en Shopify (suscrita a marketing) con etiquetas ----------
+  D.armCaptcha = function () { var form = document.getElementById('dgCust'); if (form && !form.dataset.dgArmed && window.Shopify && window.Shopify.captcha) { form.dataset.dgArmed = 1; try { window.Shopify.captcha.protect(form); } catch (e) { } } };
   D.saveEmail = function (email, whatsapp) {
     D.ans.email = email; var s = D.scores(), idx = D.index(s), lows = D.lows(s, 3);
     var tags = ['diagnostico', 'diag-' + D.variant, 'diag-indice-' + (idx < 45 ? 'bajo' : idx < 65 ? 'medio' : idx < 80 ? 'bueno' : 'alto')].concat(lows.map(function (k) { return 'diag-prioridad-' + k; }));
@@ -252,14 +253,37 @@
     if (D.ans.nombre) f.append('contact[first_name]', D.ans.nombre);
     f.append('contact[note]', (whatsapp ? 'WhatsApp: ' + whatsapp + ' | ' : '') + 'Diagnóstico ' + idx + '/100: ' + D.shareUrl());
     D.track('correo', 'enviado');
-    return fetch('/contact', { method: 'POST', body: f, credentials: 'same-origin' }).then(function (r) { return r.ok; }).catch(function () { return false; });
+    var form = document.getElementById('dgCust');
+    if (!form || !window.Shopify || !window.Shopify.captcha) return fetch('/contact', { method: 'POST', body: f, credentials: 'same-origin' }).then(function (r) { return r.ok; }).catch(function () { return false; });
+    form.querySelector('[name="contact[email]"]').value = email;
+    form.querySelector('[name="contact[first_name]"]').value = D.ans.nombre || '';
+    form.querySelector('[name="contact[tags]"]').value = tags.join(',');
+    form.querySelector('[name="contact[note]"]').value = f.get('contact[note]');
+    D.armCaptcha();
+    return new Promise(function (res) {
+      var done = false, fin = function (v) { if (!done) { done = true; res(v); } };
+      setTimeout(function () { fin(false); }, 15000);
+      // Shopify llama a form.submit() cuando ya tiene el token del captcha: lo enviamos en segundo plano
+      form.submit = function () {
+        fetch('/contact', { method: 'POST', body: new FormData(form), credentials: 'same-origin' }).then(function (r) {
+          if (/\/challenge/.test(r.url)) {
+            // Shopify pide resolver el captcha a la vista: la mandamos ahí y vuelve a su resultado
+            D.track('correo', 'captcha');
+            var u = new URL(r.url); u.searchParams.set('return_path', location.pathname + '?r=' + D.code()); location.href = u.toString(); return;
+          }
+          fin(r.ok);
+        }).catch(function () { fin(false); });
+      };
+      var tries = 0;
+      (function go() { if (form.dataset.hcaptchaBound || tries++ > 16) { form.requestSubmit ? form.requestSubmit() : form.submit(); } else setTimeout(go, 400); })();
+    });
   };
 
   D.track = function (ev, label) { try { if (window.fbq) window.fbq('trackCustom', 'Diagnostico_' + ev, { variante: D.variant, paso: label }); if (window.Shopify && window.Shopify.analytics && window.Shopify.analytics.publish) window.Shopify.analytics.publish('diagnostico_' + ev, { variante: D.variant, paso: label }); } catch (e) { } };
 
   // ---------- Pantalla de correo reutilizable ----------
   D.emailForm = function (onDone, cls) {
-    var w = document.createElement('form'); w.className = 'dg-email ' + (cls || ''); w.noValidate = true;
+    var w = document.createElement('form'); w.className = 'dg-email ' + (cls || ''); w.noValidate = true; D.armCaptcha();
     w.innerHTML = '<label>Tu correo<input type="email" name="email" required autocomplete="email" placeholder="tucorreo@ejemplo.com"></label><label><span class="lt">WhatsApp <span>(opcional)</span></span><input type="tel" name="wa" autocomplete="tel" inputmode="tel" placeholder="300 123 4567"></label><label class="dg-check"><input type="checkbox" name="ok" checked> Acepto recibir mi diagnóstico y consejos de Belleza Frenesí por correo. Puedo darme de baja cuando quiera.</label><button class="dg-btn dg-btn-big" type="submit">Ver mi diagnóstico</button><p class="dg-err" hidden>Revisa tu correo: parece que falta algo.</p>';
     w.addEventListener('submit', function (e) {
       e.preventDefault(); var em = w.email.value.trim(), ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em);
