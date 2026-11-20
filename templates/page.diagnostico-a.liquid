@@ -10,7 +10,7 @@
 .ca-who b{display:block;font:700 15px Montserrat;color:#121212}
 .ca-who span{font-size:12px;color:#7a6a66}
 .ca-prog{height:3px;background:#ecdcd2}.ca-prog i{display:block;height:100%;width:0;background:#D3306A;transition:width .4s}
-.ca-chat{flex:1;padding:18px 0 140px}
+.ca-chat{flex:1;padding:18px 0 140px;transition:padding .2s}
 .ca-msg{max-width:84%;padding:12px 15px;border-radius:18px;margin:0 0 8px;font-size:15.5px;line-height:1.45;animation:caIn .35s ease both}
 .ca-bot{background:#fff;color:#2c2422;border-bottom-left-radius:6px;box-shadow:0 2px 8px rgba(120,70,60,.07)}
 .ca-me{background:#D3306A;color:#fff;margin-left:auto;border-bottom-right-radius:6px}
@@ -92,7 +92,9 @@ document.addEventListener('DOMContentLoaded',function(){
     sol:['Este es uno de los hábitos que más rápido cambia cómo se ve la piel.','Bien, pero el sol de Colombia pega todos los días, incluso nublado.','¡Así se hace! 🧴']
   };
   function pct(){prog.style.width=Math.round(D.progress()*100)+'%'}
-  function scroll(){setTimeout(function(){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})},40)}
+  function pad(){chat.style.paddingBottom=(dock.hidden?24:dock.offsetHeight+24)+'px'}
+  if(window.ResizeObserver)new ResizeObserver(function(){pad();}).observe(dock);
+  function scroll(){setTimeout(function(){pad();window.scrollTo({top:document.documentElement.scrollHeight,behavior:'smooth'})},60)}
   function bubble(html,me){var b=document.createElement('div');b.className='ca-msg '+(me?'ca-me':'ca-bot');b.innerHTML=html;chat.appendChild(b);scroll();return b}
   function say(list,cb){ // escribe varios mensajes con "escribiendo…"
     var k=0; dock.hidden=true;
@@ -140,7 +142,7 @@ document.addEventListener('DOMContentLoaded',function(){
       chat.appendChild(box);scroll();
     });
   }
-  function showRes(){document.getElementById('ca').classList.add('ca-done');var r=document.getElementById('caRes');D.renderResults(r);setTimeout(function(){r.scrollIntoView({behavior:'smooth'})},120)}
+  function showRes(){var ca=document.getElementById('ca');ca.classList.add('ca-done');chat.innerHTML='';chat.hidden=true;dock.hidden=true;document.getElementById('caHead').hidden=true;var r=document.getElementById('caRes');D.renderResults(r);window.scrollTo(0,0)}
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   document.getElementById('caGo').onclick=function(){
     document.getElementById('caIntro').hidden=true;document.getElementById('caHead').hidden=false;chat.hidden=false;D.track('inicio','a');

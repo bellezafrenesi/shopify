@@ -52,9 +52,6 @@
 .cb-teaser .blur{filter:blur(5px);user-select:none}
 .cb-prev{display:none}
 @media(min-width:900px){
-  .cb-hero{min-height:100vh;display:flex;align-items:center;padding:0}
-  .cb-hero-in{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;width:100%;padding-top:10px;padding-bottom:30px}
-  .cb-hero h1{font-size:58px}
   .cb-hero .dg-btn-big{max-width:420px}
   .cb-prev{display:block;position:relative;padding:30px 0}
   .cb-prev-card{background:#fff;border-radius:24px;padding:26px;box-shadow:0 30px 60px rgba(120,70,60,.16);transform:rotate(-2deg);max-width:420px;margin:0 auto}
@@ -66,7 +63,7 @@
   .cb-prev-chip{position:absolute;right:0;top:6px;background:#121212;color:#fff;border-radius:99px;padding:10px 16px;font:700 13px Montserrat;box-shadow:0 10px 24px rgba(0,0,0,.18)}
   .cb-prev-chip b{color:#FC5D8B}
   .cb-prev-chip.c2{top:auto;bottom:6px;right:auto;left:0;background:#fff;color:#121212}
-  #cbStage{max-width:820px;min-height:calc(100vh - 70px);display:flex;align-items:center}
+  #cbStage{display:flex;align-items:center}
   #cbStage>.cb-card{width:100%;padding:30px 0 60px}
   .cb-card h2{font-size:40px}
   .cb-card .sub{font-size:17px}
@@ -74,36 +71,63 @@
   .cb-opt span:last-child{font-size:17px}
   .cb-emo{width:64px;height:64px;font-size:38px}
   #cbStage>.cb-load,#cbStage>.cb-gate{width:100%}
-  .cb-bar .dg-wrap{max-width:760px}
   .cb-card{padding-top:40px}
   .cb-grid{grid-template-columns:1fr 1fr}
   .cb-grid.n3{grid-template-columns:repeat(3,1fr)}
   .cb-grid.n3 .cb-opt{flex-direction:column;align-items:flex-start;min-height:140px}
 }
+/* barra en vivo con la araña (como la C) */
+.cb-bar{padding:8px 0 10px;border-bottom:1px solid #f0e2d8;background:rgba(255,255,255,.97);backdrop-filter:blur(8px)}
+.cb-live{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cb-mini{width:58px;height:58px;flex:none}
+.cb-ln{font:900 24px Montserrat;min-width:38px;flex:none;color:#bbb}
+.cb-lt{flex:1;min-width:0}.cb-lt small{display:block;font-size:10.5px;color:#7a6a66;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.cb-lt span{display:block;font-size:13px;color:#121212;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cb-trackrow{display:flex;align-items:center;gap:10px}
+.cb-side{display:none}
+/* portada oscura */
+.cb-hero{background:#121212;color:#fff;position:relative;overflow:hidden;min-height:100vh;display:flex;align-items:center;padding:0}
+.cb-hero:before{content:"";position:absolute;right:-140px;top:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(252,93,139,.45),rgba(211,48,106,0) 70%)}
+.cb-hero-in{display:grid;gap:24px;align-items:center;padding-top:10px;padding-bottom:36px;position:relative;width:100%}
+.cb-hero .dg-top{color:#F1C6C8;justify-content:flex-start;padding-left:0}
+.cb-hero h1{color:#fff;font:900 clamp(30px,5.6vw,52px)/1.06 Montserrat;margin:14px 0 12px}
+.cb-hero h1 em{font-family:"Playfair Display",serif;font-style:italic;font-weight:700;color:#FC5D8B}
+.cb-hero p.lead{color:#d9cfcb;max-width:520px;font-size:17px}
+.cb-kpis{display:flex;gap:22px;margin:18px 0 24px;flex-wrap:wrap}
+.cb-kpis div{font-size:12px;color:#b9aca8}.cb-kpis b{display:block;font:800 26px Montserrat;color:#fff}
+.cb-demo{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px;max-width:420px;margin:0 auto;width:100%}
+.cb-demo svg text{fill:#d9cfcb}
+.cb-demo p{text-align:center;font:700 12px Montserrat;letter-spacing:.14em;text-transform:uppercase;color:#FC5D8B;margin:6px 0 0}
+.cb-hero .cb-trust{color:#9a8a86}
+@media(max-width:899px){.cb-demo{display:none}}
+@media(min-width:900px){
+  .cb-hero-in{grid-template-columns:1.15fr .85fr;gap:48px}
+  .cb-qgrid{display:grid;grid-template-columns:1fr 360px;gap:36px;align-items:start;max-width:1120px!important}
+  .cb-side{display:block;position:sticky;top:110px;margin-top:40px}
+  .cb-side h3{font:800 12px Montserrat;letter-spacing:.12em;text-transform:uppercase;color:#7a6a66;margin:0 0 6px}
+  .cb-side .idx{text-align:center;font:800 16px Montserrat}
+  .cb-side .pf{text-align:center;font-size:13px;color:#7a6a66;margin:2px 0 0}
+  .cb-bar .dg-wrap{max-width:1120px!important}
+  .cb-bar .cb-mini{display:none}
+  #cbStage{min-height:calc(100vh - 140px)}
+}
 </style>
 <div class="cb" id="cb">
-  <section class="cb-hero" id="cbHero" data-flow>
-    <div class="dg-wrap dg-wide cb-hero-in"><div>
-      <div class="dg-top" style="justify-content:flex-start;padding-left:0">Belleza Frenesí</div>
-      <p class="dg-kicker" style="margin-top:14px">Test gratis · 15 preguntas · 2 minutos</p>
-      <h1>Tu belleza también<br>se cuida <em>por dentro</em>.</h1>
-      <p class="lead">Descubre qué le está faltando a tu piel, tu cabello y tus uñas, y recibe un plan hecho con tus respuestas.</p>
-      <div class="cb-steps"><div><b>1</b>Respondes 15 preguntas</div><div><b>2</b>Ves tu mapa de 9 áreas</div><div><b>3</b>Te llevas tu plan en PDF</div></div>
-      <button class="dg-btn dg-btn-big" id="cbGo">Hacer mi test gratis →</button>
-      <p class="cb-trust">Incluye: rutina de mañana hora por hora · semana de comidas · hábitos explicados. No es un diagnóstico médico.</p>
+  <section class="cb-hero" id="cbHero" data-flow><div class="dg-wrap dg-wide cb-hero-in">
+    <div>
+      <div class="dg-top">Belleza Frenesí</div>
+      <p class="dg-kicker" style="color:#FC5D8B;margin-top:12px">Test gratis de belleza por dentro</p>
+      <h1>Mira en tiempo real<br>cómo está tu <em>belleza</em>.</h1>
+      <p class="lead">Respondes una pregunta a la vez y tu mapa de 9 áreas se va dibujando con cada respuesta. Al final te llevas tu análisis, tu rutina de mañana y tu semana de comidas en PDF.</p>
+      <div class="cb-kpis"><div><b>9</b>áreas</div><div><b>15</b>preguntas</div><div><b>2'</b>minutos</div><div><b>$0</b>costo</div></div>
+      <button class="dg-btn dg-btn-big" id="cbGo" style="max-width:420px">Hacer mi test gratis →</button>
+      <p class="cb-trust">No es un diagnóstico médico.</p>
     </div>
-    <div class="cb-prev" aria-hidden="true">
-      <div class="cb-prev-card"><p class="cb-area">Uñas</p><h2>Tus uñas…</h2>
-        <div class="cb-prev-o"><span>💪</span>Están fuertes y crecen bien</div><div class="cb-prev-o on"><span>🫧</span>Se doblan o están blanditas</div><div class="cb-prev-o"><span>💔</span>Se parten o se descaman</div>
-        <div class="cb-prev-t"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div></div>
-      <div class="cb-prev-chip"><b>9</b> áreas analizadas</div>
-      <div class="cb-prev-chip c2">📄 Tu plan en PDF</div>
-    </div>
-    </div>
-  </section>
+    <div class="cb-demo" id="cbDemo"></div>
+  </div></section>
   <section class="cb-q" id="cbQ" hidden data-flow>
-    <div class="cb-bar"><div class="dg-wrap"><button class="cb-back" id="cbBack" aria-label="Volver">←</button><div class="cb-track" id="cbTrack"></div><span class="cb-count" id="cbCount"></span></div></div>
-    <div class="dg-wrap" id="cbStage"></div>
+    <div class="cb-bar"><div class="dg-wrap"><div class="cb-live"><div class="cb-mini" id="cbMini"></div><div class="cb-ln" id="cbLn">—</div><div class="cb-lt"><small>Tu diagnóstico en vivo</small><span id="cbLt">Responde para empezar</span></div></div><div class="cb-trackrow"><button class="cb-back" id="cbBack" aria-label="Volver">←</button><div class="cb-track" id="cbTrack"></div><span class="cb-count" id="cbCount"></span></div></div></div>
+    <div class="dg-wrap cb-qgrid"><div id="cbStage"></div><aside class="cb-side"><div class="dg-card"><h3>Tu mapa en vivo</h3><div id="cbRadar"></div><div class="idx" id="cbIdx"></div><p class="pf" id="cbPf"></p></div></aside></div>
   </section>
   <div class="dg-wrap dg-wide"><div class="dg-results" id="cbRes" hidden></div></div>
 </div>
@@ -125,7 +149,17 @@ document.addEventListener('DOMContentLoaded',function(){
     descanso:'Mientras duermes, la piel hace su trabajo de reparación.'
   };
   for(var k=0;k<N;k++){track.appendChild(document.createElement('i'))}
-  function bar(){[].forEach.call(track.children,function(t,ix){t.classList.toggle('on',ix<=i)});cnt.textContent=(i+1)+'/'+N;back.disabled=i===0}
+  document.getElementById('cbDemo').innerHTML=D.radar({piel:62,cabello:58,unas:50,movilidad:60,energia:60,hidratacion:40,nutricion:62,descanso:64,sol:55},320)+'<p>Así se ve tu mapa</p>';
+  function live(){
+    var s=D.scores(), idx=D.index(s), any=Object.keys(s).some(function(k){return s[k]!=null});
+    document.getElementById('cbMini').innerHTML=D.radar(s,128,1);
+    document.getElementById('cbRadar').innerHTML=D.radar(s,320);
+    var ln=document.getElementById('cbLn');ln.textContent=any?idx:'—';ln.style.color=D.color(any?idx:null);
+    document.getElementById('cbLt').textContent=any?D.profile(idx).n:'Responde para empezar';
+    document.getElementById('cbIdx').innerHTML=any?'Índice: <span style="color:'+D.color(idx)+'">'+idx+'/100</span>':'<span style="font-weight:400;color:#7a6a66">Tu índice aparece al responder</span>';
+    document.getElementById('cbPf').textContent=any?D.profile(idx).n:'';
+  }
+  function bar(){live();[].forEach.call(track.children,function(t,ix){t.classList.toggle('on',ix<=i)});cnt.textContent=(i+1)+'/'+N;back.disabled=i===0}
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function go(n){var c=stage.firstChild;if(c){c.classList.add('out');setTimeout(function(){i=n;draw()},200)}else{i=n;draw()}}
   function draw(){
@@ -142,11 +176,11 @@ document.addEventListener('DOMContentLoaded',function(){
     if(q.type==='text'){var inp=c.querySelector('#cbName');var nx=function(){var v=inp.value.trim();if(!v){inp.focus();return}D.answer('nombre',v);go(i+1)};c.querySelector('#cbNx').onclick=nx;inp.onkeydown=function(e){if(e.key==='Enter')nx()};return}
     [].forEach.call(c.querySelectorAll('.cb-opt'),function(b){b.onclick=function(){var ix=+b.dataset.i;
       if(q.multi){var m=D.ans.meta||[],v=q.o[ix][2],p=m.indexOf(v);p>-1?m.splice(p,1):m.push(v);D.ans.meta=m;b.classList.toggle('on');return}
-      [].forEach.call(c.querySelectorAll('.cb-opt'),function(x){x.classList.remove('on')});b.classList.add('on');D.answer(q.id,ix);setTimeout(function(){go(i+1)},260)}});
+      [].forEach.call(c.querySelectorAll('.cb-opt'),function(x){x.classList.remove('on')});b.classList.add('on');D.answer(q.id,ix);live();setTimeout(function(){go(i+1)},420)}});
     if(q.multi)c.querySelector('#cbNx').onclick=function(){if(!(D.ans.meta||[]).length)D.ans.meta=[];D.track('respuesta','meta');go(i+1)};
   }
   function loading(){
-    document.querySelector('.cb-bar').style.display='none';
+    document.querySelector('.cb-bar').style.display='none';document.querySelector('.cb-side').style.display='none';
     stage.innerHTML='<div class="cb-load"><div><div class="cb-ring" id="cbRing"><b id="cbPct">0%</b></div><h2 style="font:800 22px Montserrat">Analizando tus respuestas…</h2><ul id="cbL"><li>Calculando tus 9 áreas</li><li>Eligiendo tus 3 prioridades</li><li>Armando tu rutina de mañana</li><li>Preparando tu semana de comidas</li></ul></div></div>';
     var p=0,ring=document.getElementById('cbRing'),pc=document.getElementById('cbPct'),li=document.querySelectorAll('#cbL li');
     var t=setInterval(function(){p+=2;ring.style.background='conic-gradient(#D3306A '+p+'%,#f0e2d8 0)';pc.textContent=p+'%';var n=Math.floor(p/25);for(var j=0;j<n&&j<li.length;j++)li[j].classList.add('ok');if(p>=100){clearInterval(t);setTimeout(gate,300)}},45);
