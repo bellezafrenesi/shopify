@@ -93,13 +93,41 @@
   // ---------- Productos argumentados ----------
   D.recos = function (s) {
     var r = [], P = D.P;
-    if (P.rutina) r.push({ p: P.rutina, k: 'Base de tu rutina', w: 'Es la parte de tu cuidado que va por dentro: colágeno marino hidrolizado tipos 1 a 5 con vitamina E, y gomitas de nicotinamida (vitamina B3). Acompaña el cuidado de tu piel, tu cabello y tus uñas. Sabe a mango y uva, y eso hace fácil ser constante, que es lo que más importa. Pagas al recibir.' });
-    if (P.protector && s.sol != null && s.sol < 70) r.push({ p: P.protector, k: 'Para tu protección solar (' + s.sol + '/100)', w: 'Tu respuesta dice que no usas protector todos los días. Es el paso que más cuida la piel por fuera: el sol es la principal causa del envejecimiento visible. FPS 50 y toque seco, para usarlo todas las mañanas.' });
-    if (P.facial && ((s.piel != null && s.piel < 65) || (s.hidratacion != null && s.hidratacion < 60))) r.push({ p: P.facial, k: 'Para tu piel (' + s.piel + '/100)', w: 'Tu piel se siente apagada o reseca. Esta crema con rosa mosqueta y camelia hidrata por fuera mientras la rutina trabaja por dentro.' });
-    if (P.capilar && s.cabello != null && s.cabello < 65) r.push({ p: P.capilar, k: 'Para tu cabello (' + s.cabello + '/100)', w: 'Ves más cabello en el cepillo. Un tratamiento 10 en 1 ayuda a que el cabello se quiebre menos al peinarlo, mientras cuidas la proteína en tu comida.' });
-    if (P.manos && s.unas != null && s.unas < 65 && r.length < 4) r.push({ p: P.manos, k: 'Para tus uñas (' + s.unas + '/100)', w: 'Tus uñas se doblan o se parten. Hidratar manos y cutículas cada noche es un hábito simple que las protege del agua y los jabones.' });
-    return r.slice(0, 4);
+    if (P.rutina) r.push({ p: P.rutina, k: 'Base de tu rutina', w: 'Es tu cuidado por dentro: colágeno marino hidrolizado tipos 1 a 5 con vitamina E, y gomitas de nicotinamida (vitamina B3). Acompaña el cuidado de tu piel, tu cabello y tus uñas. Sabe a mango y uva, y así es fácil ser constante, que es lo que más importa.' });
+    var opts = [
+      ['sol', 'protector', 70, 'Tu protección solar está en ' + s.sol + '/100. El protector es el paso que más cuida la piel por fuera: el sol es la principal causa del envejecimiento visible. FPS 50 y toque seco, para todas las mañanas.'],
+      ['piel', 'facial', 65, 'Tu piel está en ' + s.piel + '/100 y se siente apagada o reseca. Esta crema con rosa mosqueta y camelia la hidrata por fuera mientras la rutina trabaja por dentro.'],
+      ['hidratacion', 'facial', 60, 'Tu hidratación está en ' + s.hidratacion + '/100. Además de tomar más agua, esta crema con rosa mosqueta y camelia ayuda a que la piel no se sienta tirante.'],
+      ['cabello', 'capilar', 65, 'Tu cabello está en ' + s.cabello + '/100. Un tratamiento 10 en 1 ayuda a que se quiebre menos al peinarlo, mientras cuidas la proteína en tu comida.'],
+      ['unas', 'manos', 65, 'Tus uñas están en ' + s.unas + '/100. Hidratar manos y cutículas cada noche las protege del agua y los jabones.']
+    ].filter(function (o) { return P[o[1]] && s[o[0]] != null && s[o[0]] < o[2]; })
+     .sort(function (x, y) { return s[x[0]] - s[y[0]]; });
+    if (opts.length) r.push({ p: P[opts[0][1]], k: 'Para tu ' + D.AREAS[opts[0][0]].n.toLowerCase() + ' (' + s[opts[0][0]] + '/100)', w: opts[0][3], area: opts[0][0] });
+    return r;
   };
+
+  // ---------- Checkout directo (enlace de carrito de Shopify) ----------
+  D.checkout = function (prods) {
+    var v = prods.filter(function (p) { return p && p.vid; }).map(function (p) { return p.vid + ':1'; });
+    return '/cart/' + v.join(',') + '?attributes[origen]=diagnostico-' + D.variant + '&utm_source=diagnostico&utm_medium=quiz&utm_campaign=diag-' + D.variant;
+  };
+
+  // ---------- Enlace para volver a ver el resultado (para el correo) ----------
+  D.code = function () {
+    var a = D.Q.filter(function (q) { return q.o && !q.multi; }).map(function (q) { return D.ans[q.id] == null ? 'x' : D.ans[q.id]; }).join('');
+    var m = (D.ans.meta || []).map(function (k) { return Object.keys(D.AREAS).indexOf(k); }).join('');
+    return a + '-' + m + '-' + encodeURIComponent((D.ans.nombre || '').split(' ')[0]);
+  };
+  D.fromCode = function (c) {
+    try {
+      var parts = c.split('-'), a = parts[0], i = 0, keys = Object.keys(D.AREAS), n = 0;
+      D.Q.forEach(function (q) { if (q.o && !q.multi) { var ch = a.charAt(i++); if (ch && ch !== 'x' && q.o[+ch]) { D.ans[q.id] = +ch; n++; } } });
+      D.ans.meta = (parts[1] || '').split('').filter(Boolean).map(function (x) { return keys[+x]; }).filter(Boolean);
+      if (parts[2]) D.ans.nombre = decodeURIComponent(parts.slice(2).join('-'));
+      return n >= 8;
+    } catch (e) { return false; }
+  };
+  D.shareUrl = function () { return location.origin + location.pathname + '?r=' + D.code(); };
 
   // ---------- Rutina de mañana ----------
   D.tomorrow = function (s) {
@@ -146,19 +174,47 @@
   D.money = function (p) { return p && p.price ? p.price : ''; };
   D.renderResults = function (el) {
     var s = D.scores(), idx = D.index(s), pf = D.profile(idx), lows = D.lows(s, 3), rec = D.recos(s), name = esc((D.ans.nombre || '').split(' ')[0]);
-    var h = '';
-    h += '<section class="dg-r-hero"><p class="dg-kicker">Tu diagnóstico de belleza</p><h2>' + (name ? name + ', ' : '') + esc(pf.n.charAt(0).toLowerCase() + pf.n.slice(1)) + '</h2><p>' + esc(pf.d) + '</p></section>';
-    h += '<section class="dg-r-dash"><div class="dg-card dg-card-gauge"><h3>Índice de belleza por dentro</h3>' + D.gauge(idx) + '<p class="dg-muted">Promedio de tus 9 áreas</p></div><div class="dg-card dg-card-radar"><h3>Tu mapa de 9 áreas</h3>' + D.radar(s) + '</div><div class="dg-card dg-card-bars"><h3>Área por área</h3>' + D.bars(s) + '</div></section>';
-    h += '<section class="dg-r-pri"><h3 class="dg-h">Tus 3 prioridades</h3><div class="dg-pri">' + lows.map(function (k, i) { var T = D.TXT[k]; return '<article class="dg-card dg-pri-c"><span class="dg-num">' + (i + 1) + '</span><h4>' + D.AREAS[k].i + ' ' + D.AREAS[k].n + ' <em style="color:' + D.color(s[k]) + '">' + s[k] + '/100 · ' + D.label(s[k]) + '</em></h4><p>' + esc(T.por) + '</p><ul>' + T.h.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></article>'; }).join('') + '</div></section>';
-    h += '<section class="dg-r-tl"><h3 class="dg-h">Tu rutina para mañana</h3><p class="dg-muted">Un día completo, hora por hora. Empieza mañana mismo.</p><ol class="dg-tl">' + D.tomorrow(s).map(function (r) { return '<li><span class="dg-tl-h">' + r[0] + '</span><span class="dg-tl-i">' + r[1] + '</span><div><b>' + esc(r[2]) + '</b><p>' + esc(r[3]) + '</p></div></li>'; }).join('') + '</ol></section>';
-    if (rec.length) h += '<section class="dg-r-prod"><h3 class="dg-h">Lo que te recomendamos y por qué</h3><div class="dg-prods">' + rec.map(function (r, i) { var p = r.p; return '<article class="dg-card dg-prod' + (i === 0 ? ' dg-prod-main' : '') + '"><img src="' + esc(p.img) + '" alt="' + esc(p.title) + '" loading="lazy" width="300" height="300"><div><span class="dg-tag">' + esc(r.k) + '</span><h4>' + esc(p.title) + '</h4><p>' + esc(r.w) + '</p><div class="dg-prod-f"><b>' + esc(p.price) + '</b><a class="dg-btn' + (i === 0 ? '' : ' dg-btn-ghost') + '" href="' + esc(p.url) + '?utm_source=diagnostico&utm_medium=quiz&utm_campaign=diag-' + D.variant + '" data-track="producto">' + (i === 0 ? 'Ver la rutina' : 'Ver producto') + '</a></div></div></article>'; }).join('') + '</div></section>';
-    h += '<section class="dg-r-plan"><h3 class="dg-h">Tu semana de comidas sugerida</h3><p class="dg-muted">Comida colombiana, con proteína en cada comida. La versión completa está en tu PDF.</p><div class="dg-plan-wrap"><table class="dg-plan"><thead><tr><th></th><th>Desayuno</th><th>Almuerzo</th><th>Algo</th><th>Cena</th></tr></thead><tbody>' + D.PLAN.map(function (d) { return '<tr><th>' + d[0] + '</th><td>' + d[1] + '</td><td>' + d[2] + '</td><td>' + d[3] + '</td><td>' + d[4] + '</td></tr>'; }).join('') + '</tbody></table></div></section>';
-    h += '<section class="dg-r-cta"><button class="dg-btn dg-btn-big" type="button" data-pdf>Descargar mi diagnóstico en PDF</button><p class="dg-muted" data-mailmsg>' + (D.ans.email ? 'También quedó registrado tu correo ' + esc(D.ans.email) + ' para enviarte el diagnóstico.' : '') + '</p></section>';
+    var main = rec[0], extra = rec[1], h = '';
+    // 1. resumen
+    h += '<section class="dg-r-hero"><p class="dg-kicker">Tu diagnóstico de belleza</p><div class="dg-sum"><div class="dg-sum-g">' + D.gauge(idx, 150) + '</div><div><h2>' + (name ? name + ', ' : '') + esc(pf.n.charAt(0).toLowerCase() + pf.n.slice(1)) + '</h2><p>' + esc(pf.d) + '</p></div></div>' +
+      '<div class="dg-chips">' + lows.map(function (k, i) { return '<span style="--c:' + D.color(s[k]) + '"><b>' + (i + 1) + '</b>' + D.AREAS[k].i + ' ' + D.AREAS[k].n + ' · ' + s[k] + '</span>'; }).join('') + '</div></section>';
+    // 2. mapa
+    h += '<section class="dg-r-map dg-card"><div class="dg-map-r"><h3>Tu mapa de 9 áreas</h3>' + D.radar(s) + '</div><details class="dg-more"><summary>Ver área por área</summary>' + D.bars(s) + '</details></section>';
+    // 3. prioridades en acordeón
+    h += '<section class="dg-r-pri"><h3 class="dg-h">Tus 3 prioridades</h3><div class="dg-acc">' + lows.map(function (k, i) { var T = D.TXT[k]; return '<details class="dg-card dg-acc-i"' + (i === 0 ? ' open' : '') + '><summary><span class="dg-acc-n" style="background:' + D.color(s[k]) + '">' + s[k] + '</span><span><b>' + D.AREAS[k].i + ' ' + D.AREAS[k].n + '</b><small>' + D.label(s[k]) + ' · toca para ver</small></span></summary><p>' + esc(T.por) + '</p><ul>' + T.h.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></details>'; }).join('') + '</div></section>';
+    // 4. recomendación: máximo 2 productos, botones directo al checkout
+    if (main) {
+      h += '<section class="dg-r-prod" id="dgProd"><h3 class="dg-h">Lo que te recomendamos</h3><article class="dg-card dg-main"><div class="dg-main-img"><img src="' + esc(main.p.img) + '" alt="' + esc(main.p.title) + '" loading="lazy"></div><div class="dg-main-b"><span class="dg-tag">' + esc(main.k) + '</span><h4>' + esc(main.p.title) + '</h4><p>' + esc(main.w) + '</p><ul class="dg-ticks"><li>Colágeno sabor mango, 1 litro</li><li>60 gomitas sabor uva</li><li>Guía de alimentación de regalo</li></ul><div class="dg-buy"><b>' + esc(main.p.price) + '</b><span>Pagas al recibir</span></div><a class="dg-btn dg-btn-big" data-track="checkout" href="' + D.checkout([main.p]) + '">Pedir mi rutina</a></div></article>';
+      if (extra) h += '<article class="dg-card dg-extra"><div class="dg-extra-top"><img src="' + esc(extra.p.img) + '" alt="' + esc(extra.p.title) + '" loading="lazy"><div><span class="dg-tag">' + esc(extra.k) + '</span><h4>' + esc(extra.p.title) + '</h4><b>+ ' + esc(extra.p.price) + '</b></div></div><p>' + esc(extra.w) + '</p><a class="dg-btn dg-btn-ghost dg-btn-big" data-track="checkout" href="' + D.checkout([main.p, extra.p]) + '">Pedir la rutina + este producto</a></article>';
+      h += '</section>';
+    }
+    // 5. mañana, compacto
+    var tl = D.tomorrow(s);
+    h += '<section class="dg-r-tl"><h3 class="dg-h">Tu rutina para mañana</h3><p class="dg-muted">Toca cada paso para ver por qué.</p><div class="dg-tl2">' + tl.map(function (r, i) { return '<details' + (i > 4 ? ' class="dg-tl-more"' : '') + '><summary><span class="t">' + r[0] + '</span><span class="i">' + r[1] + '</span><b>' + esc(r[2]) + '</b></summary><p>' + esc(r[3]) + '</p></details>'; }).join('') + '</div>' + (tl.length > 5 ? '<button type="button" class="dg-link" data-tlmore>Ver el día completo (' + tl.length + ' pasos)</button>' : '') + '</section>';
+    // 6. semana con pestañas por día
+    h += '<section class="dg-r-plan"><h3 class="dg-h">Tu semana de comidas</h3><p class="dg-muted">Comida colombiana, con proteína en cada comida.</p><div class="dg-days" role="tablist">' + D.PLAN.map(function (d, i) { return '<button type="button" role="tab" data-day="' + i + '"' + (i === 0 ? ' class="on"' : '') + '>' + d[0].slice(0, 3) + '</button>'; }).join('') + '</div><div class="dg-day dg-card" data-dayview></div></section>';
+    // 7. PDF
+    h += '<section class="dg-r-cta dg-card"><h3>Tu diagnóstico completo en PDF</h3><p class="dg-muted">6 páginas: tablero, prioridades explicadas, rutina hora por hora, semana de comidas y recomendación.</p><button class="dg-btn dg-btn-big" type="button" data-pdf>Descargar mi PDF</button><p class="dg-muted" data-mailmsg>' + (D.ans.email ? 'También te lo enviamos a ' + esc(D.ans.email) + '.' : '') + '</p></section>';
     h += '<p class="dg-legal">' + esc(D.LEGAL) + '</p>';
+    if (main) h += '<div class="dg-sticky" data-sticky hidden><div><b>' + esc(main.p.price) + '</b><span>Rutina Belleza de Adentro · pagas al recibir</span></div><a class="dg-btn" data-track="checkout" href="' + D.checkout([main.p]) + '">Pedir mi rutina</a></div>';
     el.innerHTML = h; el.hidden = false;
     var b = el.querySelector('[data-pdf]'); if (b) b.addEventListener('click', function () { D.pdf(b); });
+    var view = el.querySelector('[data-dayview]'), showDay = function (i) { var d = D.PLAN[i]; view.innerHTML = [['☀️', 'Desayuno', d[1] + ' + 2 gomitas sabor uva'], ['🍽️', 'Almuerzo', d[2]], ['🍎', 'Algo', d[3]], ['🌙', 'Cena', d[4] + '. En la noche, tu vaso de colágeno sabor mango.']].map(function (m) { return '<div class="dg-meal"><span class="i">' + m[0] + '</span><div><small>' + m[1] + '</small><p>' + esc(m[2]) + '</p></div></div>'; }).join(''); [].forEach.call(el.querySelectorAll('[data-day]'), function (x) { x.classList.toggle('on', +x.dataset.day === i); }); };
+    [].forEach.call(el.querySelectorAll('[data-day]'), function (x) { x.addEventListener('click', function () { showDay(+x.dataset.day); }); }); showDay(0);
+    var more = el.querySelector('[data-tlmore]'); if (more) more.addEventListener('click', function () { el.querySelector('.dg-tl2').classList.add('all'); more.remove(); });
+    [].forEach.call(el.querySelectorAll('[data-track=checkout]'), function (a) { a.addEventListener('click', function () { D.track('checkout', a.textContent); }); });
+    // barra fija de compra: aparece cuando la recomendación ya pasó hacia arriba
+    var st = el.querySelector('[data-sticky]'), prod = el.querySelector('#dgProd');
+    if (st && prod) { var onS = function () { var r = prod.getBoundingClientRect(); st.hidden = !(r.bottom < 0); }; window.addEventListener('scroll', onS, { passive: true }); onS(); }
     D.track('resultado', 'idx-' + idx);
   };
+
+  // si la página abre con ?r=… (enlace del correo), muestra el resultado directo
+  document.addEventListener('DOMContentLoaded', function () {
+    var m = location.search.match(/[?&]r=([^&]+)/); if (!m || !D.fromCode(decodeURIComponent(m[1]))) return;
+    [].forEach.call(document.querySelectorAll('[data-flow]'), function (x) { x.hidden = true; });
+    var el = document.querySelector('.dg-results'); if (el) { D.renderResults(el); window.scrollTo(0, 0); D.track('reabrir', 'correo'); }
+  });
 
   // ---------- PDF ----------
   D.reportHTML = function () {

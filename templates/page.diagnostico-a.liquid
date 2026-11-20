@@ -53,9 +53,9 @@
 }
 </style>
 <div class="ca" id="ca">
-  <header class="ca-head" hidden id="caHead"><div class="dg-wrap"><div class="ca-av">F</div><div class="ca-who"><b>Asesora virtual Frenesí</b><span id="caSt">en línea · diagnóstico gratis</span></div></div><div class="ca-prog"><i id="caProg"></i></div></header>
+  <header class="ca-head" hidden id="caHead" data-flow><div class="dg-wrap"><div class="ca-av">F</div><div class="ca-who"><b>Asesora virtual Frenesí</b><span id="caSt">en línea · diagnóstico gratis</span></div></div><div class="ca-prog"><i id="caProg"></i></div></header>
   <div class="dg-wrap">
-    <section class="ca-intro" id="caIntro"><div class="ca-intro-txt">
+    <section class="ca-intro" id="caIntro" data-flow><div class="ca-intro-txt">
       <div class="dg-top">Belleza Frenesí</div>
       <p class="dg-kicker">Diagnóstico gratis · 2 minutos</p>
       <h1>¿Qué te está pidiendo<br>tu piel <em>por dentro</em>?</h1>
@@ -72,10 +72,10 @@
         <div class="ca-msg ca-bot ca-typing"><i></i><i></i><i></i></div>
       </div>
     </section>
-    <div class="ca-chat" id="caChat" hidden></div>
+    <div class="ca-chat" id="caChat" hidden data-flow></div>
   </div>
   <div class="dg-wrap dg-wide"><div class="dg-results ca-results" id="caRes" hidden></div></div>
-  <div class="ca-dock" id="caDock" hidden><div class="dg-wrap" id="caIn"></div></div>
+  <div class="ca-dock" id="caDock" hidden data-flow><div class="dg-wrap" id="caIn"></div></div>
 </div>
 <script>
 document.addEventListener('DOMContentLoaded',function(){

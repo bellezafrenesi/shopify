@@ -34,7 +34,7 @@
           {%- when 5 -%}{%- assign p = p_manos -%}{%- assign k = 'manos' -%}
         {%- endcase -%}
         {%- if p.id and p.available -%}
-          {{ k | json }}: { title: {{ p.title | json }}, url: {{ p.url | json }}, price: {{ p.price | money_without_trailing_zeros | replace: ',', '.' | json }}, img: {{ p.featured_image | image_url: width: 600 | prepend: 'https:' | json }} },
+          {{ k | json }}: { vid: {{ p.selected_or_first_available_variant.id | json }}, title: {{ p.title | json }}, url: {{ p.url | json }}, price: {{ p.price | money_without_trailing_zeros | replace: ',', '.' | json }}, img: {{ p.featured_image | image_url: width: 600 | prepend: 'https:' | json }} },
         {%- endif -%}
       {%- endfor -%}
     };
