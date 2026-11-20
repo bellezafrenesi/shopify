@@ -1,0 +1,128 @@
+{% layout 'diagnostico' %}
+{% raw %}
+<style>
+.ca{min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#F7ECE2 0%,#fbf4ef 100%)}
+.ca-head{position:sticky;top:0;z-index:5;background:rgba(247,236,226,.94);backdrop-filter:blur(8px);border-bottom:1px solid #ecdcd2}
+.ca-head .dg-wrap{display:flex;align-items:center;gap:12px;padding-top:10px;padding-bottom:10px}
+.ca-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#FC5D8B,#D3306A);display:grid;place-items:center;color:#fff;font:700 18px "Playfair Display",serif;flex:none;position:relative}
+.ca-av:after{content:"";position:absolute;right:1px;bottom:1px;width:10px;height:10px;border-radius:50%;background:#3E9B6E;border:2px solid #F7ECE2}
+.ca-who b{display:block;font:700 15px Montserrat;color:#121212}
+.ca-who span{font-size:12px;color:#7a6a66}
+.ca-prog{height:3px;background:#ecdcd2}.ca-prog i{display:block;height:100%;width:0;background:#D3306A;transition:width .4s}
+.ca-chat{flex:1;padding:18px 0 140px}
+.ca-msg{max-width:84%;padding:12px 15px;border-radius:18px;margin:0 0 8px;font-size:15.5px;line-height:1.45;animation:caIn .35s ease both}
+.ca-bot{background:#fff;color:#2c2422;border-bottom-left-radius:6px;box-shadow:0 2px 8px rgba(120,70,60,.07)}
+.ca-me{background:#D3306A;color:#fff;margin-left:auto;border-bottom-right-radius:6px}
+.ca-msg small{display:block;color:#9a8a86;font-size:13px;margin-top:3px}
+.ca-typing{display:inline-flex;gap:4px;padding:14px 16px}
+.ca-typing i{width:7px;height:7px;border-radius:50%;background:#D37A84;animation:caDot 1s infinite}
+.ca-typing i:nth-child(2){animation-delay:.15s}.ca-typing i:nth-child(3){animation-delay:.3s}
+@keyframes caDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+@keyframes caIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.ca-dock{position:fixed;left:0;right:0;bottom:0;z-index:6;background:linear-gradient(180deg,rgba(251,244,239,0),#fbf4ef 22%);padding:22px 0 calc(14px + env(safe-area-inset-bottom))}
+.ca-opts{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.ca-opt{border:1.5px solid #D3306A;background:#fff;color:#D3306A;border-radius:999px;padding:11px 16px;font:600 14.5px Inter,Arial;animation:caIn .3s ease both}
+.ca-opt:hover,.ca-opt.on{background:#D3306A;color:#fff}
+.ca-row{display:flex;gap:8px}
+.ca-row input{flex:1;font:16px Inter,Arial;padding:14px 16px;border:1.5px solid #ecdcd2;border-radius:999px;background:#fff}
+.ca-row input:focus{outline:none;border-color:#D3306A}
+.ca-send{width:50px;height:50px;border-radius:50%;border:0;background:#D3306A;color:#fff;font-size:20px;flex:none}
+.ca-mailbox{background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 12px rgba(120,70,60,.08);animation:caIn .35s ease both}
+.ca-intro{text-align:center;padding:36px 0 10px}
+.ca-intro h1{font:900 clamp(28px,7.5vw,42px)/1.08 Montserrat;margin-bottom:12px}
+.ca-intro h1 em{font-family:"Playfair Display",serif;font-style:italic;color:#D3306A;font-weight:700}
+.ca-intro p{color:#5a4a46;max-width:480px;margin:0 auto 18px}
+.ca-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:0 0 22px;font-size:13px}
+.ca-pills span{background:#fff;border-radius:99px;padding:7px 12px;color:#5a4a46}
+.ca-done .ca-dock{display:none}
+.ca-results{padding:0 0 30px}
+</style>
+<div class="ca" id="ca">
+  <header class="ca-head" hidden id="caHead"><div class="dg-wrap"><div class="ca-av">F</div><div class="ca-who"><b>Asesora Frenesí</b><span id="caSt">en línea · diagnóstico gratis</span></div></div><div class="ca-prog"><i id="caProg"></i></div></header>
+  <div class="dg-wrap">
+    <section class="ca-intro" id="caIntro">
+      <div class="dg-top">Belleza Frenesí</div>
+      <p class="dg-kicker">Diagnóstico gratis · 2 minutos</p>
+      <h1>¿Qué te está pidiendo<br>tu piel <em>por dentro</em>?</h1>
+      <p>Charla 2 minutos con nuestra asesora. Te respondo con tu mapa de 9 áreas, tu rutina de mañana hora por hora y una semana de comidas, todo en un PDF para ti.</p>
+      <div class="ca-pills"><span>✨ Piel</span><span>💇‍♀️ Cabello</span><span>💅 Uñas</span><span>🦵 Movilidad</span><span>⚡ Energía</span></div>
+      <button class="dg-btn dg-btn-big" id="caGo" style="max-width:420px">Empezar mi diagnóstico</button>
+      <p class="dg-muted" style="margin-top:12px">Sin costo. No es un diagnóstico médico.</p>
+    </section>
+    <div class="ca-chat" id="caChat" hidden></div>
+    <div class="dg-results ca-results" id="caRes" hidden></div>
+  </div>
+  <div class="ca-dock" id="caDock" hidden><div class="dg-wrap" id="caIn"></div></div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var D=window.DIAG; D.variant='a';
+  var chat=document.getElementById('caChat'), dock=document.getElementById('caDock'), inn=document.getElementById('caIn'), prog=document.getElementById('caProg');
+  var i=0, name='';
+  var R={ // reacciones de la asesora, según la opción elegida
+    piel:['¡Qué bien! Eso habla de buenos hábitos.','Te entiendo, es de lo más común. Ya vamos a ver de dónde viene.','Eso suele tener que ver con el sueño, el agua y el colágeno. Lo revisamos.','La piel reseca casi siempre pide más agua por dentro y por fuera.'],
+    cabello:['Perfecto.','Anotado. El cabello es de las primeras cosas que reflejan lo que comemos.','Gracias por contármelo. En tu diagnóstico te explico qué puede estar pasando.'],
+    unas:['¡Uñas fuertes, qué bien!','Las uñas blanditas suelen pedir proteína y menos contacto con jabones.','Anotado: eso lo vamos a cuidar.'],
+    movilidad:['¡Bien por tus rodillas!','Muy común después de los 35. El movimiento diario ayuda mucho.','Gracias por decírmelo. Te dejo hábitos, y si es seguido, vale la pena consultarlo con tu médico.'],
+    agua:['Ahí hay algo fácil de mejorar desde mañana 💧','Vas bien, nos falta poquito.','¡Excelente!'],
+    descanso:['Dormir poco se nota en la cara. Lo vamos a tener en cuenta.','Bien, aunque 7 a 8 es lo ideal.','¡Eso es oro para tu piel!'],
+    sol:['Este es uno de los hábitos que más rápido cambia cómo se ve la piel.','Bien, pero el sol de Colombia pega todos los días, incluso nublado.','¡Así se hace! 🧴']
+  };
+  function pct(){prog.style.width=Math.round(D.progress()*100)+'%'}
+  function scroll(){setTimeout(function(){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})},40)}
+  function bubble(html,me){var b=document.createElement('div');b.className='ca-msg '+(me?'ca-me':'ca-bot');b.innerHTML=html;chat.appendChild(b);scroll();return b}
+  function say(list,cb){ // escribe varios mensajes con "escribiendo…"
+    var k=0; dock.hidden=true;
+    (function next(){ if(k>=list.length){dock.hidden=false;scroll();cb&&cb();return}
+      var t=document.createElement('div');t.className='ca-msg ca-bot ca-typing';t.innerHTML='<i></i><i></i><i></i>';chat.appendChild(t);scroll();
+      setTimeout(function(){t.remove();bubble(list[k++]);setTimeout(next,260)},Math.min(1300,380+list[k].length*12));
+    })();
+  }
+  function ask(){
+    if(i>=D.Q.length) return email();
+    var q=D.Q[i], pre=[];
+    var t=q.t.replace('¿Cómo te llamas?','¿Cómo te llamas?');
+    pre.push(t+(q.s?'<small>'+q.s+'</small>':''));
+    say(pre,function(){ options(q) });
+  }
+  function options(q){
+    inn.innerHTML='';
+    if(q.type==='text'){
+      inn.innerHTML='<form class="ca-row"><input name="v" placeholder="'+q.ph+'" autocomplete="given-name" required maxlength="40"><button class="ca-send" aria-label="Enviar">➤</button></form>';
+      var f=inn.querySelector('form'); f.v.focus({preventScroll:true});
+      f.onsubmit=function(e){e.preventDefault();var v=f.v.value.trim();if(!v)return;D.answer(q.id,v);name=v.split(' ')[0];bubble(esc(v),1);pct();i++;
+        say(['¡Mucho gusto, '+esc(name)+'! 💕','Te voy a hacer unas preguntas rápidas. Responde con lo primero que pienses: no hay respuestas buenas ni malas.'],ask)};
+      return;
+    }
+    var box=document.createElement('div');box.className='ca-opts';
+    var sel=[];
+    q.o.forEach(function(o,ix){var b=document.createElement('button');b.type='button';b.className='ca-opt';b.style.animationDelay=(ix*50)+'ms';b.textContent=o[1]+' '+o[0];
+      b.onclick=function(){
+        if(q.multi){var v=o[2],p=sel.indexOf(v);if(p>-1){sel.splice(p,1);b.classList.remove('on')}else{sel.push(v);b.classList.add('on')}ok.hidden=!sel.length;return}
+        D.answer(q.id,ix);bubble(esc(o[1]+' '+o[0]),1);pct();i++;
+        var r=R[q.id]?[R[q.id][ix]]:[];
+        if(i===7) r.push('Vamos por la mitad, '+esc(name)+'. Ahora unas sobre tus hábitos 🍽️');
+        r.length?say(r,ask):ask();
+      };box.appendChild(b)});
+    inn.appendChild(box);
+    if(q.multi){var ok=document.createElement('button');ok.type='button';ok.className='dg-btn';ok.style.cssText='margin:10px 0 0 auto;display:flex';ok.textContent='Listo';ok.hidden=true;
+      ok.onclick=function(){D.answer(q.id,sel.slice());bubble(esc(sel.map(function(v){return D.AREAS[v].n}).join(', ')),1);pct();i++;ask()};inn.appendChild(ok)}
+    scroll();
+  }
+  function email(){
+    var s=D.scores(), lows=D.lows(s,3);
+    say(['¡Listo, '+esc(name)+'! Ya tengo tu diagnóstico 🎉','Te adelanto algo: tu área que más pide atención es <b>'+D.AREAS[lows[0]].n.toLowerCase()+'</b>. En el diagnóstico completo te explico por qué pasa y qué hacer desde mañana.','¿A qué correo te lo envío? Así lo tienes a la mano.'],function(){
+      inn.innerHTML='';var box=document.createElement('div');box.className='ca-mailbox';
+      box.appendChild(D.emailForm(function(){dock.hidden=true;bubble(esc(D.ans.email),1);say(['¡Gracias! Aquí está tu diagnóstico 👇'],function(){dock.hidden=true;showRes()})}));
+      inn.appendChild(box);scroll();
+    });
+  }
+  function showRes(){document.getElementById('ca').classList.add('ca-done');var r=document.getElementById('caRes');D.renderResults(r);setTimeout(function(){r.scrollIntoView({behavior:'smooth'})},120)}
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  document.getElementById('caGo').onclick=function(){
+    document.getElementById('caIntro').hidden=true;document.getElementById('caHead').hidden=false;chat.hidden=false;D.track('inicio','a');
+    say(['¡Hola! 👋 Soy tu asesora de Belleza Frenesí.','En 2 minutos te armo un diagnóstico de belleza por dentro: piel, cabello, uñas, energía y más. Es gratis.'],ask);
+  };
+});
+</script>
+{% endraw %}

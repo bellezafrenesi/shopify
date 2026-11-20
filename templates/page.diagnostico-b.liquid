@@ -1,0 +1,125 @@
+{% layout 'diagnostico' %}
+{% raw %}
+<style>
+.cb{min-height:100vh;background:#fff}
+.cb-hero{background:linear-gradient(160deg,#F1C6C8 0%,#F7ECE2 60%,#fff 100%);padding:0 0 34px}
+.cb-hero h1{font:900 clamp(30px,8vw,52px)/1.03 Montserrat;margin:18px 0 14px;letter-spacing:-.5px}
+.cb-hero h1 em{font-family:"Playfair Display",serif;font-style:italic;font-weight:700;color:#D3306A}
+.cb-hero p.lead{font-size:17px;color:#4a3c39;max-width:520px}
+.cb-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}
+.cb-steps div{background:rgba(255,255,255,.75);border-radius:14px;padding:12px;font-size:13px;line-height:1.35}
+.cb-steps b{display:block;font:800 22px Montserrat;color:#D3306A}
+.cb-trust{font-size:13px;color:#7a6a66;margin-top:12px}
+.cb-q{min-height:100vh;display:flex;flex-direction:column;padding-bottom:30px}
+.cb-bar{position:sticky;top:0;background:#fff;z-index:3;padding:12px 0 10px}
+.cb-bar .dg-wrap{display:flex;align-items:center;gap:12px}
+.cb-back{border:0;background:#F7ECE2;width:38px;height:38px;border-radius:50%;font-size:18px;color:#121212;flex:none}
+.cb-back[disabled]{visibility:hidden}
+.cb-track{flex:1;display:flex;gap:4px}
+.cb-track i{flex:1;height:5px;border-radius:9px;background:#f0e2d8;transition:background .3s}
+.cb-track i.on{background:#D3306A}
+.cb-count{font:700 12px Montserrat;color:#7a6a66;flex:none}
+.cb-card{animation:cbIn .45s cubic-bezier(.2,.8,.2,1) both;padding-top:18px}
+.cb-card.out{animation:cbOut .22s ease both}
+@keyframes cbIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes cbOut{to{opacity:0;transform:translateX(-30px)}}
+.cb-area{font:700 12px Montserrat;letter-spacing:.14em;text-transform:uppercase;color:#D3306A}
+.cb-card h2{font:800 clamp(24px,6.4vw,34px)/1.15 Montserrat;margin:8px 0 6px}
+.cb-card .sub{color:#7a6a66;margin-bottom:18px}
+.cb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cb-grid.n3{grid-template-columns:1fr}
+@media(min-width:620px){.cb-grid.n3{grid-template-columns:repeat(3,1fr)}}
+.cb-opt{border:2px solid #f0e2d8;background:#fff;border-radius:18px;padding:18px 14px;text-align:left;display:flex;flex-direction:column;gap:10px;min-height:118px;transition:border-color .15s,transform .15s,background .15s;color:#121212}
+.cb-grid.n3 .cb-opt{flex-direction:row;align-items:center;min-height:0;padding:16px}
+.cb-opt:hover{border-color:#F1C6C8;transform:translateY(-2px)}
+.cb-opt.on{border-color:#D3306A;background:#fff5f8}
+.cb-emo{font-size:34px;line-height:1;width:58px;height:58px;border-radius:16px;background:#F7ECE2;display:grid;place-items:center;flex:none}
+.cb-opt.on .cb-emo{background:#fde8ee}
+.cb-opt span:last-child{font:600 15.5px/1.3 Inter}
+.cb-input{width:100%;font:22px Inter;padding:18px;border:2px solid #f0e2d8;border-radius:16px}
+.cb-input:focus{outline:none;border-color:#D3306A}
+.cb-next{margin-top:18px}
+.cb-fact{margin-top:22px;background:#F7ECE2;border-radius:16px;padding:14px 16px;font-size:14px;color:#4a3c39;display:flex;gap:10px}
+.cb-fact b{color:#121212}
+.cb-load{min-height:80vh;display:grid;place-items:center;text-align:center}
+.cb-ring{width:120px;height:120px;margin:0 auto 22px;border-radius:50%;background:conic-gradient(#D3306A var(--p,0%),#f0e2d8 0);display:grid;place-items:center;transition:--p .2s}
+.cb-ring b{width:96px;height:96px;border-radius:50%;background:#fff;display:grid;place-items:center;font:900 26px Montserrat}
+.cb-load ul{list-style:none;padding:0;margin:14px 0 0;text-align:left;display:inline-block}
+.cb-load li{padding:4px 0;color:#9a8a86;transition:color .3s}
+.cb-load li.ok{color:#121212}.cb-load li.ok:before{content:"✓ ";color:#3E9B6E;font-weight:700}
+.cb-gate{max-width:520px;margin:0 auto;padding:30px 0 50px}
+.cb-teaser{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;background:#F7ECE2;border-radius:18px;padding:16px;margin:16px 0 22px}
+.cb-teaser .blur{filter:blur(5px);user-select:none}
+</style>
+<div class="cb" id="cb">
+  <section class="cb-hero" id="cbHero">
+    <div class="dg-wrap">
+      <div class="dg-top" style="justify-content:flex-start;padding-left:0">Belleza Frenesí</div>
+      <p class="dg-kicker" style="margin-top:14px">Test gratis · 15 preguntas · 2 minutos</p>
+      <h1>Tu belleza también<br>se cuida <em>por dentro</em>.</h1>
+      <p class="lead">Descubre qué le está faltando a tu piel, tu cabello y tus uñas, y recibe un plan hecho con tus respuestas.</p>
+      <div class="cb-steps"><div><b>1</b>Respondes 15 preguntas</div><div><b>2</b>Ves tu mapa de 9 áreas</div><div><b>3</b>Te llevas tu plan en PDF</div></div>
+      <button class="dg-btn dg-btn-big" id="cbGo">Hacer mi test gratis →</button>
+      <p class="cb-trust">Incluye: rutina de mañana hora por hora · semana de comidas · hábitos explicados. No es un diagnóstico médico.</p>
+    </div>
+  </section>
+  <section class="cb-q" id="cbQ" hidden>
+    <div class="cb-bar"><div class="dg-wrap"><button class="cb-back" id="cbBack" aria-label="Volver">←</button><div class="cb-track" id="cbTrack"></div><span class="cb-count" id="cbCount"></span></div></div>
+    <div class="dg-wrap" id="cbStage"></div>
+  </section>
+  <div class="dg-wrap"><div class="dg-results" id="cbRes" hidden></div></div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var D=window.DIAG; D.variant='b';
+  var stage=document.getElementById('cbStage'), track=document.getElementById('cbTrack'), cnt=document.getElementById('cbCount'), back=document.getElementById('cbBack');
+  var i=0, N=D.Q.length;
+  var FACT={ // un dato que argumenta cada pregunta
+    piel:'Desde los 25 años el cuerpo produce cerca de 1 % menos colágeno cada año.',
+    cabello:'El cabello está hecho de queratina, una proteína: lo que comes se nota en él.',
+    unas:'Las uñas crecen unos 3 mm al mes. Lo que hagas hoy se empieza a ver en semanas.',
+    movilidad:'Los músculos de las piernas son los que protegen tus rodillas al subir escaleras.',
+    agua:'Perder apenas un 2 % del agua del cuerpo ya se nota en la energía y la concentración.',
+    proteina:'Tu piel, cabello y uñas se construyen con proteína.',
+    lacteos:'Las mujeres adultas necesitan unos 1.000 mg de calcio al día: unas 3 porciones de lácteos.',
+    frutas:'Sin vitamina C el cuerpo no puede fabricar colágeno.',
+    sol:'El sol causa la mayor parte del envejecimiento visible de la piel.',
+    descanso:'Mientras duermes, la piel hace su trabajo de reparación.'
+  };
+  for(var k=0;k<N;k++){track.appendChild(document.createElement('i'))}
+  function bar(){[].forEach.call(track.children,function(t,ix){t.classList.toggle('on',ix<=i)});cnt.textContent=(i+1)+'/'+N;back.disabled=i===0}
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function go(n){var c=stage.firstChild;if(c){c.classList.add('out');setTimeout(function(){i=n;draw()},200)}else{i=n;draw()}}
+  function draw(){
+    if(i>=N) return loading();
+    bar(); window.scrollTo(0,0);
+    var q=D.Q[i], a=q.a&&q.a!=='mov2'?D.AREAS[q.a].n:(q.id==='meta'?'Tu objetivo':q.id==='edad'||q.id==='nombre'?'Sobre ti':'Hábitos');
+    var c=document.createElement('div');c.className='cb-card';
+    var h='<p class="cb-area">'+a+'</p><h2>'+q.t+'</h2>'+(q.s?'<p class="sub">'+q.s+'</p>':'<p class="sub">&nbsp;</p>');
+    if(q.type==='text'){h+='<input class="cb-input" id="cbName" placeholder="'+q.ph+'" maxlength="40" autocomplete="given-name" value="'+esc(D.ans.nombre||'')+'"><button class="dg-btn dg-btn-big cb-next" id="cbNx">Continuar</button>'}
+    else{h+='<div class="cb-grid'+(q.o.length===3?' n3':'')+'">'+q.o.map(function(o,ix){var on=q.multi?(D.ans.meta||[]).indexOf(o[2])>-1:D.ans[q.id]===ix;return '<button type="button" class="cb-opt'+(on?' on':'')+'" data-i="'+ix+'"><span class="cb-emo">'+o[1]+'</span><span>'+o[0]+'</span></button>'}).join('')+'</div>';
+      if(q.multi)h+='<button class="dg-btn dg-btn-big cb-next" id="cbNx">Ver mi resultado</button>'}
+    if(FACT[q.id])h+='<div class="cb-fact">💡<span><b>¿Sabías?</b> '+FACT[q.id]+'</span></div>';
+    c.innerHTML=h;stage.innerHTML='';stage.appendChild(c);
+    if(q.type==='text'){var inp=c.querySelector('#cbName');var nx=function(){var v=inp.value.trim();if(!v){inp.focus();return}D.answer('nombre',v);go(i+1)};c.querySelector('#cbNx').onclick=nx;inp.onkeydown=function(e){if(e.key==='Enter')nx()};return}
+    [].forEach.call(c.querySelectorAll('.cb-opt'),function(b){b.onclick=function(){var ix=+b.dataset.i;
+      if(q.multi){var m=D.ans.meta||[],v=q.o[ix][2],p=m.indexOf(v);p>-1?m.splice(p,1):m.push(v);D.ans.meta=m;b.classList.toggle('on');return}
+      [].forEach.call(c.querySelectorAll('.cb-opt'),function(x){x.classList.remove('on')});b.classList.add('on');D.answer(q.id,ix);setTimeout(function(){go(i+1)},260)}});
+    if(q.multi)c.querySelector('#cbNx').onclick=function(){if(!(D.ans.meta||[]).length)D.ans.meta=[];D.track('respuesta','meta');go(i+1)};
+  }
+  function loading(){
+    document.querySelector('.cb-bar').style.display='none';
+    stage.innerHTML='<div class="cb-load"><div><div class="cb-ring" id="cbRing"><b id="cbPct">0%</b></div><h2 style="font:800 22px Montserrat">Analizando tus respuestas…</h2><ul id="cbL"><li>Calculando tus 9 áreas</li><li>Eligiendo tus 3 prioridades</li><li>Armando tu rutina de mañana</li><li>Preparando tu semana de comidas</li></ul></div></div>';
+    var p=0,ring=document.getElementById('cbRing'),pc=document.getElementById('cbPct'),li=document.querySelectorAll('#cbL li');
+    var t=setInterval(function(){p+=2;ring.style.background='conic-gradient(#D3306A '+p+'%,#f0e2d8 0)';pc.textContent=p+'%';var n=Math.floor(p/25);for(var j=0;j<n&&j<li.length;j++)li[j].classList.add('ok');if(p>=100){clearInterval(t);setTimeout(gate,300)}},45);
+  }
+  function gate(){
+    var s=D.scores(), idx=D.index(s), lows=D.lows(s,3), nm=esc((D.ans.nombre||'').split(' ')[0]);
+    stage.innerHTML='<div class="cb-gate"><p class="dg-kicker">Tu diagnóstico está listo</p><h2 style="font:800 26px/1.2 Montserrat">'+nm+', tu índice de belleza por dentro es <span style="color:'+D.color(idx)+'">'+idx+'/100</span></h2><div class="cb-teaser"><div>'+D.gauge(idx,120)+'</div><div><b>Tu prioridad n.º 1: '+D.AREAS[lows[0]].n+'</b><p class="blur" style="margin:6px 0 0;font-size:14px">'+esc(D.TXT[lows[0]].por.slice(0,110))+'…</p></div></div><p style="margin-bottom:16px">¿A qué correo te enviamos el diagnóstico completo en PDF? También lo ves aquí mismo al instante.</p><div id="cbMail"></div></div>';
+    document.getElementById('cbMail').appendChild(D.emailForm(function(){document.getElementById('cbQ').hidden=true;var r=document.getElementById('cbRes');D.renderResults(r);window.scrollTo(0,0)}));
+  }
+  back.onclick=function(){if(i>0)go(i-1)};
+  document.getElementById('cbGo').onclick=function(){document.getElementById('cbHero').hidden=true;document.getElementById('cbQ').hidden=false;D.track('inicio','b');draw()};
+});
+</script>
+{% endraw %}

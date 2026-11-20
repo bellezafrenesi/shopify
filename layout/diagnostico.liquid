@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#F7ECE2">
+  <title>Diagnóstico de belleza gratis · Belleza Frenesí</title>
+  <meta name="description" content="Responde 15 preguntas en 2 minutos y recibe tu diagnóstico de belleza por dentro, tu rutina de mañana y una semana de comidas sugerida.">
+  <meta property="og:title" content="Diagnóstico de belleza gratis">
+  <meta property="og:description" content="15 preguntas, 2 minutos. Tu mapa de 9 áreas, tu rutina de mañana y tu PDF.">
+  {%- if settings.favicon != blank -%}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">{%- endif -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  {{ 'diag-core.css' | asset_url | stylesheet_tag }}
+  {{ content_for_header }}
+</head>
+<body class="dg-body">
+  {%- liquid
+    assign p_rutina = all_products['producto-oferta-drop']
+    assign p_prot = all_products['protector-solar-avon-care-50-fps-para-rostro']
+    assign p_facial = all_products['crema-facial-avon-care-6-en-1-con-vitamina-e-copia']
+    assign p_cap = all_products['avon-advance-techniques-crema-de-tratamiento-capilar-10-en-1']
+    assign p_manos = all_products['crema-hidratante-tododia-frutas-rojas']
+  -%}
+  <script>
+    window.DIAG_PRODUCTS = {
+      {%- for pair in (1..5) -%}
+        {%- case pair -%}
+          {%- when 1 -%}{%- assign p = p_rutina -%}{%- assign k = 'rutina' -%}
+          {%- when 2 -%}{%- assign p = p_prot -%}{%- assign k = 'protector' -%}
+          {%- when 3 -%}{%- assign p = p_facial -%}{%- assign k = 'facial' -%}
+          {%- when 4 -%}{%- assign p = p_cap -%}{%- assign k = 'capilar' -%}
+          {%- when 5 -%}{%- assign p = p_manos -%}{%- assign k = 'manos' -%}
+        {%- endcase -%}
+        {%- if p.id and p.available -%}
+          {{ k | json }}: { title: {{ p.title | json }}, url: {{ p.url | json }}, price: {{ p.price | money_without_trailing_zeros | json }}, img: {{ p.featured_image | image_url: width: 600 | prepend: 'https:' | json }} },
+        {%- endif -%}
+      {%- endfor -%}
+    };
+  </script>
+  {{ content_for_layout }}
+  <script src="{{ 'diag-core.js' | asset_url }}" defer></script>
+</body>
+</html>
