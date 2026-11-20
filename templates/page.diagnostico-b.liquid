@@ -96,7 +96,7 @@
 .cb-kpis{display:flex;gap:22px;margin:18px 0 24px;flex-wrap:wrap}
 .cb-kpis div{font-size:12px;color:#b9aca8}.cb-kpis b{display:block;font:800 26px Montserrat;color:#fff}
 .cb-demo{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px;max-width:420px;margin:0 auto;width:100%}
-.cb-demo svg text{fill:#d9cfcb}
+.cb-demo svg .fc{fill:#121212}.cb-demo svg .fc2{fill:#7a6a66}
 .cb-demo p{text-align:center;font:700 12px Montserrat;letter-spacing:.14em;text-transform:uppercase;color:#FC5D8B;margin:6px 0 0}
 .cb-hero .cb-trust{color:#9a8a86}
 @media(max-width:899px){.cb-demo{display:none}}
@@ -118,7 +118,7 @@
       <div class="dg-top">Belleza Frenesí</div>
       <p class="dg-kicker" style="color:#FC5D8B;margin-top:12px">Test gratis de belleza por dentro</p>
       <h1>Mira en tiempo real<br>cómo está tu <em>belleza</em>.</h1>
-      <p class="lead">Respondes una pregunta a la vez y tu mapa de 9 áreas se va dibujando con cada respuesta. Al final te llevas tu análisis, tu rutina de mañana y tu semana de comidas en PDF.</p>
+      <p class="lead">Respondes una pregunta a la vez y tu flor de belleza se va dibujando con cada respuesta. Al final te llevas tu análisis, tu rutina de mañana y tu semana de comidas en PDF.</p>
       <div class="cb-kpis"><div><b>9</b>áreas</div><div><b>15</b>preguntas</div><div><b>2'</b>minutos</div><div><b>$0</b>costo</div></div>
       <button class="dg-btn dg-btn-big" id="cbGo" style="max-width:420px">Hacer mi test gratis →</button>
       <p class="cb-trust">No es un diagnóstico médico.</p>
@@ -127,7 +127,7 @@
   </div></section>
   <section class="cb-q" id="cbQ" hidden data-flow>
     <div class="cb-bar"><div class="dg-wrap"><div class="cb-live"><div class="cb-mini" id="cbMini"></div><div class="cb-ln" id="cbLn">—</div><div class="cb-lt"><small>Tu diagnóstico en vivo</small><span id="cbLt">Responde para empezar</span></div></div><div class="cb-trackrow"><button class="cb-back" id="cbBack" aria-label="Volver">←</button><div class="cb-track" id="cbTrack"></div><span class="cb-count" id="cbCount"></span></div></div></div>
-    <div class="dg-wrap cb-qgrid"><div id="cbStage"></div><aside class="cb-side"><div class="dg-card"><h3>Tu mapa en vivo</h3><div id="cbRadar"></div><div class="idx" id="cbIdx"></div><p class="pf" id="cbPf"></p></div></aside></div>
+    <div class="dg-wrap cb-qgrid"><div id="cbStage"></div><aside class="cb-side"><div class="dg-card"><h3>Tu flor en vivo</h3><div id="cbRadar"></div><div class="idx" id="cbIdx"></div><p class="pf" id="cbPf"></p></div></aside></div>
   </section>
   <div class="dg-wrap dg-wide"><div class="dg-results" id="cbRes" hidden></div></div>
 </div>
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded',function(){
     descanso:'Mientras duermes, la piel hace su trabajo de reparación.'
   };
   for(var k=0;k<N;k++){track.appendChild(document.createElement('i'))}
-  document.getElementById('cbDemo').innerHTML=D.radar({piel:62,cabello:58,unas:50,movilidad:60,energia:60,hidratacion:40,nutricion:62,descanso:64,sol:55},320)+'<p>Así se ve tu mapa</p>';
+  document.getElementById('cbDemo').innerHTML=D.radar({piel:62,cabello:58,unas:50,movilidad:60,energia:60,hidratacion:40,nutricion:62,descanso:64,sol:55},320)+'<p>Así se ve tu flor de belleza</p>';
   function live(){
     var s=D.scores(), idx=D.index(s), any=Object.keys(s).some(function(k){return s[k]!=null});
     document.getElementById('cbMini').innerHTML=D.radar(s,128,1);

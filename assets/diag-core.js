@@ -145,20 +145,20 @@
   };
 
   // ---------- Gráficas SVG ----------
+  // Flor de belleza: cada pétalo es un área; entre más largo, mejor está. Reemplaza a la araña (2026-11-20).
   D.radar = function (s, size, bare) {
-    size = size || 300; var keys = Object.keys(D.AREAS), n = keys.length, c = size / 2, R = bare ? size / 2 - 4 : size / 2 - 46, pts = [], grid = '', axes = '', labels = '';
-    [0.25, 0.5, 0.75, 1].forEach(function (f) { var p = keys.map(function (k, i) { var a = -Math.PI / 2 + i * 2 * Math.PI / n; return (c + Math.cos(a) * R * f).toFixed(1) + ',' + (c + Math.sin(a) * R * f).toFixed(1); }).join(' '); grid += '<polygon points="' + p + '" fill="none" stroke="#e8d6cc" stroke-width="1"/>'; });
+    size = size || 300; var keys = Object.keys(D.AREAS), n = keys.length, c = size / 2, R = bare ? size / 2 - 2 : size / 2 - 34, r0 = R * 0.22, w = R * (bare ? 0.2 : 0.18), g = '', p = '', ic = '', any = false;
     keys.forEach(function (k, i) {
-      var a = -Math.PI / 2 + i * 2 * Math.PI / n, v = (s[k] == null ? 0 : s[k]) / 100;
-      pts.push((c + Math.cos(a) * R * v).toFixed(1) + ',' + (c + Math.sin(a) * R * v).toFixed(1));
-      axes += '<line x1="' + c + '" y1="' + c + '" x2="' + (c + Math.cos(a) * R).toFixed(1) + '" y2="' + (c + Math.sin(a) * R).toFixed(1) + '" stroke="#efe2d9"/>';
-      var lx = c + Math.cos(a) * (R + 24), ly = c + Math.sin(a) * (R + 24);
-      if (!bare) labels += '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-family="Inter,Arial" fill="#5a4a46">' + D.AREAS[k].n.replace('Protección solar', 'Sol') + '</text>';
+      var d = i * 360 / n, v = s[k], rot = ' transform="rotate(' + d.toFixed(1) + ' ' + c + ' ' + c + ')"';
+      g += '<ellipse cx="' + c + '" cy="' + (c - R / 2).toFixed(1) + '" rx="' + w.toFixed(1) + '" ry="' + (R / 2).toFixed(1) + '" fill="#efe1d9" fill-opacity=".55"' + rot + '/>';
+      if (v != null) { any = true; var L = r0 + (R - r0) * v / 100; p += '<ellipse cx="' + c + '" cy="' + (c - L / 2).toFixed(1) + '" rx="' + (w - 1.5).toFixed(1) + '" ry="' + (L / 2).toFixed(1) + '" fill="' + D.color(v) + '" fill-opacity=".88"' + rot + '><title>' + D.AREAS[k].n + ': ' + v + ' de 100</title></ellipse>'; }
+      if (!bare) { var a = (d - 90) * Math.PI / 180; ic += '<text x="' + (c + Math.cos(a) * (R + 18)).toFixed(1) + '" y="' + (c + Math.sin(a) * (R + 18) + 1).toFixed(1) + '" text-anchor="middle" dominant-baseline="middle" font-size="' + (size / 16).toFixed(0) + '">' + D.AREAS[k].i + '</text>'; }
     });
-    return '<svg viewBox="0 0 ' + size + ' ' + size + '" width="100%" role="img" aria-label="Gráfica de tus 9 áreas">' + grid + axes +
-      '<polygon points="' + pts.join(' ') + '" fill="rgba(211,48,106,.22)" stroke="#D3306A" stroke-width="2" stroke-linejoin="round"/>' +
-      pts.map(function (p) { var xy = p.split(','); return '<circle cx="' + xy[0] + '" cy="' + xy[1] + '" r="3" fill="#D3306A"/>'; }).join('') + labels + '</svg>';
+    var cr = R * 0.3, ctr = '<circle cx="' + c + '" cy="' + c + '" r="' + cr.toFixed(1) + '" fill="#fff" stroke="#f0e2d8" stroke-width="2"/>';
+    if (!bare) ctr += '<text class="fc" x="' + c + '" y="' + (c + 2) + '" text-anchor="middle" font-family="Montserrat,Arial" font-weight="800" font-size="' + (cr * 0.7).toFixed(0) + '" fill="#121212">' + (any ? D.index(s) : '—') + '</text><text class="fc2" x="' + c + '" y="' + (c + cr * 0.55).toFixed(1) + '" text-anchor="middle" font-family="Inter,Arial" font-size="' + Math.max(8, cr * 0.26).toFixed(0) + '" fill="#7a6a66">de 100</text>';
+    return '<svg viewBox="0 0 ' + size + ' ' + size + '" width="100%" role="img" aria-label="Tu flor de belleza: 9 áreas">' + g + p + ctr + ic + '</svg>';
   };
+  D.legend = '<div class="dg-legend"><span><i style="background:#D3306A"></i>Necesita atención</span><span><i style="background:#E9A23B"></i>Mejorable</span><span><i style="background:#3E9B6E"></i>Bien</span></div>';
   D.gauge = function (v, size) {
     size = size || 170; var r = size / 2 - 14, c = size / 2, L = Math.PI * r, f = v / 100;
     return '<svg viewBox="0 0 ' + size + ' ' + (size / 2 + 22) + '" width="100%"><path d="M14 ' + c + ' A' + r + ' ' + r + ' 0 0 1 ' + (size - 14) + ' ' + c + '" fill="none" stroke="#f0e2d8" stroke-width="14" stroke-linecap="round"/>' +
@@ -179,7 +179,7 @@
     h += '<section class="dg-r-hero"><p class="dg-kicker">Tu diagnóstico de belleza</p><div class="dg-sum"><div class="dg-sum-g">' + D.gauge(idx, 150) + '</div><div><h2>' + (name ? name + ', ' : '') + esc(pf.n.charAt(0).toLowerCase() + pf.n.slice(1)) + '</h2><p>' + esc(pf.d) + '</p></div></div>' +
       '<div class="dg-chips">' + lows.map(function (k, i) { return '<span style="--c:' + D.color(s[k]) + '"><b>' + (i + 1) + '</b>' + D.AREAS[k].i + ' ' + D.AREAS[k].n + ' · ' + s[k] + '</span>'; }).join('') + '</div></section>';
     // 2. mapa
-    h += '<section class="dg-r-map dg-card"><div class="dg-map-r"><h3>Tu mapa de 9 áreas</h3>' + D.radar(s) + '</div><details class="dg-more"><summary>Ver área por área</summary>' + D.bars(s) + '</details></section>';
+    h += '<section class="dg-r-map dg-card"><div class="dg-map-r"><h3>Tu flor de belleza</h3><p class="dg-muted">Cada pétalo es un área. Entre más largo, mejor está.</p>' + D.radar(s) + D.legend + '</div><details class="dg-more"><summary>Ver cada área con su puntaje</summary>' + D.bars(s) + '</details></section>';
     // 3. prioridades en acordeón
     h += '<section class="dg-r-pri"><h3 class="dg-h">Tus 3 prioridades</h3><div class="dg-acc">' + lows.map(function (k, i) { var T = D.TXT[k]; return '<details class="dg-card dg-acc-i"' + (i === 0 ? ' open' : '') + '><summary><span class="dg-acc-n" style="background:' + D.color(s[k]) + '">' + s[k] + '</span><span><b>' + D.AREAS[k].i + ' ' + D.AREAS[k].n + '</b><small>' + D.label(s[k]) + ' · toca para ver</small></span></summary><p>' + esc(T.por) + '</p><ul>' + T.h.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></details>'; }).join('') + '</div></section>';
     // 4. mañana, compacto
