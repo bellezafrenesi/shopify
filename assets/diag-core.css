@@ -1,6 +1,7 @@
 /* Diagnóstico Belleza Frenesí · estilos compartidos (resultados, correo y PDF) */
 :root{--rosa:#D37A84;--beige:#F7ECE2;--palo:#F1C6C8;--cafe:#BB685D;--negro:#121212;--fucsia:#D3306A;--vivo:#FC5D8B;--vino:#9C3F4A;--txt:#3b2f2c;--muted:#7a6a66;--line:#ecdcd2;--card:#fff;--r:14px}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body.dg-body{margin:0;background:var(--beige);color:var(--txt);font:16px/1.55 Inter,system-ui,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 .dg-body h1,.dg-body h2,.dg-body h3,.dg-body h4{font-family:Montserrat,Arial,sans-serif;color:var(--negro);line-height:1.2;margin:0 0 .5em}
