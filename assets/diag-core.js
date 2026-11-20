@@ -249,7 +249,7 @@
     D.ans.email = email; var s = D.scores(), idx = D.index(s), lows = D.lows(s, 3);
     var tags = ['diagnostico', 'diag-' + D.variant, 'diag-indice-' + (idx < 45 ? 'bajo' : idx < 65 ? 'medio' : idx < 80 ? 'bueno' : 'alto')].concat(lows.map(function (k) { return 'diag-prioridad-' + k; }));
     // para el correo: código del resultado (sin nombre), índice exacto y complemento recomendado
-    var cp = D.code().split('-'); tags.push('diagr-' + cp[0] + '-' + cp[1]); tags.push('diagn-' + idx);
+    var cp = D.code().split('-'); tags.push('diagr-' + cp[0] + '-' + cp[1]); tags.push('diagn-' + idx); tags.push('diagp-' + D.variant + '-' + idx + '-' + lows.join('-'));
     var rc = D.recos(s); if (rc[1]) Object.keys(D.P).forEach(function (k) { if (D.P[k] === rc[1].p) tags.push('diagx-' + k); });
     var f = new FormData(); f.append('form_type', 'customer'); f.append('utf8', '✓'); f.append('contact[email]', email); f.append('contact[tags]', tags.join(','));
     if (D.ans.nombre) f.append('contact[first_name]', D.ans.nombre);
