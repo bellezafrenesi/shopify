@@ -113,9 +113,9 @@ document.addEventListener('DOMContentLoaded',function(){
   function email(){
     var s=D.scores(), lows=D.lows(s,3);
     say(['¡Listo, '+esc(name)+'! Ya tengo tu diagnóstico 🎉','Te adelanto algo: tu área que más pide atención es <b>'+D.AREAS[lows[0]].n.toLowerCase()+'</b>. En el diagnóstico completo te explico por qué pasa y qué hacer desde mañana.','¿A qué correo te lo envío? Así lo tienes a la mano.'],function(){
-      inn.innerHTML='';var box=document.createElement('div');box.className='ca-mailbox';
-      box.appendChild(D.emailForm(function(){dock.hidden=true;bubble(esc(D.ans.email),1);say(['¡Gracias! Aquí está tu diagnóstico 👇'],function(){dock.hidden=true;showRes()})}));
-      inn.appendChild(box);scroll();
+      inn.innerHTML='';dock.hidden=true;var box=document.createElement('div');box.className='ca-mailbox';
+      box.appendChild(D.emailForm(function(){dock.hidden=true;box.remove();bubble(esc(D.ans.email),1);say(['¡Gracias! Aquí está tu diagnóstico 👇'],function(){dock.hidden=true;showRes()})}));
+      chat.appendChild(box);scroll();
     });
   }
   function showRes(){document.getElementById('ca').classList.add('ca-done');var r=document.getElementById('caRes');D.renderResults(r);setTimeout(function(){r.scrollIntoView({behavior:'smooth'})},120)}
