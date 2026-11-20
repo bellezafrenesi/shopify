@@ -85,6 +85,31 @@ body.dg-body{margin:0;background:var(--beige);color:var(--txt);font:16px/1.55 In
 .dg-r-cta .dg-btn-big{max-width:440px}
 .dg-r-cta p{margin-top:10px}
 
+
+/* ===== Escritorio y tablet ===== */
+.dg-wrap.dg-wide{max-width:1120px}
+@media(min-width:720px){.dg-wrap{padding:0 24px}}
+@media(min-width:1000px){
+  .dg-results>section{margin-bottom:44px}
+  .dg-r-hero{padding-top:36px}
+  .dg-r-hero h2{font-size:42px}
+  .dg-r-hero p{font-size:17px}
+  .dg-r-dash{grid-template-columns:.8fr 1fr 1.2fr;align-items:stretch}
+  .dg-card-bars{grid-column:auto}
+  .dg-card{padding:22px}
+  .dg-pri{gap:18px}
+  .dg-r-tl{display:grid;grid-template-columns:300px 1fr;gap:10px 40px;align-items:start}
+  .dg-r-tl .dg-h,.dg-r-tl .dg-muted{grid-column:1}
+  .dg-r-tl .dg-tl{grid-column:2;grid-row:1/span 3;margin:0}
+  .dg-prods{grid-template-columns:1fr 1fr;gap:18px}
+  .dg-prod-main{grid-column:1/-1;grid-template-columns:260px 1fr}
+  .dg-prod-main h4{font-size:20px}
+  .dg-prod-main p{font-size:15px}
+  .dg-plan{font-size:14px}
+  .dg-r-cta .dg-btn-big{max-width:480px}
+}
+@media(min-width:720px) and (max-width:999px){.dg-prods{grid-template-columns:1fr}}
+
 /* ===== PDF (se pinta fuera de pantalla y html2pdf lo captura) ===== */
 .pdf-off{position:fixed;left:-10000px;top:0;width:794px}
 .pdf-host{width:794px;background:#fff;color:#2c2422;font:13px/1.5 Inter,Arial,sans-serif}

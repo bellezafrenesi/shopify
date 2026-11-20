@@ -50,10 +50,33 @@
 .cb-gate{max-width:520px;margin:0 auto;padding:30px 0 50px}
 .cb-teaser{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;background:#F7ECE2;border-radius:18px;padding:16px;margin:16px 0 22px}
 .cb-teaser .blur{filter:blur(5px);user-select:none}
+.cb-prev{display:none}
+@media(min-width:900px){
+  .cb-hero{min-height:100vh;display:flex;align-items:center;padding:0}
+  .cb-hero-in{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;width:100%;padding-top:10px;padding-bottom:30px}
+  .cb-hero h1{font-size:58px}
+  .cb-hero .dg-btn-big{max-width:420px}
+  .cb-prev{display:block;position:relative;padding:30px 0}
+  .cb-prev-card{background:#fff;border-radius:24px;padding:26px;box-shadow:0 30px 60px rgba(120,70,60,.16);transform:rotate(-2deg);max-width:420px;margin:0 auto}
+  .cb-prev-card h2{font:800 26px Montserrat;margin:6px 0 16px}
+  .cb-prev-o{display:flex;gap:12px;align-items:center;border:2px solid #f0e2d8;border-radius:14px;padding:12px;margin-bottom:10px;font-weight:600;font-size:15px}
+  .cb-prev-o span{font-size:24px;width:44px;height:44px;border-radius:12px;background:#F7ECE2;display:grid;place-items:center}
+  .cb-prev-o.on{border-color:#D3306A;background:#fff5f8}
+  .cb-prev-t{display:flex;gap:4px;margin-top:16px}.cb-prev-t i{flex:1;height:5px;border-radius:9px;background:#f0e2d8}.cb-prev-t i.on{background:#D3306A}
+  .cb-prev-chip{position:absolute;right:0;top:6px;background:#121212;color:#fff;border-radius:99px;padding:10px 16px;font:700 13px Montserrat;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+  .cb-prev-chip b{color:#FC5D8B}
+  .cb-prev-chip.c2{top:auto;bottom:6px;right:auto;left:0;background:#fff;color:#121212}
+  #cbStage{max-width:760px}
+  .cb-bar .dg-wrap{max-width:760px}
+  .cb-card{padding-top:40px}
+  .cb-grid{grid-template-columns:1fr 1fr}
+  .cb-grid.n3{grid-template-columns:repeat(3,1fr)}
+  .cb-grid.n3 .cb-opt{flex-direction:column;align-items:flex-start;min-height:140px}
+}
 </style>
 <div class="cb" id="cb">
   <section class="cb-hero" id="cbHero">
-    <div class="dg-wrap">
+    <div class="dg-wrap dg-wide cb-hero-in"><div>
       <div class="dg-top" style="justify-content:flex-start;padding-left:0">Belleza Frenesí</div>
       <p class="dg-kicker" style="margin-top:14px">Test gratis · 15 preguntas · 2 minutos</p>
       <h1>Tu belleza también<br>se cuida <em>por dentro</em>.</h1>
@@ -62,12 +85,20 @@
       <button class="dg-btn dg-btn-big" id="cbGo">Hacer mi test gratis →</button>
       <p class="cb-trust">Incluye: rutina de mañana hora por hora · semana de comidas · hábitos explicados. No es un diagnóstico médico.</p>
     </div>
+    <div class="cb-prev" aria-hidden="true">
+      <div class="cb-prev-card"><p class="cb-area">Uñas</p><h2>Tus uñas…</h2>
+        <div class="cb-prev-o"><span>💪</span>Están fuertes y crecen bien</div><div class="cb-prev-o on"><span>🫧</span>Se doblan o están blanditas</div><div class="cb-prev-o"><span>💔</span>Se parten o se descaman</div>
+        <div class="cb-prev-t"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="cb-prev-chip"><b>9</b> áreas analizadas</div>
+      <div class="cb-prev-chip c2">📄 Tu plan en PDF</div>
+    </div>
+    </div>
   </section>
   <section class="cb-q" id="cbQ" hidden>
     <div class="cb-bar"><div class="dg-wrap"><button class="cb-back" id="cbBack" aria-label="Volver">←</button><div class="cb-track" id="cbTrack"></div><span class="cb-count" id="cbCount"></span></div></div>
     <div class="dg-wrap" id="cbStage"></div>
   </section>
-  <div class="dg-wrap"><div class="dg-results" id="cbRes" hidden></div></div>
+  <div class="dg-wrap dg-wide"><div class="dg-results" id="cbRes" hidden></div></div>
 </div>
 <script>
 document.addEventListener('DOMContentLoaded',function(){
