@@ -2,7 +2,7 @@
 {% raw %}
 <style>
 .ca>.dg-wrap{width:100%;min-width:0}
-.ca{min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#F7ECE2 0%,#fbf4ef 100%)}
+.ca{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;background:linear-gradient(180deg,#F7ECE2 0%,#fbf4ef 100%)}
 .ca-head{position:sticky;top:0;z-index:5;background:rgba(247,236,226,.94);backdrop-filter:blur(8px);border-bottom:1px solid #ecdcd2}
 .ca-head .dg-wrap{display:flex;align-items:center;gap:12px;padding-top:10px;padding-bottom:10px}
 .ca-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#FC5D8B,#D3306A);display:grid;place-items:center;color:#fff;font:700 18px "Playfair Display",serif;flex:none;position:relative}
@@ -10,7 +10,7 @@
 .ca-who b{display:block;font:700 15px Montserrat;color:#121212}
 .ca-who span{font-size:12px;color:#7a6a66}
 .ca-prog{height:3px;background:#ecdcd2}.ca-prog i{display:block;height:100%;width:0;background:#D3306A;transition:width .4s}
-.ca-chat{flex:1;padding:18px 0 140px}
+.ca-chat{flex:1;padding:18px 0 8px}
 .ca-msg{max-width:84%;padding:12px 15px;border-radius:18px;margin:0 0 8px;font-size:15.5px;line-height:1.45;animation:caIn .35s ease both}
 .ca-bot{background:#fff;color:#2c2422;border-bottom-left-radius:6px;box-shadow:0 2px 8px rgba(120,70,60,.07)}
 .ca-me{background:#D3306A;color:#fff;margin-left:auto;border-bottom-right-radius:6px}
@@ -20,7 +20,7 @@
 .ca-typing i:nth-child(2){animation-delay:.15s}.ca-typing i:nth-child(3){animation-delay:.3s}
 @keyframes caDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
 @keyframes caIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.ca-dock{position:fixed;left:0;right:0;bottom:0;z-index:6;background:linear-gradient(180deg,rgba(251,244,239,0),#fbf4ef 22%);padding:22px 0 calc(14px + env(safe-area-inset-bottom))}
+.ca-dock{padding:6px 0 calc(22px + env(safe-area-inset-bottom))}
 .ca-opts{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
 .ca-opt{border:1.5px solid #D3306A;background:#fff;color:#D3306A;border-radius:999px;padding:11px 16px;font:600 14.5px Inter,Arial;animation:caIn .3s ease both}
 .ca-opt:hover,.ca-opt.on{background:#D3306A;color:#fff}
@@ -29,12 +29,30 @@
 .ca-row input:focus{outline:none;border-color:#D3306A}
 .ca-send{width:50px;height:50px;border-radius:50%;border:0;background:#D3306A;color:#fff;font-size:20px;flex:none}
 .ca-mailbox{background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 12px rgba(120,70,60,.08);animation:caIn .35s ease both}
-.ca-intro{text-align:center;padding:36px 0 10px}
+.ca-intro{text-align:center;padding:24px 0;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
 .ca-intro h1{font:900 clamp(28px,7.5vw,42px)/1.08 Montserrat;margin-bottom:12px}
 .ca-intro h1 em{font-family:"Playfair Display",serif;font-style:italic;color:#D3306A;font-weight:700}
-.ca-intro p{color:#5a4a46;max-width:480px;margin:0 auto 18px}
-.ca-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:0 0 22px;font-size:13px}
-.ca-pills span{background:#fff;border-radius:99px;padding:7px 12px;color:#5a4a46}
+.ca-badge{display:inline-block;background:#fff;border:1px solid #F1C6C8;color:#9C3F4A;border-radius:99px;padding:8px 14px;font:700 12.5px Montserrat,Arial;margin:4px 0 16px;box-shadow:0 4px 14px rgba(211,48,106,.10)}
+.ca-lead{color:#4a3c39;max-width:480px;margin:0 auto 18px;font-size:16px}
+.ca-prev{display:flex;align-items:center;gap:14px;background:#fff;border-radius:22px;padding:14px 16px;margin:0 auto 20px;max-width:420px;text-align:left;box-shadow:0 18px 40px rgba(120,70,60,.14);transform:rotate(-1.2deg)}
+.ca-prev-flor{width:128px;flex:none}.ca-prev-flor svg{width:100%;height:auto;display:block}
+.ca-prev svg .fc{fill:#121212}.ca-prev svg .fc2{fill:#7a6a66}
+.ca-prev-side{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ca-prev-k{font:700 10.5px Montserrat;letter-spacing:.12em;text-transform:uppercase;color:#D3306A}
+.ca-prev-side b{font:700 15px Montserrat;color:#121212}
+.ca-prev-n{font:900 32px/1 Montserrat;color:#E9A23B}.ca-prev-n small{font:600 13px Inter;color:#7a6a66}
+.ca-prev-bar{height:8px;border-radius:9px;background:#f3e7df;overflow:hidden;margin-top:4px}.ca-prev-bar i{display:block;width:57%;height:100%;background:#E9A23B}
+.ca-prev-tag{align-self:flex-start;margin-top:6px;font-size:11px;color:#9a8a86;background:#F7ECE2;border-radius:99px;padding:2px 9px}
+.ca-go{max-width:420px;font-size:17px;padding:19px 24px}
+.ca-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;font-size:12.5px;color:#7a6a66;margin:12px 0 0}
+.ca-get{background:#fff;border-radius:22px;padding:20px 18px;margin:28px auto 8px;max-width:480px;text-align:left;box-shadow:0 2px 12px rgba(120,70,60,.07)}
+.ca-get-t{font:800 18px Montserrat;color:#121212;margin:0 0 12px;text-align:center}
+.ca-get ul{list-style:none;padding:0;margin:0 0 18px}
+.ca-get li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f3e7df;font-size:14px;line-height:1.4;color:#5a4a46}
+.ca-get li:last-child{border-bottom:0}
+.ca-get li>span{font-size:22px;width:42px;height:42px;border-radius:12px;background:#fbf0f3;display:grid;place-items:center;flex:none}
+.ca-get li b{display:block;font:700 15px Inter;color:#121212}
+.ca-get .ca-go{width:100%}
 .ca-done .ca-dock{display:none}
 .ca-results{padding:0 0 30px}
 .ca-phone{display:none}
@@ -43,8 +61,11 @@
   .ca-intro{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;text-align:left;min-height:calc(100vh - 20px);padding:20px 0}
   .ca-intro .dg-top{justify-content:flex-start;padding-left:0}
   .ca-intro h1{font-size:54px}
-  .ca-intro p{margin-left:0;font-size:17px}
-  .ca-pills{justify-content:flex-start}
+  .ca-lead{margin-left:0;font-size:17px}
+  .ca-trust{justify-content:flex-start}
+  .ca-prev{margin-left:0}
+  .ca-get{margin-left:0}
+  .ca-phone{align-self:start;position:sticky;top:40px}
   .ca-phone{display:block;background:#fbf4ef;border-radius:32px;padding:16px;box-shadow:0 30px 60px rgba(120,70,60,.18),0 0 0 10px #fff;max-width:380px;justify-self:center;width:100%}
   .ca-phone-h{display:flex;gap:10px;align-items:center;padding:4px 4px 14px;border-bottom:1px solid #ecdcd2;margin-bottom:14px}
   .ca-phone .ca-msg{font-size:14px}
@@ -57,12 +78,22 @@
   <div class="dg-wrap">
     <section class="ca-intro" id="caIntro" data-flow><div class="ca-intro-txt">
       <div class="dg-top">Belleza Frenesí</div>
-      <p class="dg-kicker">Diagnóstico gratis · 2 minutos</p>
+      <div class="ca-badge">🎁 Gratis · 2 minutos · Resultado al instante</div>
       <h1>¿Qué te está pidiendo<br>tu piel <em>por dentro</em>?</h1>
-      <p>Charla 2 minutos con nuestra asesora virtual y recibe tu flor de belleza de 9 áreas, tu rutina de mañana hora por hora y una semana de comidas, todo en un PDF para ti.</p>
-      <div class="ca-pills"><span>✨ Piel</span><span>💇‍♀️ Cabello</span><span>💅 Uñas</span><span>🦵 Movilidad</span><span>⚡ Energía</span></div>
-      <button class="dg-btn dg-btn-big" id="caGo" style="max-width:420px">Empezar mi diagnóstico</button>
-      <p class="dg-muted" style="margin-top:12px">Sin costo. No es un diagnóstico médico.</p>
+      <p class="ca-lead">Charla 2 minutos con nuestra asesora virtual y descubre qué necesita tu belleza desde adentro, con un plan hecho para ti.</p>
+      <div class="ca-prev" aria-hidden="true"><div class="ca-prev-flor" id="caFlor"></div><div class="ca-prev-side"><span class="ca-prev-k">Así se ve tu resultado</span><b>Tu índice de belleza</b><span class="ca-prev-n">57<small> / 100</small></span><span class="ca-prev-bar"><i></i></span><span class="ca-prev-tag">Ejemplo</span></div></div>
+      <button class="dg-btn dg-btn-big ca-go" id="caGo">Quiero mi diagnóstico gratis <span aria-hidden="true">→</span></button>
+      <p class="ca-trust"><span>✓ Sin costo</span><span>✓ Sin compras obligatorias</span><span>✓ No es un diagnóstico médico</span></p>
+      <div class="ca-get"><p class="ca-get-t">Lo que recibes gratis</p>
+        <ul>
+          <li><span>🌸</span><div><b>Tu flor de belleza</b>Cómo están tus 9 áreas: piel, cabello, uñas, energía y más.</div></li>
+          <li><span>🎯</span><div><b>Tus 3 prioridades</b>Qué atender primero y por qué te está pasando.</div></li>
+          <li><span>⏰</span><div><b>Tu rutina de mañana</b>Hora por hora, con hábitos fáciles de seguir.</div></li>
+          <li><span>🥗</span><div><b>Tu semana de comidas</b>Ideas sencillas para cada día.</div></li>
+          <li><span>📩</span><div><b>Todo en un PDF</b>Te llega a tu correo para tenerlo siempre a mano.</div></li>
+        </ul>
+        <button class="dg-btn dg-btn-big ca-go" id="caGo2">Empezar ahora, es gratis</button>
+      </div>
       </div>
       <div class="ca-phone" aria-hidden="true"><div class="ca-phone-h"><div class="ca-av">F</div><div class="ca-who"><b>Asesora virtual Frenesí</b><span>en línea</span></div></div>
         <div class="ca-msg ca-bot">¡Hola! 👋 En 2 minutos te armo tu diagnóstico de belleza por dentro.</div>
@@ -92,10 +123,9 @@ document.addEventListener('DOMContentLoaded',function(){
     sol:['Este es uno de los hábitos que más rápido cambia cómo se ve la piel.','Bien, pero el sol de Colombia pega todos los días, incluso nublado.','¡Así se hace! 🧴']
   };
   function pct(){prog.style.width=Math.round(D.progress()*100)+'%'}
-  function pad(){chat.style.paddingBottom=(dock.hidden?24:dock.offsetHeight+24)+'px'}
-  function toEnd(sm){window.scrollTo({top:document.documentElement.scrollHeight,behavior:sm?'smooth':'auto'})}
-  function scroll(){setTimeout(function(){pad();toEnd(true)},60);setTimeout(function(){if(chat.hidden)return;pad();if(window.innerHeight+window.scrollY<document.documentElement.scrollHeight-4)toEnd(false)},650)}
-  if(window.ResizeObserver)new ResizeObserver(function(){pad();if(!dock.hidden&&!chat.hidden)scroll();}).observe(dock);
+  function pad(){}
+  function toEnd(sm){var de=document.documentElement,end=de.scrollHeight-window.innerHeight,top=end,bots=chat.querySelectorAll('.ca-bot:not(.ca-typing)'),q=bots[bots.length-1],h=document.getElementById('caHead');if(q&&!dock.hidden){var qt=q.getBoundingClientRect().top+window.scrollY-(h&&!h.hidden?h.offsetHeight:0)-12;if(qt<end)top=qt}window.scrollTo({top:Math.max(0,top),behavior:sm?'smooth':'auto'})}
+  function scroll(){setTimeout(function(){if(!chat.hidden)toEnd(true)},60);setTimeout(function(){if(!chat.hidden)toEnd(false)},500)}
   function bubble(html,me){var b=document.createElement('div');b.className='ca-msg '+(me?'ca-me':'ca-bot');b.innerHTML=html;chat.appendChild(b);scroll();return b}
   function say(list,cb){ // escribe varios mensajes con "escribiendo…"
     var k=0; dock.hidden=true;
@@ -145,7 +175,9 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   function showRes(){var ca=document.getElementById('ca');ca.classList.add('ca-done');chat.innerHTML='';chat.hidden=true;dock.hidden=true;document.getElementById('caHead').hidden=true;var r=document.getElementById('caRes');D.renderResults(r);window.scrollTo(0,0)}
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-  document.getElementById('caGo').onclick=function(){
+  var fl=document.getElementById('caFlor');if(fl)fl.innerHTML=D.radar({piel:62,cabello:58,unas:50,movilidad:60,energia:60,hidratacion:40,nutricion:62,descanso:64,sol:55},200);
+  document.getElementById('caGo2').onclick=function(){document.getElementById('caGo').click()};
+  document.getElementById('caGo').onclick=function(){window.scrollTo(0,0);
     document.getElementById('caIntro').hidden=true;document.getElementById('caHead').hidden=false;chat.hidden=false;D.track('inicio','a');
     say(['¡Hola! 👋 Soy la asesora virtual de Belleza Frenesí.','En 2 minutos te armo un diagnóstico de belleza por dentro: piel, cabello, uñas, energía y más. Es gratis.'],ask);
   };
