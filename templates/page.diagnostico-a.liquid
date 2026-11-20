@@ -1,6 +1,7 @@
 {% layout 'diagnostico' %}
 {% raw %}
 <style>
+.ca>.dg-wrap{width:100%;min-width:0}
 .ca{min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#F7ECE2 0%,#fbf4ef 100%)}
 .ca-head{position:sticky;top:0;z-index:5;background:rgba(247,236,226,.94);backdrop-filter:blur(8px);border-bottom:1px solid #ecdcd2}
 .ca-head .dg-wrap{display:flex;align-items:center;gap:12px;padding-top:10px;padding-bottom:10px}
@@ -38,13 +39,13 @@
 .ca-results{padding:0 0 30px}
 </style>
 <div class="ca" id="ca">
-  <header class="ca-head" hidden id="caHead"><div class="dg-wrap"><div class="ca-av">F</div><div class="ca-who"><b>Asesora Frenesí</b><span id="caSt">en línea · diagnóstico gratis</span></div></div><div class="ca-prog"><i id="caProg"></i></div></header>
+  <header class="ca-head" hidden id="caHead"><div class="dg-wrap"><div class="ca-av">F</div><div class="ca-who"><b>Asesora virtual Frenesí</b><span id="caSt">en línea · diagnóstico gratis</span></div></div><div class="ca-prog"><i id="caProg"></i></div></header>
   <div class="dg-wrap">
     <section class="ca-intro" id="caIntro">
       <div class="dg-top">Belleza Frenesí</div>
       <p class="dg-kicker">Diagnóstico gratis · 2 minutos</p>
       <h1>¿Qué te está pidiendo<br>tu piel <em>por dentro</em>?</h1>
-      <p>Charla 2 minutos con nuestra asesora. Te respondo con tu mapa de 9 áreas, tu rutina de mañana hora por hora y una semana de comidas, todo en un PDF para ti.</p>
+      <p>Charla 2 minutos con nuestra asesora virtual y recibe tu mapa de 9 áreas, tu rutina de mañana hora por hora y una semana de comidas, todo en un PDF para ti.</p>
       <div class="ca-pills"><span>✨ Piel</span><span>💇‍♀️ Cabello</span><span>💅 Uñas</span><span>🦵 Movilidad</span><span>⚡ Energía</span></div>
       <button class="dg-btn dg-btn-big" id="caGo" style="max-width:420px">Empezar mi diagnóstico</button>
       <p class="dg-muted" style="margin-top:12px">Sin costo. No es un diagnóstico médico.</p>
@@ -121,7 +122,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   document.getElementById('caGo').onclick=function(){
     document.getElementById('caIntro').hidden=true;document.getElementById('caHead').hidden=false;chat.hidden=false;D.track('inicio','a');
-    say(['¡Hola! 👋 Soy tu asesora de Belleza Frenesí.','En 2 minutos te armo un diagnóstico de belleza por dentro: piel, cabello, uñas, energía y más. Es gratis.'],ask);
+    say(['¡Hola! 👋 Soy la asesora virtual de Belleza Frenesí.','En 2 minutos te armo un diagnóstico de belleza por dentro: piel, cabello, uñas, energía y más. Es gratis.'],ask);
   };
 });
 </script>

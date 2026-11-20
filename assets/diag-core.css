@@ -33,7 +33,7 @@ body.dg-body{margin:0;background:var(--beige);color:var(--txt);font:16px/1.55 In
 .dg-err{color:var(--fucsia);font-size:14px;margin:0}
 
 /* resultados */
-.dg-results{padding:8px 0 0}
+.dg-results{padding:8px 0 0;min-width:0;max-width:100%}
 .dg-results>section{margin:0 0 28px}
 .dg-r-hero{text-align:center;padding:12px 0 4px}
 .dg-r-hero h2{font-size:clamp(24px,6vw,34px)}
