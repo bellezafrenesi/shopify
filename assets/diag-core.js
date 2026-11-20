@@ -117,15 +117,15 @@
   };
 
   // ---------- Gráficas SVG ----------
-  D.radar = function (s, size) {
-    size = size || 300; var keys = Object.keys(D.AREAS), n = keys.length, c = size / 2, R = size / 2 - 46, pts = [], grid = '', axes = '', labels = '';
+  D.radar = function (s, size, bare) {
+    size = size || 300; var keys = Object.keys(D.AREAS), n = keys.length, c = size / 2, R = bare ? size / 2 - 4 : size / 2 - 46, pts = [], grid = '', axes = '', labels = '';
     [0.25, 0.5, 0.75, 1].forEach(function (f) { var p = keys.map(function (k, i) { var a = -Math.PI / 2 + i * 2 * Math.PI / n; return (c + Math.cos(a) * R * f).toFixed(1) + ',' + (c + Math.sin(a) * R * f).toFixed(1); }).join(' '); grid += '<polygon points="' + p + '" fill="none" stroke="#e8d6cc" stroke-width="1"/>'; });
     keys.forEach(function (k, i) {
       var a = -Math.PI / 2 + i * 2 * Math.PI / n, v = (s[k] == null ? 0 : s[k]) / 100;
       pts.push((c + Math.cos(a) * R * v).toFixed(1) + ',' + (c + Math.sin(a) * R * v).toFixed(1));
       axes += '<line x1="' + c + '" y1="' + c + '" x2="' + (c + Math.cos(a) * R).toFixed(1) + '" y2="' + (c + Math.sin(a) * R).toFixed(1) + '" stroke="#efe2d9"/>';
       var lx = c + Math.cos(a) * (R + 24), ly = c + Math.sin(a) * (R + 24);
-      labels += '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-family="Inter,Arial" fill="#5a4a46">' + D.AREAS[k].n.replace('Protección solar', 'Sol') + '</text>';
+      if (!bare) labels += '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-family="Inter,Arial" fill="#5a4a46">' + D.AREAS[k].n.replace('Protección solar', 'Sol') + '</text>';
     });
     return '<svg viewBox="0 0 ' + size + ' ' + size + '" width="100%" role="img" aria-label="Gráfica de tus 9 áreas">' + grid + axes +
       '<polygon points="' + pts.join(' ') + '" fill="rgba(211,48,106,.22)" stroke="#D3306A" stroke-width="2" stroke-linejoin="round"/>' +

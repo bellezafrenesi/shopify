@@ -14,7 +14,8 @@
 @media(min-width:900px){.cc-body{grid-template-columns:1fr 340px;align-items:start}.cc-side{position:sticky;top:16px}}
 .cc-live{position:sticky;top:0;z-index:4;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid #ecdcd2;padding:10px 0}
 .cc-live .dg-wrap{display:flex;align-items:center;gap:12px}
-.cc-live-n{font:900 26px Montserrat;min-width:54px}
+.cc-mini{width:64px;height:64px;flex:none}
+.cc-live-n{font:900 26px Montserrat;min-width:44px}
 .cc-live-t{flex:1}.cc-live-t small{display:block;font-size:11px;color:#7a6a66;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
 .cc-live-t span{font-size:13px;color:#121212;font-weight:600}
 .cc-live-p{font:700 12px Montserrat;color:#7a6a66}
@@ -47,7 +48,7 @@
     <div class="cc-kpis"><div><b>9</b>áreas</div><div><b>15</b>preguntas</div><div><b>2'</b>minutos</div><div><b>$0</b>costo</div></div>
     <a class="dg-btn dg-btn-big" href="#ccForm" id="ccGo" style="max-width:420px">Empezar el escáner ↓</a>
   </div></section>
-  <div class="cc-live" id="ccLive" hidden><div class="dg-wrap"><div class="cc-live-n" id="ccLn">—</div><div class="cc-live-t"><small>Tu índice en vivo</small><span id="ccLt">Responde para ver tu índice</span></div><div class="cc-live-p" id="ccLp">0/15</div></div></div>
+  <div class="cc-live" id="ccLive" hidden><div class="dg-wrap"><div class="cc-mini" id="ccMini"></div><div class="cc-live-n" id="ccLn">—</div><div class="cc-live-t"><small>Tu índice en vivo</small><span id="ccLt">Responde para ver tu índice</span></div><div class="cc-live-p" id="ccLp">0/15</div></div></div>
   <div class="dg-wrap">
     <div class="cc-body" id="ccBody">
       <div id="ccForm"></div>
@@ -73,13 +74,13 @@ document.addEventListener('DOMContentLoaded',function(){
   form.innerHTML=h;
   function update(){
     var s=D.scores(), idx=D.index(s), n=0;D.Q.forEach(function(q){var v=D.ans[q.id];if(v!=null&&v!==''&&!(Array.isArray(v)&&!v.length))n++});
-    radar.innerHTML=D.radar(s,300);
+    radar.innerHTML=D.radar(s,300);document.getElementById('ccMini').innerHTML=D.radar(s,128,1);
     var any=Object.keys(s).some(function(k){return s[k]!=null});
     document.getElementById('ccIdx').innerHTML=any?'Índice: <span style="color:'+D.color(idx)+'">'+idx+'/100</span>':'<span class="dg-muted" style="font-weight:400">Empieza a responder</span>';
     document.getElementById('ccLn').textContent=any?idx:'—';document.getElementById('ccLn').style.color=D.color(any?idx:null);
     document.getElementById('ccLt').textContent=any?D.profile(idx).n:'Responde para ver tu índice';
     document.getElementById('ccLp').textContent=n+'/15';
-    var b=document.getElementById('ccDone');b.disabled=n<D.Q.length;b.textContent=n<D.Q.length?'Te faltan '+(D.Q.length-n)+' preguntas':'Ver mi análisis completo →';
+    var b=document.getElementById('ccDone');b.disabled=n<D.Q.length;b.textContent=n<D.Q.length?(D.Q.length-n===1?'Te falta 1 pregunta':'Te faltan '+(D.Q.length-n)+' preguntas'):'Ver mi análisis completo →';
   }
   function next(id){var ix=D.Q.findIndex(function(q){return q.id===id});for(var k=ix+1;k<D.Q.length;k++){var q=D.Q[k];if(D.ans[q.id]==null){var el=document.getElementById('it-'+q.id);[].forEach.call(document.querySelectorAll('.cc-item.cur'),function(x){x.classList.remove('cur')});el.classList.add('cur');var y=el.getBoundingClientRect().top+window.scrollY-90;window.scrollTo({top:y,behavior:'smooth'});return}}}
   form.addEventListener('click',function(e){var b=e.target.closest('.cc-seg button');if(!b)return;var seg=b.parentNode,id=seg.dataset.q,q=byId[id],ix=+b.dataset.i;
