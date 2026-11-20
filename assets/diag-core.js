@@ -273,6 +273,9 @@
           if (tk && tk.value && form._dgSend) { e.preventDefault(); e.stopImmediatePropagation(); form._dgSend(); }
         }, true);
       }
+      // red de seguridad: si Shopify envía el formulario de forma normal, va a un iframe oculto y la página no se recarga
+      var sink = document.getElementById('dgSink');
+      if (sink) { form.target = 'dgSink'; sink.onload = function () { if (sink.dataset.armed) { form._dgSend = null; fin(true); } }; sink.dataset.armed = 1; }
       if (form.elements['h-captcha-response']) form.elements['h-captcha-response'].value = '';
       form._dgSend = function () { form._dgSend = null; send(); };
       form.submit = function () { if (form._dgSend) form._dgSend(); };
