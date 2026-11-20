@@ -214,6 +214,8 @@
     var m = location.search.match(/[?&]r=([^&]+)/); if (!m || !D.fromCode(decodeURIComponent(m[1]))) return;
     [].forEach.call(document.querySelectorAll('[data-flow]'), function (x) { x.hidden = true; });
     var el = document.querySelector('.dg-results'); if (el) { D.renderResults(el); window.scrollTo(0, 0); D.track('reabrir', 'correo'); }
+    // ?pdf=1 (botón "Descargar mi PDF" del correo): baja el PDF solo
+    if (el && /[?&]pdf=1/.test(location.search)) setTimeout(function () { var b = [].filter.call(el.querySelectorAll('button'), function (x) { return /PDF/i.test(x.textContent); })[0]; D.pdf(b || null); }, 900);
   });
 
   // ---------- PDF ----------
