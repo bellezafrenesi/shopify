@@ -265,8 +265,18 @@
     return new Promise(function (res) {
       var done = false, fin = function (v) { if (!done) { done = true; res(v); } };
       setTimeout(function () { fin(false); }, 15000);
-      // Shopify llama a form.submit() cuando ya tiene el token del captcha: lo enviamos en segundo plano
-      form.submit = function () {
+      // Con el token del captcha, Shopify reenvía el formulario (con submit() o con un submit normal): lo atajamos y lo enviamos en segundo plano
+      if (!form.dataset.dgHook) {
+        form.dataset.dgHook = 1;
+        form.addEventListener('submit', function (e) {
+          var tk = form.elements['h-captcha-response'];
+          if (tk && tk.value && form._dgSend) { e.preventDefault(); e.stopImmediatePropagation(); form._dgSend(); }
+        }, true);
+      }
+      if (form.elements['h-captcha-response']) form.elements['h-captcha-response'].value = '';
+      form._dgSend = function () { form._dgSend = null; send(); };
+      form.submit = function () { if (form._dgSend) form._dgSend(); };
+      function send() {
         fetch('/contact', { method: 'POST', body: new FormData(form), credentials: 'same-origin' }).then(function (r) {
           if (/\/challenge/.test(r.url)) {
             // Shopify pide resolver el captcha a la vista: la mandamos ahí y vuelve a su resultado
@@ -275,7 +285,7 @@
           }
           fin(r.ok);
         }).catch(function () { fin(false); });
-      };
+      }
       var tries = 0;
       (function go() { if (form.dataset.hcaptchaBound || tries++ > 16) { form.requestSubmit ? form.requestSubmit() : form.submit(); } else setTimeout(go, 400); })();
     });
